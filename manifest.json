@@ -1,0 +1,40 @@
+{
+  "name": "TEGNE Markedsføring",
+  "short_name": "TEGNE",
+  "description": "Markedsføringsdashboard for TEGNE kunst- og hobbybutikker",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#1d2739",
+  "theme_color": "#247ca7",
+  "orientation": "any",
+  "icons": [
+    {
+      "src": "assets/icon-192.svg",
+      "sizes": "192x192",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "assets/icon-512.svg",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["business", "productivity"],
+  "lang": "no",
+  "shortcuts": [
+    {
+      "name": "Ukentlig visning",
+      "short_name": "Uke",
+      "description": "Åpne ukentlig dashboard",
+      "url": "/?view=weekly"
+    },
+    {
+      "name": "Månedlig visning",
+      "short_name": "Mnd",
+      "description": "Åpne månedlig dashboard",
+      "url": "/?view=monthly"
+    }
+  ]
+}

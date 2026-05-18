@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#247ca7">
+  <meta name="description" content="TEGNE Markedsføringsdashboard">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="TEGNE">
+  <title>TEGNE Dashboard</title>
+  <link rel="manifest" href="manifest.json">
+  <link rel="apple-touch-icon" href="assets/icon-192.svg">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header class="header">
+    <div class="header-content">
+      <div class="logo">
+        <img src="assets/TEGNE_Logo_Favicon_FARGE_TRANSPARENT-Smal.png" alt="TEGNE" class="logo-img">
+        <span class="logo-sub">Markedsføring</span>
+      </div>
+      <div class="header-right">
+        <div class="wellness-pill" id="wellnessPill" title="Husk å ta vare på deg selv!">
+          💧
+        </div>
+        <button class="btn-icon" id="settingsBtn" aria-label="Innstillinger">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-2 2 2 2 0 01-2-2v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83 0 2 2 0 010-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 01-2-2 2 2 0 012-2h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 010-2.83 2 2 0 012.83 0l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 012-2 2 2 0 012 2v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 0 2 2 0 010 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 012 2 2 2 0 01-2 2h-.09a1.65 1.65 0 00-1.51 1z"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- MAIN NAVIGATION -->
+  <nav class="main-nav">
+    <button class="nav-tab active" data-view="weekly">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+      Ukentlig
+    </button>
+    <button class="nav-tab" data-view="monthly">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 20V10"/><path d="M12 20V4"/><path d="M6 20v-6"/></svg>
+      Månedlig
+    </button>
+    <button class="nav-tab" data-view="quarterly">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+      Kvartalsvis
+    </button>
+  </nav>
+
+  <!-- CAMPAIGN BANNER -->
+  <div class="campaign-banner" id="campaignBanner" style="display:none">
+    <div class="banner-inner">
+      <span class="banner-icon">🎯</span>
+      <span id="bannerText"></span>
+      <button class="btn-ghost-sm" id="editBannerBtn">Rediger</button>
+    </div>
+  </div>
+
+  <!-- MAIN CONTENT -->
+  <main class="main-content">
+
+    <!-- ===== UKENTLIG VIEW ===== -->
+    <section id="weeklyView" class="view active">
+
+      <div class="week-header">
+        <div class="week-nav">
+          <button class="btn-icon" id="prevWeek" aria-label="Forrige uke">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>
+          </button>
+          <span id="weekLabel" class="week-label">Uke 20, 2026</span>
+          <button class="btn-icon" id="nextWeek" aria-label="Neste uke">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+          </button>
+        </div>
+        <div class="day-tabs">
+          <button class="day-tab" data-day="0">Man</button>
+          <button class="day-tab" data-day="1">Tir</button>
+          <button class="day-tab" data-day="2">Ons</button>
+          <button class="day-tab" data-day="3">Tor</button>
+          <button class="day-tab" data-day="4">Fre</button>
+        </div>
+      </div>
+
+      <!-- Day content rendered by weekly.js -->
+      <div id="dayContent"></div>
+
+    </section>
+
+    <!-- ===== MÅNEDLIG VIEW ===== -->
+    <section id="monthlyView" class="view">
+      <div class="view-header">
+        <div class="view-nav">
+          <button class="btn-icon" id="prevMonth">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>
+          </button>
+          <span id="monthLabel" class="week-label">Mai 2026</span>
+          <button class="btn-icon" id="nextMonth">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+          </button>
+        </div>
+      </div>
+      <div id="monthContent"></div>
+    </section>
+
+    <!-- ===== KVARTALSVIS VIEW ===== -->
+    <section id="quarterlyView" class="view">
+      <div class="view-header">
+        <div class="view-nav">
+          <button class="btn-icon" id="prevQuarter">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>
+          </button>
+          <span id="quarterLabel" class="week-label">Q2 2026</span>
+          <button class="btn-icon" id="nextQuarter">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+          </button>
+        </div>
+      </div>
+      <div id="quarterContent"></div>
+    </section>
+
+  </main>
+
+  <!-- AI FLOATING BUTTON -->
+  <button class="ai-fab" id="aiBtn" aria-label="Åpne AI-assistent">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <path d="M12 2a10 10 0 110 20A10 10 0 0112 2z" stroke-dasharray="2 3"/>
+      <path d="M8 12h8M12 8v8" stroke-linecap="round"/>
+    </svg>
+    <span class="ai-fab-label">AI</span>
+  </button>
+
+  <!-- AI PANEL -->
+  <div class="ai-panel" id="aiPanel" aria-hidden="true">
+    <div class="ai-panel-header">
+      <div class="ai-panel-title">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
+        AI-assistent
+      </div>
+      <div class="ai-panel-actions">
+        <button class="btn-ghost-sm" id="clearAiBtn">Tøm</button>
+        <button class="btn-icon" id="closeAiBtn" aria-label="Lukk">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+    </div>
+    <div class="ai-context-bar" id="aiContextBar">
+      <span class="context-badge" id="aiContextBadge">Ukentlig · Mandag</span>
+    </div>
+    <div class="ai-messages" id="aiMessages">
+      <div class="ai-msg ai-msg--bot">
+        <div class="ai-msg-avatar">AI</div>
+        <div class="ai-msg-bubble">
+          Hei Marthe! 👋 Jeg er din markedsassistent for TEGNE.<br><br>
+          Jeg kan hjelpe med analyse av KPIer, innholdsideer, kampanjestrategi eller ukentlig diagnose. Hva trenger du?
+        </div>
+      </div>
+    </div>
+    <div class="ai-quick-prompts" id="aiQuickPrompts">
+      <button class="quick-prompt" data-prompt="Analyser ukens KPIer og gi meg en diagnose">📊 Ukediagnose</button>
+      <button class="quick-prompt" data-prompt="Forslag til innhold denne uken basert på sesong og trender">✍️ Innholdsideer</button>
+      <button class="quick-prompt" data-prompt="Hvilke søkeord bør jeg prioritere nå?">🔍 Søkeord</button>
+    </div>
+    <div class="ai-input-row">
+      <textarea id="aiInput" placeholder="Spør om KPIer, innhold, kampanjer..." rows="2" aria-label="Melding til AI"></textarea>
+      <button class="btn-primary ai-send-btn" id="aiSend" aria-label="Send">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+      </button>
+    </div>
+  </div>
+  <div class="ai-backdrop" id="aiBackdrop"></div>
+
+  <!-- SETTINGS MODAL -->
+  <div class="modal-overlay" id="settingsModal" aria-hidden="true">
+    <div class="modal" role="dialog" aria-label="Innstillinger">
+      <div class="modal-header">
+        <h2>Innstillinger</h2>
+        <button class="btn-icon modal-close" data-modal="settingsModal">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="settings-section">
+          <h3>Integrasjoner</h3>
+          <div class="form-group">
+            <label class="form-label">Anthropic API-nøkkel</label>
+            <input type="password" id="anthropicKey" class="form-input" placeholder="sk-ant-...">
+            <p class="form-hint">Hent fra console.anthropic.com → API Keys. Lagres kun lokalt i nettleseren.</p>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Google Apps Script URL</label>
+            <input type="url" id="sheetsUrl" class="form-input" placeholder="https://script.google.com/macros/s/.../exec">
+            <p class="form-hint">Lim inn URL fra ditt deployede Apps Script-prosjekt</p>
+            <button class="btn-secondary" id="forceSyncBtn" style="margin-top:8px">↑ Synk all data til Sheets nå</button>
+          </div>
+        </div>
+        <div class="settings-section">
+          <h3>Sesong &amp; Kampanje</h3>
+          <div class="form-group">
+            <label class="form-label">Aktivt banner</label>
+            <input type="text" id="bannerInput" class="form-input" placeholder="f.eks. 🌸 Vårlanseringen pågår — uke 18–22">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Bannerfarge</label>
+            <div class="color-picker-row">
+              <label class="color-opt"><input type="radio" name="bannerColor" value="primary" checked> <span style="background:#247ca7"></span></label>
+              <label class="color-opt"><input type="radio" name="bannerColor" value="yellow"> <span style="background:#f7c855"></span></label>
+              <label class="color-opt"><input type="radio" name="bannerColor" value="green"> <span style="background:#acf5ca"></span></label>
+              <label class="color-opt"><input type="radio" name="bannerColor" value="red"> <span style="background:#eb5857"></span></label>
+              <label class="color-opt"><input type="radio" name="bannerColor" value="dark"> <span style="background:#1d2739"></span></label>
+            </div>
+          </div>
+        </div>
+        <div class="settings-section">
+          <h3>Butikker</h3>
+          <div class="store-chips">
+            <span class="store-chip">📍 Bergen sentrum</span>
+            <span class="store-chip">📍 Horisont Åsane</span>
+            <span class="store-chip">📍 Oslo</span>
+          </div>
+        </div>
+        <div class="settings-section">
+          <h3>Velvære-påminnelse</h3>
+          <div class="form-group">
+            <label class="form-label">Melding</label>
+            <input type="text" id="wellnessText" class="form-input" value="Har du drukket vann i dag? 💧">
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-secondary" data-modal="settingsModal">Avbryt</button>
+        <button class="btn-primary" id="saveSettings">Lagre</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- TOAST CONTAINER -->
+  <div id="toastContainer" aria-live="polite"></div>
+
+  <!-- SCRIPTS -->
+  <script src="js/config.js"></script>
+  <script src="js/utils.js"></script>
+  <script src="js/sheets.js"></script>
+  <script src="js/ai.js"></script>
+  <script src="js/weekly.js"></script>
+  <script src="js/monthly.js"></script>
+  <script src="js/quarterly.js"></script>
+  <script src="js/app.js"></script>
+
+</body>
+</html>

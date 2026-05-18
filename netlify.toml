@@ -1,0 +1,33 @@
+[build]
+  publish = "."
+  functions = "netlify/functions"
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "DENY"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    Permissions-Policy = "geolocation=(), microphone=()"
+
+[[headers]]
+  for = "/sw.js"
+  [headers.values]
+    Cache-Control = "no-cache"
+
+[[headers]]
+  for = "/manifest.json"
+  [headers.values]
+    Content-Type = "application/manifest+json"
+
+# Redirect API-kall til Netlify function
+[[redirects]]
+  from = "/api/claude"
+  to   = "/.netlify/functions/claude"
+  status = 200
+
+# SPA fallback
+[[redirects]]
+  from = "/*"
+  to   = "/index.html"
+  status = 200

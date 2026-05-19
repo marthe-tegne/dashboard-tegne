@@ -402,8 +402,12 @@ const Weekly = {
                 ? Utils.deltaHTML(Number(val), Number(prevKpiData[f.key]), f.key === 'position')
                 : '<span style="height:18px;display:block"></span>';
               return `<div class="kpi-field">
-                <div class="kpi-label">${f.label}</div>
-                <div class="kpi-input" style="cursor:default;background:var(--gray)">${f.prefix || ''}${val}${f.suffix || ''}</div>
+                <div class="kpi-label-row">
+                  <span class="kpi-label">${f.label}</span>
+                  ${f.auto ? '<span class="kpi-auto-badge">auto</span>' : ''}
+                  ${f.tooltip ? `<button class="kpi-help" data-tooltip="${f.tooltip}" type="button" tabindex="-1">?</button>` : ''}
+                </div>
+                <div class="kpi-value-static">${f.prefix || ''}${val}${f.suffix || ''}</div>
                 ${delta}
               </div>`;
             }).join('')}

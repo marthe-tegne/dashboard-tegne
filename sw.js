@@ -36,6 +36,9 @@ self.addEventListener('activate', e => {
 
 // Fetch: cache-first for assets, network-first for API
 self.addEventListener('fetch', e => {
+  // Ignorer ikke-HTTP forespørsler (f.eks. chrome-extension://)
+  if (!e.request.url.startsWith('http')) return;
+
   const url = new URL(e.request.url);
 
   // API-kall går alltid mot nett

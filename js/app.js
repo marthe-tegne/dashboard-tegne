@@ -19,6 +19,7 @@ const App = {
     Weekly.init();
     Monthly.init();
     Quarterly.init();
+    Campaigns.init();
 
     this.setView('weekly');
     this.syncFromSheets();
@@ -121,6 +122,7 @@ const App = {
     if (view === 'weekly')    Weekly.render();
     if (view === 'monthly')   Monthly.render();
     if (view === 'quarterly') Quarterly.render();
+    if (view === 'campaigns') Campaigns.render();
 
     // Oppdater AI kontekst-badge
     this.updateAIContext(view);
@@ -134,8 +136,10 @@ const App = {
       badge.textContent = `Ukentlig · ${day} · Uke ${Weekly.state.week}`;
     } else if (view === 'monthly') {
       badge.textContent = `Månedlig · ${CONFIG.MONTHS_NO[Monthly.state.month - 1]} ${Monthly.state.year}`;
-    } else {
+    } else if (view === 'quarterly') {
       badge.textContent = `Kvartalsvis · Q${Quarterly.state.quarter} ${Quarterly.state.year}`;
+    } else {
+      badge.textContent = 'Kampanjer';
     }
   },
 

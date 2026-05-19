@@ -52,6 +52,10 @@
       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
       Kvartalsvis
     </button>
+    <button class="nav-tab" data-view="campaigns">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
+      Kampanjer
+    </button>
   </nav>
 
   <!-- CAMPAIGN BANNER -->
@@ -106,6 +110,14 @@
         </div>
       </div>
       <div id="monthContent"></div>
+    </section>
+
+    <!-- ===== KAMPANJER VIEW ===== -->
+    <section id="campaignsView" class="view">
+      <div class="view-header">
+        <h2 class="view-title">Kampanjeoversikt</h2>
+      </div>
+      <div id="campaignContent"></div>
     </section>
 
     <!-- ===== KVARTALSVIS VIEW ===== -->
@@ -232,6 +244,77 @@
     </div>
   </div>
 
+  <!-- CAMPAIGN MODAL -->
+  <div class="modal-overlay" id="campaignModal" aria-hidden="true">
+    <div class="modal" role="dialog" aria-label="Kampanje">
+      <div class="modal-header">
+        <h2 id="campaignModalTitle">Ny kampanje</h2>
+        <button class="btn-icon modal-close" data-modal="campaignModal">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+      <div class="modal-body">
+        <input type="hidden" id="cmpId">
+        <div class="form-group">
+          <label class="form-label">Navn *</label>
+          <input type="text" id="cmpName" class="form-input" placeholder="f.eks. Påskekampanje 2026" autocomplete="off">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Type</label>
+          <div class="cmp-type-row">
+            <button class="cmp-type-btn active" data-type="hoved" type="button">Hovedkampanje</button>
+            <button class="cmp-type-btn" data-type="helg" type="button">Helgekampanje</button>
+            <button class="cmp-type-btn" data-type="fokus" type="button">Fokus</button>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Status</label>
+          <select id="cmpStatus" class="form-input">
+            <option value="ide">Idé</option>
+            <option value="planlagt" selected>Planlagt</option>
+            <option value="aktiv">Aktiv</option>
+            <option value="avsluttet">Avsluttet</option>
+          </select>
+        </div>
+        <div class="form-row-2">
+          <div class="form-group">
+            <label class="form-label">Startdato</label>
+            <input type="date" id="cmpStart" class="form-input">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Sluttdato</label>
+            <input type="date" id="cmpEnd" class="form-input">
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Butikker</label>
+          <div class="cmp-store-row">
+            <label class="cmp-store-item"><input type="checkbox" class="cmp-store-cb" data-store="bergen"> Bergen</label>
+            <label class="cmp-store-item"><input type="checkbox" class="cmp-store-cb" data-store="aasane"> Åsane</label>
+            <label class="cmp-store-item"><input type="checkbox" class="cmp-store-cb" data-store="oslo"> Oslo</label>
+            <label class="cmp-store-item"><input type="checkbox" class="cmp-store-cb" data-store="nett"> Nettbutikken</label>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Mål / beskrivelse</label>
+          <textarea id="cmpGoal" class="form-textarea" rows="2" placeholder="Hva er målet med kampanjen?"></textarea>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Budsjett (kr)</label>
+          <input type="number" id="cmpBudget" class="form-input" placeholder="0">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Resultat / notater</label>
+          <textarea id="cmpResult" class="form-textarea" rows="2" placeholder="Hva funket? Hva kan gjøres bedre neste gang?"></textarea>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-secondary" data-modal="campaignModal">Avbryt</button>
+        <button class="btn-primary" id="saveCampaignBtn">Lagre</button>
+      </div>
+    </div>
+  </div>
+
   <!-- TOAST CONTAINER -->
   <div id="toastContainer" aria-live="polite"></div>
 
@@ -243,6 +326,7 @@
   <script src="js/weekly.js"></script>
   <script src="js/monthly.js"></script>
   <script src="js/quarterly.js"></script>
+  <script src="js/campaigns.js"></script>
   <script src="js/app.js"></script>
 
 </body>

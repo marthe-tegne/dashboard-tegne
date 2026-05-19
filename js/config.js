@@ -19,12 +19,33 @@ const CONFIG = {
     WINLOSS:     'tegne_winloss',
     MONDAY_TABLE:'tegne_monday_table',
     AI_CONTEXT:  'tegne_ai_context',
+    CAMPAIGNS:   'tegne_campaigns',
   },
 
   STORES: [
     { id: 'bergen',  label: 'Bergen',  icon: '📍' },
     { id: 'aasane',  label: 'Åsane',   icon: '📍' },
     { id: 'oslo',    label: 'Oslo',    icon: '📍' },
+  ],
+
+  CAMPAIGN_TYPES: [
+    { id: 'hoved', label: 'Hovedkampanje', color: '#247ca7', textColor: '#fff' },
+    { id: 'helg',  label: 'Helgekampanje', color: '#f7c855', textColor: '#1d2739' },
+    { id: 'fokus', label: 'Fokus',         color: '#acf5ca', textColor: '#1d2739' },
+  ],
+
+  CAMPAIGN_STATUSES: [
+    { id: 'ide',       label: 'Idé' },
+    { id: 'planlagt',  label: 'Planlagt' },
+    { id: 'aktiv',     label: 'Aktiv' },
+    { id: 'avsluttet', label: 'Avsluttet' },
+  ],
+
+  CAMPAIGN_STORES: [
+    { id: 'bergen',  label: 'Bergen' },
+    { id: 'aasane',  label: 'Åsane' },
+    { id: 'oslo',    label: 'Oslo' },
+    { id: 'nett',    label: 'Nettbutikken' },
   ],
 
   // Standardinnstillinger

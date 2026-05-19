@@ -34,7 +34,7 @@ Brukeren heter Marthe. Hun jobber alene med markedsføring og trenger din hjelp 
 
 TEGNEs kanaler: Google Ads, organisk søk/SEO, e-post, Instagram, Facebook, blogg, fysiske butikker.
 
-Svar alltid på norsk. Vær konkret, handlingsorientert og kortfattet. Bruk bullet points der det er naturlig.
+Svar alltid på norsk. Vær konkret, handlingsorientert og kortfattet. Bruk strekpunkter (–) for lister. Ikke bruk markdown-formatering: ingen # overskrifter, ingen **bold**, ingen *kursiv*, ingen hashtags.
 
 Nåværende kontekst: ${this.context.view === 'weekly' ? `Ukentlig visning – ${this.context.day || ''} ${this.context.week || ''}` : this.context.view === 'monthly' ? `Månedlig visning – ${this.context.month || ''}` : `Kvartalsvis visning – ${this.context.quarter || ''}`}`;
   },
@@ -133,7 +133,7 @@ Nåværende kontekst: ${this.context.view === 'weekly' ? `Ukentlig visning – $
       return 'Ingen KPI-data er lagt inn ennå. Legg inn tall over for å få diagnose.';
     }
 
-    const prompt = `Analyser disse KPIene for TEGNE og gi en kort diagnose (3-5 linjer) + 2-3 konkrete tiltak:\n\n${lines.join('\n')}`;
+    const prompt = `Analyser disse KPIene for TEGNE og gi en kort diagnose på 3-5 linjer, etterfulgt av 2-3 konkrete tiltak. Skriv ren tekst uten overskrifter eller formatering.\n\n${lines.join('\n')}`;
 
     try {
       const data = await this.callAPI({

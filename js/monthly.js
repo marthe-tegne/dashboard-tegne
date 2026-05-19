@@ -70,7 +70,7 @@ const Monthly = {
       <!-- Månedstall vs forrige måned -->
       <div class="card">
         <div class="card-header">
-          <div class="card-title"><span class="icon">📊</span> Månedstall</div>
+          <div class="card-title"><span class="icon">${CONFIG.ICONS.chart}</span> Månedstall</div>
           <span class="text-muted text-small">Manuell innlegging</span>
         </div>
         <div class="card-body">
@@ -92,11 +92,47 @@ const Monthly = {
         </div>
       </div>
 
+      <!-- SoMe-resultater forrige måned -->
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title"><span class="icon">${CONFIG.ICONS.phone}</span> SoMe-resultater forrige måned</div>
+          <span class="text-muted text-small">Instagram & Facebook</span>
+        </div>
+        <div class="card-body">
+          <div class="month-stat-row">
+            ${[
+              { key: 'ig_followers', label: 'IG Følgere', icon: '📸' },
+              { key: 'ig_reach',     label: 'IG Rekkevidde', icon: '👁️' },
+              { key: 'ig_engagement',label: 'IG Engasjement', icon: '❤️' },
+              { key: 'fb_followers', label: 'FB Følgere', icon: '👥' },
+              { key: 'fb_reach',     label: 'FB Rekkevidde', icon: '👁️' },
+              { key: 'fb_engagement',label: 'FB Engasjement', icon: '❤️' },
+            ].map(f => {
+              const val  = data[f.key] || '';
+              const pval = prev[f.key] || '';
+              const delta = (val && pval) ? Utils.delta(Number(val), Number(pval)) : null;
+              const deltaHtml = delta !== null
+                ? `<div class="stat-delta ${delta >= 0 ? 'pos' : 'neg'}">${delta > 0 ? '↑' : '↓'} ${Math.abs(delta).toFixed(1)}% vs forrige mnd</div>`
+                : `<div class="stat-delta" style="color:var(--text-muted);font-size:.7rem">–</div>`;
+              return `<div class="stat-card">
+                <div class="stat-label">${f.icon} ${f.label}</div>
+                <input class="kpi-input month-kpi" data-key="${f.key}" type="number" value="${Utils.esc(val)}" placeholder="0" style="font-size:1.2rem">
+                ${deltaHtml}
+              </div>`;
+            }).join('')}
+          </div>
+          <div class="form-group" style="margin-top:12px">
+            <label class="form-label" style="font-size:.75rem">Beste innlegg denne måneden</label>
+            <textarea class="form-textarea" id="bestPost" placeholder="Beskriv innlegget som presterte best — plattform, tema, rekkevidde…" rows="2">${Utils.esc(data.bestPost || '')}</textarea>
+          </div>
+        </div>
+      </div>
+
       <!-- Hva funket / ikke funket -->
       <div class="grid-2">
         <div class="card">
           <div class="card-header">
-            <div class="card-title"><span class="icon">✅</span> Hva funket</div>
+            <div class="card-title"><span class="icon">${CONFIG.ICONS.check}</span> Hva funket</div>
           </div>
           <div class="card-body">
             <textarea class="form-textarea" id="whatWorked" placeholder="Kampanjer, innhold, kanaler som ga resultater denne måneden…" rows="5">${Utils.esc(data.whatWorked || '')}</textarea>
@@ -104,7 +140,7 @@ const Monthly = {
         </div>
         <div class="card">
           <div class="card-header">
-            <div class="card-title"><span class="icon">❌</span> Hva funket ikke</div>
+            <div class="card-title"><span class="icon">${CONFIG.ICONS.xcircle}</span> Hva funket ikke</div>
           </div>
           <div class="card-body">
             <textarea class="form-textarea" id="whatDidnt" placeholder="Hva skuffet? Hva bør justeres?…" rows="5">${Utils.esc(data.whatDidnt || '')}</textarea>
@@ -116,7 +152,7 @@ const Monthly = {
       <div class="grid-2">
         <div class="card">
           <div class="card-header">
-            <div class="card-title"><span class="icon">🏆</span> Beste innhold</div>
+            <div class="card-title"><span class="icon">${CONFIG.ICONS.award}</span> Beste innhold</div>
           </div>
           <div class="card-body">
             <textarea class="form-textarea" id="bestContent" placeholder="Hvilket innhold presterte best denne måneden? URL, tittel, plattform…" rows="4">${Utils.esc(data.bestContent || '')}</textarea>
@@ -124,7 +160,7 @@ const Monthly = {
         </div>
         <div class="card">
           <div class="card-header">
-            <div class="card-title"><span class="icon">🔍</span> Søkeordbevegelser</div>
+            <div class="card-title"><span class="icon">${CONFIG.ICONS.search}</span> Søkeordbevegelser</div>
           </div>
           <div class="card-body">
             <textarea class="form-textarea" id="keywordMoves" placeholder="Søkeord som klatret ↑ eller falt ↓ denne måneden…" rows="4">${Utils.esc(data.keywordMoves || '')}</textarea>
@@ -135,7 +171,7 @@ const Monthly = {
       <!-- Kampanjeevaluering -->
       <div class="card">
         <div class="card-header">
-          <div class="card-title"><span class="icon">🎯</span> Kampanjeevaluering</div>
+          <div class="card-title"><span class="icon">${CONFIG.ICONS.target}</span> Kampanjeevaluering</div>
         </div>
         <div class="card-body">
           <textarea class="form-textarea" id="campaignEval" placeholder="Evaluer månedets kampanjer: mål vs. resultat, hva fungerte, hva bør endres…" rows="4">${Utils.esc(data.campaignEval || '')}</textarea>
@@ -145,7 +181,7 @@ const Monthly = {
       <!-- Fokus neste måned (maks 3) -->
       <div class="card">
         <div class="card-header">
-          <div class="card-title"><span class="icon">🎯</span> Fokus neste måned</div>
+          <div class="card-title"><span class="icon">${CONFIG.ICONS.forward}</span> Fokus neste måned</div>
           <span class="badge badge-primary">Maks 3</span>
         </div>
         <div class="card-body">
@@ -157,7 +193,7 @@ const Monthly = {
       <!-- AI-kommentar -->
       <div class="card">
         <div class="card-header">
-          <div class="card-title"><span class="icon">✨</span> AI-kommentar</div>
+          <div class="card-title"><span class="icon">${CONFIG.ICONS.stars}</span> AI-kommentar</div>
           <button class="btn-ai" id="generateMonthlyAI">✨ Generer</button>
         </div>
         <div class="card-body">
@@ -182,7 +218,7 @@ const Monthly = {
     });
 
     // Tekstfelter
-    ['whatWorked','whatDidnt','bestContent','keywordMoves','campaignEval'].forEach(id => {
+    ['whatWorked','whatDidnt','bestContent','keywordMoves','campaignEval','bestPost'].forEach(id => {
       const el = Utils.el(id);
       if (el) {
         el.addEventListener('input', Utils.debounce(() => {

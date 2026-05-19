@@ -90,7 +90,7 @@ const Quarterly = {
       <!-- Kvartalsmål vs. faktisk -->
       <div class="card">
         <div class="card-header">
-          <div class="card-title"><span class="icon">🎯</span> Kvartalsmål vs. faktisk — ${label}</div>
+          <div class="card-title"><span class="icon">${CONFIG.ICONS.target}</span> Kvartalsmål vs. faktisk — ${label}</div>
         </div>
         <div class="card-body">
           <div class="grid-2">
@@ -129,7 +129,7 @@ const Quarterly = {
       <!-- Sesong- og kampanjekalender 3 mnd frem -->
       <div class="card">
         <div class="card-header">
-          <div class="card-title"><span class="icon">📅</span> Sesong- og kampanjekalender — neste 3 måneder</div>
+          <div class="card-title"><span class="icon">${CONFIG.ICONS.compass}</span> Sesong- og kampanjekalender — neste 3 måneder</div>
           <button class="btn-ai btn-sm" id="addSeasonEntry">+ Legg til</button>
         </div>
         <div class="card-body">
@@ -141,7 +141,7 @@ const Quarterly = {
       <div class="grid-2">
         <div class="card">
           <div class="card-header">
-            <div class="card-title"><span class="icon">🔍</span> SEO-strategi</div>
+            <div class="card-title"><span class="icon">${CONFIG.ICONS.search}</span> SEO-strategi</div>
           </div>
           <div class="card-body">
             <textarea class="form-textarea" id="seoStrategy" rows="6"
@@ -150,7 +150,7 @@ const Quarterly = {
         </div>
         <div class="card">
           <div class="card-header">
-            <div class="card-title"><span class="icon">✍️</span> Innholdsstrategi</div>
+            <div class="card-title"><span class="icon">${CONFIG.ICONS.filetext}</span> Innholdsstrategi</div>
           </div>
           <div class="card-body">
             <textarea class="form-textarea" id="contentStrategy" rows="6"
@@ -162,7 +162,7 @@ const Quarterly = {
       <!-- Konkurrentobservasjoner -->
       <div class="card">
         <div class="card-header">
-          <div class="card-title"><span class="icon">🔭</span> Konkurrentobservasjoner</div>
+          <div class="card-title"><span class="icon">${CONFIG.ICONS.trending}</span> Konkurrentobservasjoner</div>
           <button class="btn-ai btn-sm" id="addCompetitorBtn">+ Legg til</button>
         </div>
         <div class="card-body">
@@ -173,7 +173,7 @@ const Quarterly = {
       <!-- Ressurser & budsjett -->
       <div class="card">
         <div class="card-header">
-          <div class="card-title"><span class="icon">💰</span> Ressurser &amp; budsjett</div>
+          <div class="card-title"><span class="icon">${CONFIG.ICONS.award}</span> Ressurser &amp; budsjett</div>
         </div>
         <div class="card-body">
           <div class="grid-2" style="margin-bottom:12px">
@@ -193,7 +193,7 @@ const Quarterly = {
       <!-- AI-analyse -->
       <div class="card">
         <div class="card-header">
-          <div class="card-title"><span class="icon">✨</span> AI-analyse — ${label} vs. forrige kvartal</div>
+          <div class="card-title"><span class="icon">${CONFIG.ICONS.stars}</span> AI-analyse — ${label} vs. forrige kvartal</div>
           <button class="btn-ai" id="generateQuarterlyAI">✨ Generer</button>
         </div>
         <div class="card-body">

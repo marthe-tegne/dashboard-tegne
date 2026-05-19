@@ -11,8 +11,8 @@ const App = {
     this.bindMainNav();
     this.bindAIPanel();
     this.bindSettingsModal();
-    this.bindCampaignBanner();
     this.initWellness();
+    this.bindHomeBtn();
     this.registerSW();
 
     // Start med ukentlig visning
@@ -22,6 +22,7 @@ const App = {
 
     this.setView('weekly');
     this.syncFromSheets();
+    this.checkPeriodicReminders();
   },
 
   /* ---- Innstillinger ---- */
@@ -40,10 +41,6 @@ const App = {
     if (s.bannerInput) {
       const el = Utils.el('bannerInput');
       if (el) el.value = s.bannerInput;
-    }
-    if (s.wellnessText) {
-      const el = Utils.el('wellnessText');
-      if (el) el.value = s.wellnessText;
     }
   },
 
@@ -86,8 +83,14 @@ const App = {
     if (banner) banner.style.display = 'none';
   },
 
-  bindCampaignBanner() {
-    Utils.on('editBannerBtn', 'click', () => this.openModal('settingsModal'));
+  bindHomeBtn() {
+    Utils.on('homeBtn', 'click', () => {
+      const { year, week } = Utils.getCurrentWeek();
+      Weekly.state.year = year;
+      Weekly.state.week = week;
+      Weekly.state.dayIndex = Utils.getCurrentDayIndex();
+      this.setView('weekly');
+    });
   },
 
   /* ---- Hoved-navigasjon ---- */
@@ -248,6 +251,30 @@ const App = {
         Utils.toast(msg, 'info', 5000);
       });
     }
+  },
+
+  checkPeriodicReminders() {
+    const now = new Date();
+    const day = now.getDate();
+    const month = now.getMonth() + 1;
+    const lastKey = Utils.load('tegne_reminder_last', '');
+    const todayKey = `${now.getFullYear()}-${month}-${day}`;
+    if (lastKey === todayKey) return;
+
+    const isQuarterStart = day === 1 && [1, 4, 7, 10].includes(month);
+
+    if (day === 1) {
+      setTimeout(() => {
+        Utils.toast('📅 Det er den 1. — husk å legge inn månedstall i Månedlig-fanen!', 'info', 8000);
+      }, 2000);
+    }
+    if (isQuarterStart) {
+      setTimeout(() => {
+        Utils.toast('📊 Nytt kvartal! Husk å oppdatere Kvartalsvis-fanen.', 'info', 8000);
+      }, 4000);
+    }
+
+    Utils.save('tegne_reminder_last', todayKey);
   },
 
   /* ---- Google Sheets sync ---- */

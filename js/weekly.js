@@ -134,7 +134,7 @@ const Weekly = {
         <!-- Ukens oppgaveliste -->
         <div class="card">
           <div class="card-header">
-            <div class="card-title"><span class="icon">✅</span> Ukens oppgaver</div>
+            <div class="card-title"><span class="icon">${CONFIG.ICONS.tasks}</span> Ukens oppgaver</div>
             <span class="badge badge-primary" id="taskCount"></span>
           </div>
           <div class="card-body" style="padding-top:8px">
@@ -144,11 +144,15 @@ const Weekly = {
               <button class="task-filter-btn" data-filter="fullfort">Fullført</button>
             </div>
             <div class="task-list" id="taskList"></div>
-            <div class="add-task-row" style="margin-top:10px">
+            <div class="platform-tag-row" id="taskStoreTags" style="margin-bottom:6px">
+              ${CONFIG.STORES.map(s => `<button class="stag" data-s="${s.id}">${s.icon} ${s.label}</button>`).join('')}
+            </div>
+            <div class="add-task-row" style="margin-top:4px">
               <select id="newTaskPriority" class="task-prio-select">
+                <option value="ikke-startet" selected>⚪ Ikke startet</option>
                 <option value="haster">🔴 Haster</option>
                 <option value="hoy">🟠 Høy</option>
-                <option value="middels" selected>🟡 Middels</option>
+                <option value="middels">🟡 Middels</option>
                 <option value="lav">🟢 Lav</option>
               </select>
               <input class="add-task-input" id="newTaskInput" placeholder="Ny oppgave…">
@@ -162,35 +166,33 @@ const Weekly = {
         <div class="card">
           <div class="card-header">
             <div class="card-title">
-              <span class="icon">📊</span> Ukentlige KPIer — Uke ${this.state.week}
+              <span class="icon">${CONFIG.ICONS.chart}</span> Ukentlige KPIer — Uke ${this.state.week}
             </div>
             <button class="btn-ai" id="runDiagnosisBtn">✨ Diagnose</button>
           </div>
           <div class="card-body">
             ${this.renderKpiGrid(kpiData, prevKpiData)}
-          </div>
-        </div>
-
-        <!-- AI Diagnose -->
-        <div class="ai-diagnosis" id="diagnosisBox">
-          <div class="ai-diagnosis-header">
-            <div class="ai-diagnosis-title">✨ AI-diagnose</div>
-            <div style="display:flex;gap:6px;align-items:center">
-              <button class="btn-ghost-sm" id="regenerateDiagnosis" style="background:transparent;border:1px solid var(--primary);color:var(--primary);font-size:.72rem;padding:2px 8px;border-radius:4px;cursor:pointer;">↻ Regenerer</button>
-              <button class="btn-icon ai-collapse-btn" data-target="diagnosisContent" style="font-size:.75rem">${kpiData._diagnosis ? '▶' : '▼'}</button>
+            <div style="margin-top:12px;border-top:1px solid var(--border);padding-top:12px">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
+                <div class="ai-diagnosis-title" style="margin:0;font-size:.8rem">✨ AI-diagnose</div>
+                <div style="display:flex;gap:6px;align-items:center">
+                  <button class="btn-ghost-sm" id="regenerateDiagnosis" style="background:transparent;border:1px solid var(--primary);color:var(--primary);font-size:.72rem;padding:2px 8px;border-radius:4px;cursor:pointer;">↻ Regenerer</button>
+                  <button class="btn-icon ai-collapse-btn" data-target="diagnosisContent" style="font-size:.75rem">${kpiData._diagnosis ? '▶' : '▼'}</button>
+                </div>
+              </div>
+              <div class="ai-diagnosis-content" id="diagnosisContent" ${kpiData._diagnosis ? 'style="display:none"' : ''}>
+                ${kpiData._diagnosis || '<span style="color:var(--text-muted);font-size:.8rem">Legg inn KPIer og trykk «Diagnose» for AI-analyse.</span>'}
+              </div>
+              ${kpiData._diagnosis ? this.renderActionChips(kpiData._actions || []) : ''}
             </div>
           </div>
-          <div class="ai-diagnosis-content" id="diagnosisContent" ${kpiData._diagnosis ? 'style="display:none"' : ''}>
-            ${kpiData._diagnosis || '<span style="color:var(--text-muted)">Legg inn KPIer og trykk «Diagnose» for AI-analyse.</span>'}
-          </div>
-          ${kpiData._diagnosis ? this.renderActionChips(kpiData._actions || []) : ''}
         </div>
         ` : this.renderKpiSummary(kpiData, prevKpiData)}
 
         <!-- Notater -->
         <div class="card">
           <div class="card-header">
-            <div class="card-title"><span class="icon">📝</span> Notater</div>
+            <div class="card-title"><span class="icon">${CONFIG.ICONS.notes}</span> Notater</div>
           </div>
           <div class="card-body">
             <textarea class="form-textarea" id="dayNotes" placeholder="Fri notater for dagen — observasjoner, tanker, ideer…" rows="3">${Utils.esc(dayData._notes || '')}</textarea>
@@ -206,7 +208,7 @@ const Weekly = {
         <!-- Hva funket / funket ikke — alltid nederst -->
         <div class="card">
           <div class="card-header">
-            <div class="card-title"><span class="icon">💡</span> Hva funket / funket ikke</div>
+            <div class="card-title"><span class="icon">${CONFIG.ICONS.bulb}</span> Hva funket / funket ikke</div>
           </div>
           <div class="card-body">
             <div class="winloss-list" id="winlossList"></div>
@@ -244,7 +246,7 @@ const Weekly = {
       <div class="card week-context-card">
         <div class="card-header">
           <div class="card-title">
-            <span class="icon">🧭</span> Ukens fokus
+            <span class="icon">${CONFIG.ICONS.compass}</span> Ukens fokus
             ${dayFocus ? `<span class="badge badge-primary" style="font-size:.68rem;margin-left:6px">${dayFocus}</span>` : ''}
           </div>
           ${!isMonday ? `<button class="btn-ai" id="generateDayBriefBtn">✨ Dagsbriefing</button>` : ''}
@@ -378,7 +380,7 @@ const Weekly = {
     if (!hasData) return `
       <div class="card kpi-summary-collapsible">
         <div class="card-header">
-          <div class="card-title"><span class="icon">📊</span> Ukentlige KPIer</div>
+          <div class="card-title"><span class="icon">${CONFIG.ICONS.chart}</span> Ukentlige KPIer</div>
         </div>
         <div class="card-body">
           <p class="text-muted text-small">KPIer fylles inn på mandag. Gå til mandag-fanen for å legge inn eller redigere.</p>
@@ -388,7 +390,7 @@ const Weekly = {
     return `
       <div class="card kpi-summary-collapsible">
         <div class="card-header">
-          <div class="card-title"><span class="icon">📊</span> Ukentlige KPIer</div>
+          <div class="card-title"><span class="icon">${CONFIG.ICONS.chart}</span> Ukentlige KPIer</div>
           <span class="badge badge-primary">Uke ${this.state.week}</span>
         </div>
         <div class="card-body">
@@ -422,23 +424,32 @@ const Weekly = {
 
   renderKpiGrid(kpiData, prevKpiData) {
     return `<div class="kpi-grid">
-      ${CONFIG.KPI_FIELDS.map(f => `
+      ${CONFIG.KPI_FIELDS.map(f => {
+        const val = kpiData[f.key] !== undefined ? kpiData[f.key] : '';
+        const delta = prevKpiData && prevKpiData[f.key] !== undefined && val !== ''
+          ? Utils.deltaHTML(Number(val), Number(prevKpiData[f.key]), f.key === 'position')
+          : '<span style="height:18px;display:block"></span>';
+        return `
         <div class="kpi-field">
-          <label class="kpi-label">${f.label}</label>
+          <div class="kpi-label-row">
+            <span class="kpi-label">${f.label}</span>
+            ${f.auto ? '<span class="kpi-auto-badge">auto</span>' : ''}
+            ${f.tooltip ? `<button class="kpi-help" data-tooltip="${f.tooltip}" type="button" tabindex="-1">?</button>` : ''}
+          </div>
           <input
             class="kpi-input"
-            type="${f.type}"
+            type="number"
             step="${f.step || '1'}"
             placeholder="${f.placeholder}"
-            value="${Utils.esc(kpiData[f.key] !== undefined ? kpiData[f.key] : '')}"
+            value="${Utils.esc(val)}"
             data-key="${f.key}"
             inputmode="decimal"
+            autocomplete="off"
+            ${f.auto ? 'readonly' : ''}
           >
-          ${prevKpiData && prevKpiData[f.key] !== undefined && kpiData[f.key] !== undefined
-            ? Utils.deltaHTML(Number(kpiData[f.key]), Number(prevKpiData[f.key]), f.key === 'position')
-            : '<span style="height:18px;display:block"></span>'
-          }
-        </div>`).join('')}
+          ${delta}
+        </div>`;
+      }).join('')}
     </div>`;
   },
 
@@ -455,7 +466,7 @@ const Weekly = {
     return `
       <div class="card">
         <div class="card-header">
-          <div class="card-title"><span class="icon">🔍</span> Søkeord-spotlight denne uka</div>
+          <div class="card-title"><span class="icon">${CONFIG.ICONS.search}</span> Søkeord-spotlight denne uka</div>
           <button class="btn-ai btn-sm" id="addKeywordBtn">+ Søkeord</button>
         </div>
         <div class="card-body">
@@ -520,14 +531,17 @@ const Weekly = {
       <!-- Ukens innleggsplan -->
       <div class="card">
         <div class="card-header">
-          <div class="card-title"><span class="icon">📱</span> Ukens innleggsplan</div>
+          <div class="card-title"><span class="icon">${CONFIG.ICONS.phone}</span> Ukens innleggsplan</div>
         </div>
         <div class="card-body">
-          <div class="platform-tag-row" id="platformTags" style="margin-bottom:8px">
+          <div class="platform-tag-row" id="platformTags" style="margin-bottom:6px">
             <button class="ptag" data-p="Instagram">📸 Instagram</button>
             <button class="ptag" data-p="Facebook">👥 Facebook</button>
             <button class="ptag" data-p="TikTok">🎵 TikTok</button>
             <button class="ptag" data-p="Pinterest">📌 Pinterest</button>
+          </div>
+          <div class="platform-tag-row" id="postStoreTags" style="margin-bottom:8px">
+            ${CONFIG.STORES.map(s => `<button class="stag" data-s="${s.id}">${s.icon} ${s.label}</button>`).join('')}
           </div>
           <div class="add-task-row" style="margin-bottom:10px">
             <input class="add-task-input" id="newPostInput" placeholder="Beskriv innlegget…">
@@ -552,7 +566,7 @@ const Weekly = {
       <!-- SoMe resultater forrige uke -->
       <div class="card">
         <div class="card-header">
-          <div class="card-title"><span class="icon">📊</span> SoMe-resultater forrige uke</div>
+          <div class="card-title"><span class="icon">${CONFIG.ICONS.chart}</span> SoMe-resultater forrige uke</div>
         </div>
         <div class="card-body">
           <div class="grid-2">
@@ -581,7 +595,7 @@ const Weekly = {
       <!-- TikTok / Pinterest påminnelse -->
       <div class="card" style="border-left:4px solid var(--yellow)">
         <div class="card-header">
-          <div class="card-title"><span class="icon">🎯</span> TikTok &amp; Pinterest — påminnelse</div>
+          <div class="card-title"><span class="icon">${CONFIG.ICONS.target}</span> TikTok &amp; Pinterest — påminnelse</div>
         </div>
         <div class="card-body">
           <p class="text-small text-muted" style="margin-bottom:10px">Ikke aktive kanaler nå, men et godt tidspunkt å vurdere om noe er verdt å gjenbruke.</p>
@@ -686,14 +700,20 @@ const Weekly = {
     }
     list.innerHTML = posts.map(p => {
       const platforms = p.platforms || (p.platform ? [p.platform] : ['Instagram']);
-      const badges = platforms.map(pl =>
+      const platBadges = platforms.map(pl =>
         `<span class="badge" style="background:${platformColors[pl]||'#888'}22;color:${platformColors[pl]||'#888'};font-size:.68rem;margin-right:2px">${pl}</span>`
       ).join('');
+      const storeBadges = (p.stores || []).map(sid => {
+        const s = CONFIG.STORES.find(x => x.id === sid);
+        return s ? `<span class="badge" style="background:#247ca715;color:var(--primary-dk);font-size:.65rem">${s.icon} ${s.label}</span>` : '';
+      }).join('');
       return `
       <div class="task-item" data-pid="${p.id}">
         <div class="task-checkbox ${p.done ? 'checked' : ''}" data-pid="${p.id}">${p.done ? '✓' : ''}</div>
-        <div style="display:flex;flex-wrap:wrap;gap:2px;margin-right:6px">${badges}</div>
-        <span class="task-text ${p.done ? 'done' : ''}" style="flex:1;font-size:.85rem">${p.text ? Utils.esc(p.text) : '<span style="color:var(--text-muted);font-style:italic">Beskriv innlegget…</span>'}</span>
+        <div style="flex:1;min-width:0">
+          <div style="display:flex;flex-wrap:wrap;gap:2px;margin-bottom:2px">${platBadges}${storeBadges}</div>
+          <span class="task-text ${p.done ? 'done' : ''}" style="font-size:.85rem">${p.text ? Utils.esc(p.text) : '<span style="color:var(--text-muted);font-style:italic">Beskriv innlegget…</span>'}</span>
+        </div>
         <button class="task-del post-del" data-pid="${p.id}">✕</button>
       </div>`;
     }).join('');
@@ -719,13 +739,13 @@ const Weekly = {
   addPost(weekKey) {
     const input = Utils.el('newPostInput');
     if (!input || !input.value.trim()) return;
-    const selected = [...Utils.qsa('.ptag.active')].map(b => b.dataset.p);
-    const platforms = selected.length ? selected : ['Instagram'];
+    const platforms = [...Utils.qsa('.ptag.active')].map(b => b.dataset.p);
+    const stores    = [...Utils.qsa('#postStoreTags .stag.active')].map(b => b.dataset.s);
     const posts = Utils.loadNested(CONFIG.STORAGE_KEYS.WEEKLY, weekKey + '_posts', []);
-    posts.push({ id: Utils.uid(), platforms, text: input.value.trim(), done: false });
+    posts.push({ id: Utils.uid(), platforms: platforms.length ? platforms : ['Instagram'], stores, text: input.value.trim(), done: false });
     Utils.saveNested(CONFIG.STORAGE_KEYS.WEEKLY, weekKey + '_posts', posts);
     input.value = '';
-    Utils.qsa('.ptag').forEach(b => b.classList.remove('active'));
+    Utils.qsa('.ptag, .stag').forEach(b => b.classList.remove('active'));
     this.renderPostPlan(weekKey);
   },
 
@@ -764,7 +784,7 @@ const Weekly = {
       <!-- AI nyhetsbrev-ideer -->
       <div class="card">
         <div class="card-header">
-          <div class="card-title"><span class="icon">📧</span> Nyhetsbrev-ideer</div>
+          <div class="card-title"><span class="icon">${CONFIG.ICONS.mail}</span> Nyhetsbrev-ideer</div>
           <div style="display:flex;gap:6px;align-items:center">
             <button class="btn-ai" id="generateNewsletterBtn">✨ AI-ideer</button>
             <button class="btn-icon ai-collapse-btn" data-target="newsletterIdeas" style="font-size:.75rem">▼</button>
@@ -778,7 +798,7 @@ const Weekly = {
       <!-- Innholdsblokker -->
       <div class="card">
         <div class="card-header">
-          <div class="card-title"><span class="icon">📋</span> Innholdsblokker</div>
+          <div class="card-title"><span class="icon">${CONFIG.ICONS.layout}</span> Innholdsblokker</div>
         </div>
         <div class="card-body">
           <div id="newsletterBlocks"></div>
@@ -788,7 +808,7 @@ const Weekly = {
       <!-- Statistikk forrige nyhetsbrev -->
       <div class="card">
         <div class="card-header">
-          <div class="card-title"><span class="icon">📊</span> Forrige nyhetsbrev — statistikk</div>
+          <div class="card-title"><span class="icon">${CONFIG.ICONS.chart}</span> Forrige nyhetsbrev — statistikk</div>
         </div>
         <div class="card-body">
           <div class="kpi-grid" style="grid-template-columns:1fr 1fr">
@@ -899,7 +919,7 @@ const Weekly = {
     return `
       <div class="card">
         <div class="card-header">
-          <div class="card-title"><span class="icon">📈</span> Ukeoversikt — Mandagsanalyse</div>
+          <div class="card-title"><span class="icon">${CONFIG.ICONS.trending}</span> Ukeoversikt — Mandagsanalyse</div>
           <button class="btn-ai" id="generateMondayAI">✨ AI-analyse</button>
         </div>
         <div class="card-body">
@@ -1021,7 +1041,7 @@ const Weekly = {
       <!-- SEO-sjekkliste -->
       <div class="card">
         <div class="card-header">
-          <div class="card-title"><span class="icon">✅</span> SEO-sjekkliste denne uka</div>
+          <div class="card-title"><span class="icon">${CONFIG.ICONS.check}</span> SEO-sjekkliste denne uka</div>
         </div>
         <div class="card-body">
           <div id="seoChecklist">
@@ -1037,7 +1057,7 @@ const Weekly = {
       <!-- Kategorier denne uka -->
       <div class="card">
         <div class="card-header">
-          <div class="card-title"><span class="icon">🗂️</span> Kategorier denne uka</div>
+          <div class="card-title"><span class="icon">${CONFIG.ICONS.folder}</span> Kategorier denne uka</div>
         </div>
         <div class="card-body">
           <div id="seoCategoryList"></div>
@@ -1051,7 +1071,7 @@ const Weekly = {
       <!-- Teknisk SEO-notater -->
       <div class="card">
         <div class="card-header">
-          <div class="card-title"><span class="icon">🔧</span> Teknisk SEO — funn og notater</div>
+          <div class="card-title"><span class="icon">${CONFIG.ICONS.tool}</span> Teknisk SEO — funn og notater</div>
         </div>
         <div class="card-body">
           <textarea class="form-textarea" id="technicalSeoNotes" rows="3"
@@ -1163,7 +1183,7 @@ const Weekly = {
       <!-- Ukens oppgavepåminnelse -->
       <div class="card" style="border-left:4px solid var(--green)">
         <div class="card-header">
-          <div class="card-title"><span class="icon">✅</span> Har du rukket alt denne uken?</div>
+          <div class="card-title"><span class="icon">${CONFIG.ICONS.tasks}</span> Har du rukket alt denne uken?</div>
         </div>
         <div class="card-body" id="fridayTaskSummary">
           <p class="text-muted text-small">Laster oppgaveoversikt…</p>
@@ -1173,7 +1193,7 @@ const Weekly = {
       <!-- Ukens funn oppsummering -->
       <div class="card">
         <div class="card-header">
-          <div class="card-title"><span class="icon">💡</span> Ukens funn — hva funket?</div>
+          <div class="card-title"><span class="icon">${CONFIG.ICONS.bulb}</span> Ukens funn — hva funket?</div>
         </div>
         <div class="card-body" id="fridayWinLossSummary">
           <p class="text-muted text-small">Laster ukens funn…</p>
@@ -1183,7 +1203,7 @@ const Weekly = {
       <!-- Artikler denne uka -->
       <div class="card">
         <div class="card-header">
-          <div class="card-title"><span class="icon">✍️</span> Artikler denne uka</div>
+          <div class="card-title"><span class="icon">${CONFIG.ICONS.filetext}</span> Artikler denne uka</div>
         </div>
         <div class="card-body">
           <div id="seoArticleList"></div>
@@ -1197,7 +1217,7 @@ const Weekly = {
       <!-- Fredagsforslag -->
       <div class="card">
         <div class="card-header">
-          <div class="card-title"><span class="icon">🔮</span> Neste ukes SEO-prioriteringer</div>
+          <div class="card-title"><span class="icon">${CONFIG.ICONS.forward}</span> Neste ukes SEO-prioriteringer</div>
           <div style="display:flex;gap:6px;align-items:center">
             <button class="btn-ai" id="generateFridayBtn">✨ Generer forslag</button>
             <button class="btn-icon ai-collapse-btn" data-target="fridayContent" style="font-size:.75rem">▼</button>
@@ -1304,7 +1324,7 @@ const Weekly = {
                 pct >= 50  ? '⚡ Halvveis — hold fokus til slutt!' :
                              '💪 Noen oppgaver gjenstår — prioriter det viktigste!';
 
-    const prioColors = { haster: '#eb5857', hoy: '#f97316', middels: '#f7c855', lav: '#acf5ca' };
+    const prioColors = { 'ikke-startet': '#d1d9e0', haster: '#eb5857', hoy: '#f97316', middels: '#f7c855', lav: '#acf5ca' };
     const remaining = tasks.filter(t => t.status !== 'fullfort');
 
     container.innerHTML = `
@@ -1402,6 +1422,21 @@ const Weekly = {
       this.renderDayTabs();
     }, 600);
     kpiInputs.forEach(input => input.addEventListener('input', saveKpi));
+
+    // Auto-beregn AOV og CTR
+    const calcAuto = () => {
+      const revenue = parseFloat(dayContent?.querySelector('.kpi-input[data-key="revenue"]')?.value || 0);
+      const orders  = parseFloat(dayContent?.querySelector('.kpi-input[data-key="orders"]')?.value || 0);
+      const clicks  = parseFloat(dayContent?.querySelector('.kpi-input[data-key="clicks"]')?.value || 0);
+      const impr    = parseFloat(dayContent?.querySelector('.kpi-input[data-key="impressions"]')?.value || 0);
+      const aovEl   = dayContent?.querySelector('.kpi-input[data-key="aov"]');
+      const ctrEl   = dayContent?.querySelector('.kpi-input[data-key="ctr"]');
+      if (aovEl && orders > 0) aovEl.value = (revenue / orders).toFixed(0);
+      if (ctrEl && impr > 0)   ctrEl.value = (clicks / impr * 100).toFixed(2);
+      saveKpi();
+    };
+    kpiInputs.filter(i => ['revenue','orders','clicks','impressions'].includes(i.dataset.key))
+      .forEach(i => i.addEventListener('input', calcAuto));
 
     // Diagnoser (bruker weekKey)
     Utils.on('runDiagnosisBtn', 'click', () => this.runDiagnosis(weekKey));
@@ -1526,12 +1561,15 @@ const Weekly = {
     Utils.qsa('.task-filter-btn').forEach(btn => {
       btn.onclick = () => { this.state.taskFilter = btn.dataset.filter; this.renderTasks(weekKey); };
     });
+    Utils.qsa('.stag').forEach(btn => {
+      btn.addEventListener('click', () => btn.classList.toggle('active'));
+    });
 
     let visible = allTasks;
     if (filter === 'aktive') visible = active;
     if (filter === 'fullfort') visible = done;
 
-    const prioColors = { haster: '#eb5857', hoy: '#f97316', middels: '#f7c855', lav: '#acf5ca' };
+    const prioColors = { 'ikke-startet': '#d1d9e0', haster: '#eb5857', hoy: '#f97316', middels: '#f7c855', lav: '#acf5ca' };
     const statusLabels = { startet: 'Startet', pagar: 'Pågår', fullfort: 'Fullført' };
     const statusColors = {
       startet:  { bg: 'var(--gray)',      color: 'var(--text-soft)' },
@@ -1547,10 +1585,17 @@ const Weekly = {
     } else {
       list.innerHTML = visible.map(t => {
         const sc = statusColors[t.status] || statusColors.startet;
+        const storeBadges = (t.stores || []).map(sid => {
+          const s = CONFIG.STORES.find(x => x.id === sid);
+          return s ? `<span class="badge" style="background:#247ca715;color:var(--primary-dk);font-size:.65rem">${s.icon} ${s.label}</span>` : '';
+        }).join('');
         return `
         <div class="task-item-v2" data-tid="${t.id}">
-          <div class="task-prio-bar" style="background:${prioColors[t.priority] || prioColors.middels}"></div>
-          <span class="task-text-v2 ${t.status === 'fullfort' ? 'done' : ''}" contenteditable="true" data-tid="${t.id}">${Utils.esc(t.text)}</span>
+          <div class="task-prio-bar" style="background:${prioColors[t.priority] || prioColors['ikke-startet']}"></div>
+          <div style="flex:1;min-width:0">
+            <span class="task-text-v2 ${t.status === 'fullfort' ? 'done' : ''}" contenteditable="true" data-tid="${t.id}">${Utils.esc(t.text)}</span>
+            ${storeBadges ? `<div style="display:flex;flex-wrap:wrap;gap:2px;margin-top:2px">${storeBadges}</div>` : ''}
+          </div>
           <select class="task-status-sel" data-tid="${t.id}" style="background:${sc.bg};color:${sc.color}">
             <option value="startet" ${t.status==='startet'?'selected':''}>Startet</option>
             <option value="pagar"   ${t.status==='pagar'  ?'selected':''}>Pågår</option>
@@ -1588,12 +1633,14 @@ const Weekly = {
 
   addWeekTask(weekKey) {
     const input = Utils.el('newTaskInput');
-    const prio  = Utils.el('newTaskPriority')?.value || 'middels';
+    const prio  = Utils.el('newTaskPriority')?.value || 'ikke-startet';
     if (!input || !input.value.trim()) return;
+    const stores = [...Utils.qsa('.stag.active')].map(b => b.dataset.s);
     const tasks = this.getWeekTasks(weekKey);
-    tasks.unshift({ id: Utils.uid(), text: input.value.trim(), priority: prio, status: 'startet', created: new Date().toISOString() });
+    tasks.unshift({ id: Utils.uid(), text: input.value.trim(), priority: prio, stores, status: 'startet', created: new Date().toISOString() });
     this.saveWeekTasks(weekKey, tasks);
     input.value = '';
+    Utils.qsa('.stag').forEach(b => b.classList.remove('active'));
     this.renderTasks(weekKey);
   },
 

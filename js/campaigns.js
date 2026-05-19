@@ -26,12 +26,16 @@ const Campaigns = {
     const campaigns = this.getData();
     const today = new Date(); today.setHours(0, 0, 0, 0);
     const filtered = this.applyFilter(campaigns);
+    const hasAny = campaigns.some(c => c.status !== 'ide');
 
     Utils.html('campaignContent', `
       ${this.renderTopSection(campaigns, today)}
       ${this.renderTimeline(campaigns, today)}
       ${this.renderControls()}
-      ${this.renderList(filtered, today)}
+      ${hasAny ? this.renderList(filtered, today) : `<div class="card"><div class="card-body">
+        <p class="text-muted text-small" style="text-align:center;padding:8px 0">
+          Ingen kampanjer ennå. Trykk «+ Ny kampanje» for å komme i gang.
+        </p></div></div>`}
       ${this.renderIdeaBank(filtered)}
     `);
     this.bindEvents();
@@ -158,14 +162,11 @@ const Campaigns = {
   /* ---- Campaign list ---- */
 
   renderList(campaigns, today = new Date()) {
-    const listed = campaigns.filter(c => c.status !== 'ide');
-    if (!listed.length) return `<div class="card"><div class="card-body">
-      <p class="text-muted text-small" style="text-align:center;padding:8px 0">
-        Ingen kampanjer ennå. Trykk «+ Ny kampanje» for å komme i gang, eller legg til en idé i idébanken.
-      </p></div></div>`;
+    // Aktive kampanjer vises allerede i renderTopSection — ikke gjenta dem her
+    const listed = campaigns.filter(c => c.status === 'planlagt' || c.status === 'avsluttet');
+    if (!listed.length) return '';
 
     const groups = [
-      { id: 'aktiv',     label: 'Aktive',     items: listed.filter(c => c.status === 'aktiv') },
       { id: 'planlagt',  label: 'Planlagte',  items: listed.filter(c => c.status === 'planlagt') },
       { id: 'avsluttet', label: 'Avsluttede', items: listed.filter(c => c.status === 'avsluttet') },
     ].filter(g => g.items.length);

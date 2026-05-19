@@ -1599,7 +1599,8 @@ body {
   justify-content: space-between;
   gap: 12px;
   flex-wrap: wrap;
-  margin-bottom: 4px;
+  margin-bottom: 8px;
+  padding: 12px 0 4px;
 }
 .campaign-filters {
   display: flex;
@@ -1630,7 +1631,7 @@ body {
 .campaign-row {
   display: flex;
   flex-wrap: wrap;
-  gap: 12px;
+  gap: 14px;
 }
 
 /* Campaign card */
@@ -1638,13 +1639,13 @@ body {
   background: var(--white);
   border: 1.5px solid var(--border);
   border-radius: var(--radius);
-  padding: 12px;
+  padding: 14px;
   min-width: 200px;
   flex: 1 1 200px;
   max-width: 320px;
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 8px;
   transition: box-shadow .15s;
 }
 .campaign-card:hover { box-shadow: var(--shadow-md); }
@@ -1709,7 +1710,7 @@ body {
 .campaign-upcoming-section { border-top: 3px solid var(--yellow); }
 
 /* Group headers */
-.campaign-group { margin-bottom: 4px; }
+.campaign-group { margin-bottom: 12px; }
 .campaign-group-label {
   font-size: .72rem;
   font-weight: 700;

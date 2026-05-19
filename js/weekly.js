@@ -580,35 +580,6 @@ const Weekly = {
         </div>
       </div>
 
-      <!-- SoMe resultater forrige uke -->
-      <div class="card">
-        <div class="card-header">
-          <div class="card-title"><span class="icon">${CONFIG.ICONS.chart}</span> SoMe-resultater forrige uke</div>
-        </div>
-        <div class="card-body">
-          <div class="grid-2">
-            <div>
-              <div class="form-label" style="margin-bottom:8px">📸 Instagram</div>
-              <div class="kpi-grid" style="grid-template-columns:1fr 1fr">
-                <div class="kpi-field"><label class="kpi-label">Rekkevidde</label><input class="kpi-input some-stat" data-platform="ig" data-stat="reach" type="number" placeholder="0"></div>
-                <div class="kpi-field"><label class="kpi-label">Engasjement</label><input class="kpi-input some-stat" data-platform="ig" data-stat="engagement" type="number" placeholder="0"></div>
-                <div class="kpi-field"><label class="kpi-label">Følgere +/-</label><input class="kpi-input some-stat" data-platform="ig" data-stat="followers" type="number" placeholder="0"></div>
-                <div class="kpi-field"><label class="kpi-label">Beste innlegg</label><input class="kpi-input some-stat" data-platform="ig" data-stat="best" type="text" placeholder="Beskriv…" style="font-size:.8rem"></div>
-              </div>
-            </div>
-            <div>
-              <div class="form-label" style="margin-bottom:8px">👥 Facebook</div>
-              <div class="kpi-grid" style="grid-template-columns:1fr 1fr">
-                <div class="kpi-field"><label class="kpi-label">Rekkevidde</label><input class="kpi-input some-stat" data-platform="fb" data-stat="reach" type="number" placeholder="0"></div>
-                <div class="kpi-field"><label class="kpi-label">Engasjement</label><input class="kpi-input some-stat" data-platform="fb" data-stat="engagement" type="number" placeholder="0"></div>
-                <div class="kpi-field"><label class="kpi-label">Følgere +/-</label><input class="kpi-input some-stat" data-platform="fb" data-stat="followers" type="number" placeholder="0"></div>
-                <div class="kpi-field"><label class="kpi-label">Beste innlegg</label><input class="kpi-input some-stat" data-platform="fb" data-stat="best" type="text" placeholder="Beskriv…" style="font-size:.8rem"></div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
       <!-- TikTok / Pinterest påminnelse -->
       <div class="card" style="border-left:4px solid var(--yellow)">
         <div class="card-header">

@@ -1,5 +1,5 @@
 // TEGNE Dashboard — Service Worker (PWA)
-const CACHE = 'tegne-v1';
+const CACHE = 'tegne-v2';
 const ASSETS = [
   '/',
   '/index.html',
@@ -11,10 +11,11 @@ const ASSETS = [
   '/js/weekly.js',
   '/js/monthly.js',
   '/js/quarterly.js',
+  '/js/campaigns.js',
   '/js/app.js',
   '/manifest.json',
-  '/assets/icon-192.svg',
-  '/assets/icon-512.svg',
+  '/assets/icon-192.png',
+  '/assets/icon-512.png',
 ];
 
 // Installer og cache kjerne-assets

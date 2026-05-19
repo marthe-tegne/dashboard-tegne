@@ -1812,6 +1812,59 @@ body {
   display: inline-block;
 }
 
+/* Campaign week strip (top of daily view) */
+.campaign-week-strip {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+  padding: 7px 12px;
+  background: var(--gray);
+  border-radius: var(--radius-sm);
+  margin-bottom: 2px;
+}
+.campaign-strip-label {
+  font-size: .68rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .06em;
+  color: var(--text-muted);
+  flex-shrink: 0;
+}
+.campaign-strip-badge {
+  font-size: .7rem;
+  font-weight: 700;
+  padding: 2px 9px;
+  border-radius: 20px;
+  letter-spacing: .02em;
+}
+
+/* Campaign tag button in post form */
+.ctag {
+  font-size: .72rem;
+  font-weight: 500;
+  padding: 3px 10px;
+  border-radius: 20px;
+  border: 1.5px solid var(--border);
+  background: var(--white);
+  color: var(--text-soft);
+  cursor: pointer;
+  transition: all .15s;
+  font-family: var(--font);
+}
+.ctag.active {
+  background: var(--ctag-color, var(--primary));
+  border-color: var(--ctag-color, var(--primary));
+  color: #fff;
+}
+
+/* Friday campaign results */
+.campaign-result-item {
+  padding: 10px 0;
+  border-bottom: 1px solid var(--border);
+}
+.campaign-result-item:last-child { border-bottom: none; }
+
 /* Campaign modal extras */
 .cmp-type-row {
   display: flex;

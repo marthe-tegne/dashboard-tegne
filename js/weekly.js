@@ -129,6 +129,8 @@ const Weekly = {
     let html = `
       <div class="section-stack">
 
+        ${this.renderCampaignStrip()}
+
         ${this.renderWeekContext(weekKey, dayIndex)}
 
         <!-- Ukens oppgaveliste -->
@@ -172,6 +174,7 @@ const Weekly = {
           </div>
           <div class="card-body">
             ${this.renderKpiGrid(kpiData, prevKpiData)}
+            ${this.renderMondayCampaigns()}
             <div style="margin-top:12px;border-top:1px solid var(--border);padding-top:12px">
               <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
                 <div class="ai-diagnosis-title" style="margin:0;font-size:.8rem">✨ AI-diagnose</div>
@@ -544,8 +547,18 @@ const Weekly = {
             <button class="ptag" data-p="TikTok">🎵 TikTok</button>
             <button class="ptag" data-p="Pinterest">📌 Pinterest</button>
           </div>
-          <div class="platform-tag-row" id="postStoreTags" style="margin-bottom:8px">
+          <div class="platform-tag-row" id="postStoreTags" style="margin-bottom:6px">
             ${CONFIG.STORES.map(s => `<button class="stag" data-s="${s.id}">${s.icon} ${s.label}</button>`).join('')}
+          </div>
+          <div class="platform-tag-row" id="postCampaignTags" style="margin-bottom:8px">
+            ${(() => {
+              const list = this.getWeekCampaigns();
+              if (!list.length) return '<span style="font-size:.72rem;color:var(--text-muted)">Ingen aktive kampanjer</span>';
+              return list.map(c => {
+                const tc = CONFIG.CAMPAIGN_TYPES.find(t => t.id === c.type);
+                return `<button class="ctag" data-c="${c.id}" style="--ctag-color:${tc?.color||'var(--primary)'};">${Utils.esc(c.name)}</button>`;
+              }).join('');
+            })()}
           </div>
           <div class="add-task-row" style="margin-bottom:10px">
             <input class="add-task-input" id="newPostInput" placeholder="Beskriv innlegget…">
@@ -692,11 +705,14 @@ const Weekly = {
     if (!list) return;
     const posts = Utils.loadNested(CONFIG.STORAGE_KEYS.WEEKLY, weekKey + '_posts', []);
     const platformColors = { Instagram: '#e1306c', Facebook: '#1877f2', TikTok: '#010101', Pinterest: '#e60023' };
+    const allCampaigns = typeof Campaigns !== 'undefined' ? Campaigns.getData() : [];
 
-    // Bind platform tag toggles
-    Utils.qsa('.ptag').forEach(btn => {
-      btn.addEventListener('click', () => btn.classList.toggle('active'));
-    });
+    // Bind tag toggles
+    Utils.qsa('.ptag').forEach(btn => btn.addEventListener('click', () => btn.classList.toggle('active')));
+    Utils.qsa('.ctag').forEach(btn => btn.addEventListener('click', () => {
+      Utils.qsa('.ctag').forEach(b => b.classList.remove('active'));
+      btn.classList.toggle('active');
+    }));
 
     if (posts.length === 0) {
       list.innerHTML = '<p class="text-muted text-small">Ingen innlegg planlagt ennå.</p>';
@@ -711,11 +727,18 @@ const Weekly = {
         const s = CONFIG.STORES.find(x => x.id === sid);
         return s ? `<span class="badge" style="background:#247ca715;color:var(--primary-dk);font-size:.65rem">${s.icon} ${s.label}</span>` : '';
       }).join('');
+      const campaignBadge = (() => {
+        if (!p.campaignId) return '';
+        const c = allCampaigns.find(x => x.id === p.campaignId);
+        if (!c) return '';
+        const tc = CONFIG.CAMPAIGN_TYPES.find(t => t.id === c.type);
+        return `<span class="campaign-type-badge" style="background:${tc?.color||'var(--primary)'};color:${tc?.textColor||'#fff'};font-size:.62rem">${Utils.esc(c.name)}</span>`;
+      })();
       return `
       <div class="task-item" data-pid="${p.id}">
         <div class="task-checkbox ${p.done ? 'checked' : ''}" data-pid="${p.id}">${p.done ? '✓' : ''}</div>
         <div style="flex:1;min-width:0">
-          <div style="display:flex;flex-wrap:wrap;gap:2px;margin-bottom:2px">${platBadges}${storeBadges}</div>
+          <div style="display:flex;flex-wrap:wrap;gap:2px;margin-bottom:2px">${platBadges}${storeBadges}${campaignBadge}</div>
           <span class="task-text ${p.done ? 'done' : ''}" style="font-size:.85rem">${p.text ? Utils.esc(p.text) : '<span style="color:var(--text-muted);font-style:italic">Beskriv innlegget…</span>'}</span>
         </div>
         <button class="task-del post-del" data-pid="${p.id}">✕</button>
@@ -743,13 +766,14 @@ const Weekly = {
   addPost(weekKey) {
     const input = Utils.el('newPostInput');
     if (!input || !input.value.trim()) return;
-    const platforms = [...Utils.qsa('.ptag.active')].map(b => b.dataset.p);
-    const stores    = [...Utils.qsa('#postStoreTags .stag.active')].map(b => b.dataset.s);
+    const platforms   = [...Utils.qsa('.ptag.active')].map(b => b.dataset.p);
+    const stores      = [...Utils.qsa('#postStoreTags .stag.active')].map(b => b.dataset.s);
+    const campaignId  = Utils.qsa('#postCampaignTags .ctag.active')[0]?.dataset.c || null;
     const posts = Utils.loadNested(CONFIG.STORAGE_KEYS.WEEKLY, weekKey + '_posts', []);
-    posts.push({ id: Utils.uid(), platforms: platforms.length ? platforms : ['Instagram'], stores, text: input.value.trim(), done: false });
+    posts.push({ id: Utils.uid(), platforms: platforms.length ? platforms : ['Instagram'], stores, campaignId, text: input.value.trim(), done: false });
     Utils.saveNested(CONFIG.STORAGE_KEYS.WEEKLY, weekKey + '_posts', posts);
     input.value = '';
-    Utils.qsa('.ptag, .stag').forEach(b => b.classList.remove('active'));
+    Utils.qsa('.ptag, .stag, .ctag').forEach(b => b.classList.remove('active'));
     this.renderPostPlan(weekKey);
   },
 
@@ -1218,6 +1242,16 @@ const Weekly = {
         </div>
       </div>
 
+      <!-- Kampanjeresultater fredag -->
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title"><span class="icon">${CONFIG.ICONS.target}</span> Kampanjeresultater — Uke ${this.state.week}</div>
+        </div>
+        <div class="card-body" id="fridayCampaignResults">
+          <p class="text-muted text-small">Laster kampanjeresultater…</p>
+        </div>
+      </div>
+
       <!-- Fredagsforslag -->
       <div class="card">
         <div class="card-header">
@@ -1236,6 +1270,7 @@ const Weekly = {
   renderFridayData(weekKey) {
     this.renderFridayTaskSummary(weekKey);
     this.renderFridayWinLossSummary(weekKey);
+    this.renderFridayCampaignResults(weekKey);
     this.renderSeoArticles(weekKey);
     Utils.on('addArticleBtn', 'click', () => this.addSeoArticle(weekKey));
     Utils.on('newArticleInput', 'keydown', e => { if (e.key === 'Enter') this.addSeoArticle(weekKey); });
@@ -1409,6 +1444,85 @@ const Weekly = {
     const btn = document.querySelector(`.ai-collapse-btn[data-target="${contentId}"]`);
     if (content) content.style.display = 'none';
     if (btn) btn.textContent = '▶';
+  },
+
+  /* ---- Kampanje-hjelpere ---- */
+
+  getWeekCampaigns() {
+    if (typeof Campaigns === 'undefined') return [];
+    const monday = Utils.getMonday(this.state.year, this.state.week);
+    const sunday = new Date(monday); sunday.setDate(monday.getDate() + 6);
+    return Campaigns.getData().filter(c => {
+      if (c.status === 'ide') return false;
+      if (!c.startDate || !c.endDate) return c.status === 'aktiv';
+      const s = new Date(c.startDate), e = new Date(c.endDate);
+      return s <= sunday && e >= monday;
+    });
+  },
+
+  renderCampaignStrip() {
+    const list = this.getWeekCampaigns();
+    if (!list.length) return '';
+    return `<div class="campaign-week-strip">
+      <span class="campaign-strip-label">Denne uken:</span>
+      ${list.map(c => {
+        const tc = CONFIG.CAMPAIGN_TYPES.find(t => t.id === c.type);
+        return `<span class="campaign-strip-badge" style="background:${tc?.color||'var(--primary)'};color:${tc?.textColor||'#fff'}">${Utils.esc(c.name)}</span>`;
+      }).join('')}
+    </div>`;
+  },
+
+  renderMondayCampaigns() {
+    const list = this.getWeekCampaigns();
+    if (!list.length) return '';
+    return `<div style="margin-top:10px;border-top:1px solid var(--border);padding-top:10px">
+      <div class="kpi-label" style="margin-bottom:8px">KAMPANJER DENNE UKEN</div>
+      ${list.map(c => {
+        const tc = CONFIG.CAMPAIGN_TYPES.find(t => t.id === c.type);
+        const sc = CONFIG.CAMPAIGN_STATUSES.find(s => s.id === c.status);
+        const dateStr = c.startDate && c.endDate
+          ? `${Utils.formatDate(c.startDate)} – ${Utils.formatDate(c.endDate)}` : '';
+        return `<div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;flex-wrap:wrap">
+          <span class="campaign-type-badge" style="background:${tc?.color||'var(--primary)'};color:${tc?.textColor||'#fff'}">${tc?.label||c.type}</span>
+          <span style="font-size:.85rem;font-weight:600;flex:1">${Utils.esc(c.name)}</span>
+          ${dateStr ? `<span style="font-size:.7rem;color:var(--text-muted)">${dateStr}</span>` : ''}
+          <span class="campaign-status-badge campaign-status--${c.status}">${sc?.label||''}</span>
+        </div>`;
+      }).join('')}
+    </div>`;
+  },
+
+  renderFridayCampaignResults(weekKey) {
+    const container = Utils.el('fridayCampaignResults');
+    if (!container) return;
+    const list = this.getWeekCampaigns();
+    if (!list.length) {
+      container.innerHTML = '<p class="text-muted text-small">Ingen aktive kampanjer denne uken.</p>';
+      return;
+    }
+    container.innerHTML = list.map(c => {
+      const tc = CONFIG.CAMPAIGN_TYPES.find(t => t.id === c.type);
+      const saved = (c.weeklyResults || {})[weekKey] || '';
+      return `<div class="campaign-result-item">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px">
+          <span class="campaign-type-badge" style="background:${tc?.color||'var(--primary)'};color:${tc?.textColor||'#fff'}">${tc?.label||c.type}</span>
+          <span style="font-size:.85rem;font-weight:600">${Utils.esc(c.name)}</span>
+        </div>
+        <textarea class="form-textarea campaign-result-ta" data-cid="${c.id}" rows="2"
+          placeholder="Resultater og observasjoner for uke ${this.state.week}…">${Utils.esc(saved)}</textarea>
+      </div>`;
+    }).join('');
+
+    container.querySelectorAll('.campaign-result-ta').forEach(ta => {
+      ta.addEventListener('input', Utils.debounce(() => {
+        const all = Campaigns.getData();
+        const c = all.find(x => x.id === ta.dataset.cid);
+        if (!c) return;
+        if (!c.weeklyResults) c.weeklyResults = {};
+        c.weeklyResults[weekKey] = ta.value;
+        Campaigns.saveData(all);
+      }, 800));
+    });
   },
 
   /* ---- Bind daglige events ---- */

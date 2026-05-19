@@ -306,10 +306,34 @@ const Campaigns = {
 
     const campaigns = this.getData();
     const idx = campaigns.findIndex(c => c.id === campaign.id);
+    const wasAktiv = idx >= 0 ? campaigns[idx].status === 'aktiv' : false;
     if (idx >= 0) campaigns[idx] = campaign;
     else campaigns.push(campaign);
 
     this.saveData(campaigns);
+
+    // Auto-sett banner når kampanje settes til Aktiv
+    if (campaign.status === 'aktiv' && !wasAktiv) {
+      const bannerColor = campaign.type === 'helg' ? 'yellow' : campaign.type === 'fokus' ? 'green' : 'primary';
+      const s = Utils.load(CONFIG.STORAGE_KEYS.SETTINGS, {});
+      s.banner = campaign.name;
+      s.bannerInput = campaign.name;
+      s.bannerColor = bannerColor;
+      Utils.save(CONFIG.STORAGE_KEYS.SETTINGS, s);
+      App.applyBanner(campaign.name, bannerColor);
+      Utils.toast(`Kampanjebanner satt: "${campaign.name}"`, 'success');
+    }
+    // Fjern banner når kampanje avsluttes
+    if (campaign.status === 'avsluttet' && wasAktiv) {
+      const s = Utils.load(CONFIG.STORAGE_KEYS.SETTINGS, {});
+      if (s.banner === campaign.name) {
+        s.banner = ''; s.bannerInput = '';
+        Utils.save(CONFIG.STORAGE_KEYS.SETTINGS, s);
+        App.hideBanner();
+        Utils.toast(`Kampanje avsluttet — banner fjernet`, 'info');
+      }
+    }
+
     App.closeModal('campaignModal');
     this.render();
     Utils.toast(idx >= 0 ? 'Kampanje oppdatert' : 'Kampanje opprettet', 'success');

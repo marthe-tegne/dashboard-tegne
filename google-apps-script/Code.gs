@@ -115,8 +115,9 @@ function getAllData() {
 
 // ---- HTTP GET (testformål) ----
 function doGet(e) {
+  const data = getAllData();
   return ContentService
-    .createTextOutput(JSON.stringify({ status: 'TEGNE Dashboard API aktiv' }))
+    .createTextOutput(JSON.stringify({ data }))
     .setMimeType(ContentService.MimeType.JSON);
 }
 

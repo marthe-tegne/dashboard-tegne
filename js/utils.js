@@ -150,12 +150,15 @@ const Utils = {
     } catch { return fallback; }
   },
 
-  save(key, value) {
-    try {
-      localStorage.setItem(key, JSON.stringify(value));
-      return true;
-    } catch { return false; }
-  },
+save(key, value) {
+  try {
+    localStorage.setItem(key, JSON.stringify(value));
+    if (typeof Sheets !== 'undefined' && typeof CONFIG !== 'undefined' && key !== CONFIG.STORAGE_KEYS.SETTINGS) {
+      Sheets.debouncedSave('local', key, value, 3000);
+    }
+    return true;
+  } catch { return false; }
+},
 
   loadNested(storageKey, subKey, fallback = {}) {
     const store = this.load(storageKey, {});

@@ -55,17 +55,44 @@ const Monthly = {
   },
 
   buildHTML(data, prev, key) {
+    // Auto-beregn AOV og CTR
+    const aovVal = (data.revenue && data.orders && Number(data.orders) > 0)
+      ? (Number(data.revenue) / Number(data.orders))
+      : null;
+    const ctrVal = (data.clicks && data.impressions && Number(data.impressions) > 0)
+      ? (Number(data.clicks) / Number(data.impressions) * 100)
+      : null;
+    const prevAov = (prev.revenue && prev.orders && Number(prev.orders) > 0)
+      ? (Number(prev.revenue) / Number(prev.orders))
+      : null;
+    const prevCtr = (prev.clicks && prev.impressions && Number(prev.impressions) > 0)
+      ? (Number(prev.clicks) / Number(prev.impressions) * 100)
+      : null;
+
     const kpiDefs = [
-      { key: 'revenue',    label: 'Net Revenue',   fmt: v => Utils.formatKr(v) },
-      { key: 'orders',     label: 'Ordre',          fmt: v => Utils.formatNum(v) },
-      { key: 'aov',        label: 'Snitt AOV',      fmt: v => Utils.formatKr(v) },
-      { key: 'clicks',     label: 'Klikk',          fmt: v => Utils.formatNum(v) },
-      { key: 'impressions',label: 'Visninger',      fmt: v => Utils.formatNum(v) },
-      { key: 'ctr',        label: 'CTR (snitt)',    fmt: v => Utils.formatPct(v) },
-      { key: 'position',   label: 'Snittposisjon',  fmt: v => v ? Number(v).toFixed(1) : '–' },
+      { key: 'revenue',     label: 'Net Revenue',  fmt: v => Utils.formatKr(v) },
+      { key: 'orders',      label: 'Ordre',         fmt: v => Utils.formatNum(v) },
+      { key: 'aov',         label: 'Snitt AOV',     fmt: v => Utils.formatKr(v),  auto: true, autoVal: aovVal, prevAutoVal: prevAov },
+      { key: 'clicks',      label: 'Klikk',         fmt: v => Utils.formatNum(v) },
+      { key: 'impressions', label: 'Visninger',     fmt: v => Utils.formatNum(v) },
+      { key: 'ctr',         label: 'CTR (snitt)',   fmt: v => (Number(v).toFixed(2) + ' %'), auto: true, autoVal: ctrVal, prevAutoVal: prevCtr },
+      { key: 'position',    label: 'Snittposisjon', fmt: v => v ? Number(v).toFixed(1) : '–' },
     ];
 
     return `<div class="section-stack">
+
+      <!-- AI-analyse -->
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title"><span class="icon">${CONFIG.ICONS.stars}</span> AI-analyse</div>
+          <button class="btn-ai" id="generateMonthlyAI">✨ Analyser måneden</button>
+        </div>
+        <div class="card-body">
+          <div class="ai-diagnosis-content" id="monthlyAIText" style="min-height:60px">
+            ${data.aiComment ? Utils.esc(data.aiComment) : '<span class="text-muted">Fyll inn månedstall og trykk «Analyser måneden» for en AI-gjennomgang.</span>'}
+          </div>
+        </div>
+      </div>
 
       <!-- Månedstall vs forrige måned -->
       <div class="card">
@@ -76,6 +103,20 @@ const Monthly = {
         <div class="card-body">
           <div class="month-stat-row">
             ${kpiDefs.map(f => {
+              if (f.auto) {
+                const val  = f.autoVal;
+                const pval = f.prevAutoVal;
+                const delta = (val !== null && pval !== null) ? Utils.delta(val, pval) : null;
+                const deltaHtml = delta !== null
+                  ? `<div class="stat-delta ${delta >= 0 ? 'pos' : 'neg'}">${delta > 0 ? '↑' : '↓'} ${Math.abs(delta).toFixed(1)}% vs forrige mnd</div>`
+                  : `<div class="stat-delta" style="color:var(--text-muted);font-size:.7rem">–</div>`;
+                const displayVal = val !== null ? f.fmt(val) : '–';
+                return `<div class="stat-card">
+                  <div class="stat-label">${f.label} <span style="font-size:.65rem;color:var(--text-muted);font-style:italic">auto</span></div>
+                  <div class="kpi-auto-value" style="font-size:1.2rem;font-weight:600;padding:6px 0;color:var(--text)">${displayVal}</div>
+                  ${deltaHtml}
+                </div>`;
+              }
               const val  = data[f.key] || '';
               const pval = prev[f.key] || '';
               const delta = (val && pval) ? Utils.delta(Number(val), Number(pval)) : null;
@@ -92,21 +133,20 @@ const Monthly = {
         </div>
       </div>
 
-      <!-- SoMe-resultater forrige måned -->
+      <!-- SoMe-resultater -->
       <div class="card">
         <div class="card-header">
-          <div class="card-title"><span class="icon">${CONFIG.ICONS.phone}</span> SoMe-resultater forrige måned</div>
+          <div class="card-title"><span class="icon">${CONFIG.ICONS.phone}</span> SoMe-resultater</div>
           <span class="text-muted text-small">Instagram & Facebook</span>
         </div>
         <div class="card-body">
-          <div class="month-stat-row">
+          <div style="font-size:.75rem;font-weight:600;color:var(--text-muted);text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px">Instagram</div>
+          <div class="month-stat-row" style="margin-bottom:16px">
             ${[
-              { key: 'ig_followers', label: 'IG Følgere', icon: '📸' },
-              { key: 'ig_reach',     label: 'IG Rekkevidde', icon: '👁️' },
-              { key: 'ig_engagement',label: 'IG Engasjement', icon: '❤️' },
-              { key: 'fb_followers', label: 'FB Følgere', icon: '👥' },
-              { key: 'fb_reach',     label: 'FB Rekkevidde', icon: '👁️' },
-              { key: 'fb_engagement',label: 'FB Engasjement', icon: '❤️' },
+              { key: 'ig_impressions',   label: 'Visninger' },
+              { key: 'ig_interactions',  label: 'Samhandlinger' },
+              { key: 'ig_new_followers', label: 'Nye følgere' },
+              { key: 'ig_posts_shared',  label: 'Innhold delt' },
             ].map(f => {
               const val  = data[f.key] || '';
               const pval = prev[f.key] || '';
@@ -115,7 +155,27 @@ const Monthly = {
                 ? `<div class="stat-delta ${delta >= 0 ? 'pos' : 'neg'}">${delta > 0 ? '↑' : '↓'} ${Math.abs(delta).toFixed(1)}% vs forrige mnd</div>`
                 : `<div class="stat-delta" style="color:var(--text-muted);font-size:.7rem">–</div>`;
               return `<div class="stat-card">
-                <div class="stat-label">${f.icon} ${f.label}</div>
+                <div class="stat-label">${f.label}</div>
+                <input class="kpi-input month-kpi" data-key="${f.key}" type="number" value="${Utils.esc(val)}" placeholder="0" style="font-size:1.2rem">
+                ${deltaHtml}
+              </div>`;
+            }).join('')}
+          </div>
+          <div style="font-size:.75rem;font-weight:600;color:var(--text-muted);text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px">Facebook</div>
+          <div class="month-stat-row">
+            ${[
+              { key: 'fb_impressions',        label: 'Visninger' },
+              { key: 'fb_reach_followers',    label: 'Visn. av følgere' },
+              { key: 'fb_reach_nonfollowers', label: 'Visn. av ikke-følgere' },
+            ].map(f => {
+              const val  = data[f.key] || '';
+              const pval = prev[f.key] || '';
+              const delta = (val && pval) ? Utils.delta(Number(val), Number(pval)) : null;
+              const deltaHtml = delta !== null
+                ? `<div class="stat-delta ${delta >= 0 ? 'pos' : 'neg'}">${delta > 0 ? '↑' : '↓'} ${Math.abs(delta).toFixed(1)}% vs forrige mnd</div>`
+                : `<div class="stat-delta" style="color:var(--text-muted);font-size:.7rem">–</div>`;
+              return `<div class="stat-card">
+                <div class="stat-label">${f.label}</div>
                 <input class="kpi-input month-kpi" data-key="${f.key}" type="number" value="${Utils.esc(val)}" placeholder="0" style="font-size:1.2rem">
                 ${deltaHtml}
               </div>`;
@@ -190,19 +250,6 @@ const Monthly = {
         </div>
       </div>
 
-      <!-- AI-kommentar -->
-      <div class="card">
-        <div class="card-header">
-          <div class="card-title"><span class="icon">${CONFIG.ICONS.stars}</span> AI-kommentar</div>
-          <button class="btn-ai" id="generateMonthlyAI">✨ Generer</button>
-        </div>
-        <div class="card-body">
-          <div class="ai-diagnosis-content" id="monthlyAIText" style="min-height:60px">
-            ${data.aiComment ? Utils.esc(data.aiComment) : '<span class="text-muted">Trykk «Generer» for AI-analyse av måneden.</span>'}
-          </div>
-        </div>
-      </div>
-
     </div>`;
   },
 
@@ -212,8 +259,13 @@ const Monthly = {
       input.addEventListener('input', Utils.debounce(() => {
         const data = this.getData(key);
         Utils.qsa('.month-kpi').forEach(el => { data[el.dataset.key] = el.value; });
+        // Lagre auto-beregnede verdier
+        if (data.revenue && data.orders && Number(data.orders) > 0)
+          data.aov = (Number(data.revenue) / Number(data.orders)).toFixed(2);
+        if (data.clicks && data.impressions && Number(data.impressions) > 0)
+          data.ctr = (Number(data.clicks) / Number(data.impressions) * 100).toFixed(4);
         this.saveData(key, data);
-        this.render(); // oppdater delta
+        this.render(); // oppdater delta og auto-verdier
       }, 800));
     });
 

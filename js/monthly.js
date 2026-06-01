@@ -188,6 +188,45 @@ const Monthly = {
         </div>
       </div>
 
+      <!-- Mailchimp e-post -->
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title"><span class="icon">${CONFIG.ICONS.mail}</span> E-post (Mailchimp)</div>
+          <button class="btn-secondary btn-sm" id="fetchMailchimpBtn">↻ Hent statistikk</button>
+        </div>
+        <div class="card-body">
+          <div id="mailchimpStatus" style="display:none;font-size:.8rem;color:var(--text-muted);margin-bottom:12px"></div>
+
+          <!-- Totaltall -->
+          <div class="month-stat-row" id="mailchimpTotals" style="margin-bottom:16px">
+            <div class="stat-card">
+              <div class="stat-label">Totalt sendt</div>
+              <div class="kpi-auto-value" id="mc_totalSent" style="font-size:1.2rem;font-weight:600;padding:6px 0;color:var(--text)">–</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-label">Åpningsrate</div>
+              <div class="kpi-auto-value" id="mc_openRate" style="font-size:1.2rem;font-weight:600;padding:6px 0;color:var(--text)">–</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-label">Klikkrate</div>
+              <div class="kpi-auto-value" id="mc_clickRate" style="font-size:1.2rem;font-weight:600;padding:6px 0;color:var(--text)">–</div>
+            </div>
+          </div>
+
+          <!-- Topp 5 nyhetsbrev -->
+          <div style="font-size:.75rem;font-weight:600;color:var(--text-muted);text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px">Topp 5 nyhetsbrev denne måneden</div>
+          <div id="mailchimpTop5">
+            <p class="text-muted text-small">Trykk «Hent statistikk» for å laste inn data fra Mailchimp.</p>
+          </div>
+
+          <!-- Notatfelt for popularitet -->
+          <div class="form-group" style="margin-top:16px">
+            <label class="form-label" style="font-size:.75rem">Notater — hvorfor tror jeg disse presterte godt?</label>
+            <textarea class="form-textarea" id="emailNotes" placeholder="Hva tror du er grunnen til at disse nyhetsbrevene gikk bra? Tidspunkt, tema, tilbud, emnelinje…" rows="3">${Utils.esc(data.emailNotes || '')}</textarea>
+          </div>
+        </div>
+      </div>
+
       <!-- Hva funket / ikke funket -->
       <div class="grid-2">
         <div class="card">
@@ -270,7 +309,7 @@ const Monthly = {
     });
 
     // Tekstfelter
-    ['whatWorked','whatDidnt','bestContent','keywordMoves','campaignEval','bestPost'].forEach(id => {
+    ['whatWorked','whatDidnt','bestContent','keywordMoves','campaignEval','bestPost','emailNotes'].forEach(id => {
       const el = Utils.el(id);
       if (el) {
         el.addEventListener('input', Utils.debounce(() => {
@@ -280,6 +319,10 @@ const Monthly = {
         }, 800));
       }
     });
+
+    // Mailchimp
+    this.restoreMailchimpUI(key);
+    Utils.on('fetchMailchimpBtn', 'click', () => this.fetchMailchimp(key));
 
     // Fokus
     this.renderFocus(key);
@@ -350,6 +393,82 @@ const Monthly = {
       const inputs = Utils.qsa('.focus-text');
       if (inputs.length) inputs[inputs.length - 1].focus();
     }, 50);
+  },
+
+  async fetchMailchimp(key) {
+    const btn    = Utils.el('fetchMailchimpBtn');
+    const status = Utils.el('mailchimpStatus');
+    if (btn) { btn.textContent = '⏳ Henter…'; btn.disabled = true; }
+    if (status) { status.style.display = 'block'; status.textContent = 'Kobler til Mailchimp…'; }
+
+    const stats = await Mailchimp.fetchStats(this.state.year, this.state.month);
+
+    if (stats.error) {
+      if (status) status.textContent = `Feil: ${stats.error}`;
+      if (btn) { btn.textContent = '↻ Hent statistikk'; btn.disabled = false; }
+      return;
+    }
+
+    // Lagre til data
+    const data = this.getData(key);
+    data.mailchimp = stats;
+    this.saveData(key, data);
+
+    if (status) status.textContent = `Sist hentet: ${new Date().toLocaleString('no-NO')}`;
+    this.renderMailchimpUI(stats);
+    if (btn) { btn.textContent = '↻ Hent statistikk'; btn.disabled = false; }
+  },
+
+  restoreMailchimpUI(key) {
+    const data = this.getData(key);
+    if (data.mailchimp) {
+      const status = Utils.el('mailchimpStatus');
+      if (status) { status.style.display = 'block'; status.textContent = 'Viser lagret data — trykk «Hent statistikk» for å oppdatere.'; }
+      this.renderMailchimpUI(data.mailchimp);
+    }
+  },
+
+  renderMailchimpUI(stats) {
+    const fmt = v => Utils.formatNum(Math.round(v));
+    const pct = v => (v * 100).toFixed(1) + ' %';
+
+    const totalEl     = Utils.el('mc_totalSent');
+    const openRateEl  = Utils.el('mc_openRate');
+    const clickRateEl = Utils.el('mc_clickRate');
+    const top5El      = Utils.el('mailchimpTop5');
+
+    if (totalEl)     totalEl.textContent     = fmt(stats.totalSent);
+    if (openRateEl)  openRateEl.textContent  = pct(stats.openRate);
+    if (clickRateEl) clickRateEl.textContent = pct(stats.clickRate);
+
+    if (top5El) {
+      if (!stats.top5 || stats.top5.length === 0) {
+        top5El.innerHTML = '<p class="text-muted text-small">Ingen sendte kampanjer funnet for denne måneden.</p>';
+        return;
+      }
+      top5El.innerHTML = `
+        <table style="width:100%;border-collapse:collapse;font-size:.8rem">
+          <thead>
+            <tr style="border-bottom:1px solid var(--border);color:var(--text-muted)">
+              <th style="text-align:left;padding:4px 8px 4px 0;font-weight:500">Emnelinje</th>
+              <th style="text-align:right;padding:4px 4px;font-weight:500;white-space:nowrap">Åpnet</th>
+              <th style="text-align:right;padding:4px 4px;font-weight:500;white-space:nowrap">Klikk</th>
+              <th style="text-align:right;padding:4px 0 4px 4px;font-weight:500;white-space:nowrap">Åpn.rate</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${stats.top5.map((c, i) => `
+              <tr style="border-bottom:1px solid var(--border)">
+                <td style="padding:6px 8px 6px 0;color:var(--text)">
+                  <span style="color:var(--text-muted);margin-right:6px">${i + 1}.</span>${Utils.esc(c.subject)}
+                </td>
+                <td style="text-align:right;padding:6px 4px;color:var(--text)">${fmt(c.opens)}</td>
+                <td style="text-align:right;padding:6px 4px;color:var(--text)">${fmt(c.clicks)}</td>
+                <td style="text-align:right;padding:6px 0 6px 4px;color:var(--primary)">${pct(c.openRate)}</td>
+              </tr>`).join('')}
+          </tbody>
+        </table>`;
+    }
   },
 
 };

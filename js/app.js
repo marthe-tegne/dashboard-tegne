@@ -22,7 +22,6 @@ const App = {
     Campaigns.init();
 
     this.setView('weekly');
-    this.syncFromSheets();
     this.checkPeriodicReminders();
   },
 

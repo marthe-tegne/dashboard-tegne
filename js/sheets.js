@@ -18,10 +18,13 @@ const Sheets = {
 
       let count = 0;
       Object.entries(data).forEach(([key, value]) => {
-        if (!key.startsWith('_')) {
-          localStorage.setItem(key, JSON.stringify(value));
-          count++;
-        }
+        if (key.startsWith('_')) return;
+        // Hopp over tomme verdier — ikke overskrive eksisterende localStorage-data
+        const isEmpty = (Array.isArray(value) && value.length === 0) ||
+                        (value !== null && typeof value === 'object' && Object.keys(value).length === 0);
+        if (isEmpty) return;
+        localStorage.setItem(key, JSON.stringify(value));
+        count++;
       });
 
       const updated = data._updated || '?';

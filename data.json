@@ -1,32 +1,1748 @@
 {
   "_updated": "2026-06-19",
-  "_version": 1,
-  "_note": "Denne filen oppdateres av Claude i Cowork. Push til Netlify for å oppdatere dashboardet.",
-
+  "_version": 2,
+  "tegne_weekly": {
+    "2026-W21_kpi": {
+      "revenue": "143338",
+      "orders": "199",
+      "aov": "720.29",
+      "clicks": "2891",
+      "impressions": "111560",
+      "ctr": "2.6",
+      "position": "7.4",
+      "_diagnosis": "# TEGNE – KPI-analyse Uke 21 📊\n\n## Diagnose\n\nOmsetningstallene er solide med kr 143 338 på 199 ordre, og AOV på kr 720 er et godt tegn – kundene handler for en fornuftig sum per besøk. CTR på 2,6 % og snittposisjon 7,4 er **middels**, noe som indikerer at du er synlig, men ikke dominerende nok på de viktigste søkene. Det største forbedringspotensialet ligger i å **løfte posisjonene fra 7-området og opp mot topp 5**, da dette typisk gir uforholdsmessig stor CTR-gevinst. Med 111 560 visninger er det altså et betydelig uutnyttet volum.\n\n---\n\n## Konkrete tiltak 🎯\n\n- **Prioriter posisjonsforbedring på nøkkelord i posisjon 5–10**\nKjør en søkeordsanalyse denne uken og identifiser hvilke termer som allerede er nær topp 5 – disse er lavthengende frukt for SEO-innsats (intern lenking, titteloptimalisering, ev. Google Ads-boost).\n\n- **Test sterkere titler/metabeskrivelser for å løfte CTR**\n2,6 % CTR er akseptabelt, men med 111 K visninger kan selv 0,5 % økning gi merkbar trafikkvekst. Prioriter de sidene med høyest visningsvolum og svak CTR i Search Console.\n\n- **Aktiver e-post mot eksisterende kunder for å styrke AOV videre**\nAOV er allerede bra – bruk en målrettet e-postkampanje (f.eks. «fullfør din starter-pakke» eller produktbundles) for å dytte AOV mot kr 800+ uten å måtte øke trafikken.\n\n---\n\n> 💡 **Ukens fokus for deg, Marthe:**"
+    },
+    "2026-W21_priorities": "",
+    "2026-W21-monday": {
+      "_notes": "Notat ang oppgaver: \nOppgavene ligger som steg for steg i Claude\n"
+    },
+    "2026-W21_posts": [
+      {
+        "id": "mpcjdcutohp4",
+        "platforms": [
+          "Instagram",
+          "Facebook",
+          "Pinterest"
+        ],
+        "stores": [],
+        "campaignId": null,
+        "text": "Produktfokus akrylmaling med forskjellige egenskaper",
+        "done": false
+      },
+      {
+        "id": "mpcjeefopt0o",
+        "platforms": [
+          "Instagram"
+        ],
+        "stores": [],
+        "campaignId": null,
+        "text": "Lufttørkende leire",
+        "done": false
+      },
+      {
+        "id": "mpckkk6b78c8",
+        "platforms": [
+          "Instagram"
+        ],
+        "stores": [],
+        "campaignId": "1779179482591",
+        "text": "Fargesirkel reel akvarellkampanjen",
+        "done": true
+      }
+    ],
+    "2026-W21_tuesday": {
+      "_postsInitialized": true,
+      "postPlanIdeas": "Her er ukentlig innleggsplan for TEGNE, uke 21:\n\nAkvarellkampanjen nærmer seg slutten 31. mai, så denne uken bør vi kombinere kampanjetrykk med søkeordinnhold for å drive både kortsiktig salg og organisk trafikk.\n\n[Instagram] Hastetrykk på akvarellkampanjen — Reels med countdown-tekst og time-lapse av akvarellmaling på vått papir. Vis 2–3 produkter som er med i kampanjen. Tekst: \"Bare X dager igjen – hent favorittene dine nå.\"\n\n[Facebook] Produktfokus akrylmaling — Karusellinnlegg med 4–5 akrylfarger i ulike prisklasser, fra student til profesjonell. Koble til nettbutikken. Passer godt for de som søker etter akrylmaling og treffer TEGNE via betalt søk eller organisk.\n\n[Instagram] Inspirasjonsvideo med lufttørkende leire — Vis en enkel og rask skulptur laget med lufttørkende leire, gjerne fra start til slutt på 30–45 sekunder. Tekst som forklarer at ingen brenning trengs og at det passer for alle aldre.\n\n[Facebook] Kundestory eller brukerinnhold — Del et bilde fra en kunde eller følger som har brukt akvarellfarger fra TEGNE. Spør gjerne i teksten om andre vil dele sine verk. Bygger engasjement og sosial tillit rett før kampanjeslutt.\n\n[Instagram] Produktnært bilde av leire og verktøy — Flatt lay med lufttørkende leire, modelleringsverktøy og ferdig resultat. Tekst som guider til nettbutikken og nevner at varene finnes i alle tre butikker.\n\n[Facebook] Påminnelse om akvarellkampanjen med lenke — Enkelt og direkte innlegg: kampanjen slutter 31. mai, her er hva som er inkludert, klikk her for å handle. Fungerer godt som avsluttende kampanjetrykk mot helgen.\n\nPrioriter Instagram-innleggene med leire og akrylmaling tidlig i uken, og legg kampanjepåminnelsene mot torsdag-fredag"
+    },
+    "2026-W21_brief_2": "Her er 4–5 konkrete innholdsvinkler til nyhetsbrev og e-postkampanjer for i dag, basert på ukens data:\n\n– Russedress-vinkel som primær hook: Søkeordene «male på russedress», «russedress maling» og «hvordan male på russedress» peker alle oppover, og russetiden er nå. Lag en e-post med emnelinjen «Klar til å male russedressen?» som viser frem Posca-tusjer, Rit Dye og akrylmaling i én samlet produktvisning. Dette er trolig den vinkelen med høyest aktualitet denne uka.\n\n– Boost akvarellkampanjen med en deadline-melding: Kampanjen løper ut 31. mai, og akvarellmaling er på vei opp. Bruk e-posten til å minne om at tilbudet snart er over — «Bare noen dager igjen» fungerer som konkret konverteringsdriver. Koble gjerne inn fargelære-innholdet som støtte for de som er nybegynnere.\n\n– Nybegynner-vinkel for akrylmaling: «Akrylmaling for nybegynnere» er på vei opp både som innhold og søkeord. Lag en kort e-postblokk rettet mot de som aldri har malt før — hva trenger man til å starte, hva koster det å komme i gang? Lufttørkende leire kan fungere som et tillegg her for de som vil prøve noe tredimensjonalt.\n\n– Lufttørkende leire i spotlight: Dette søkeordet er i spotlight denne uka og innholdet peker oppover. Leire er lett å vinkle som et lavterskel hobbyprosjekt som passer for sommeren. En liten produktfokusert blokk i nyhetsbrevet — gjerne med bilde av noe ferdig laget — kan fange opp denne interessen mens den er varm.\n\n– Unng",
+    "2026-W21_wednesday": {
+      "open_rate": "7.5",
+      "click_rate": "0.48",
+      "subscribers": "390",
+      "best": "https://www.tegne.no/kampanje-akvarellmaling/",
+      "txt_produktfokus": "Akrylmaling, bestselgende akryl, forskjellen på kvaliteter",
+      "txt_blogglenke": "Akrylmaling for nybegynnere",
+      "txt_kampanje": "Hele utvalget akrylmaling",
+      "txt_tips": "Tipse om flere typer akrylmaling",
+      "txt_annet": "Lufttørkende leire",
+      "blk_produktfokus": true,
+      "blk_blogglenke": true,
+      "blk_kampanje": true,
+      "blk_tips": true,
+      "blk_annet": true
+    },
+    "2026-W22_posts": [
+      {
+        "id": "mppf2e51kd57",
+        "platforms": [
+          "Instagram",
+          "Facebook"
+        ],
+        "stores": [],
+        "campaignId": null,
+        "text": "Påminnelse om siste sjanse akvarell, med kampanjebilde",
+        "done": false
+      },
+      {
+        "id": "mppf2m8uy8xh",
+        "platforms": [
+          "Instagram"
+        ],
+        "stores": [],
+        "campaignId": null,
+        "text": "Story med nedtelling",
+        "done": false
+      }
+    ],
+    "2026-W22_tuesday": {
+      "_postsInitialized": true,
+      "postPlanIdeas": "Ukentlig innleggsplan — Uke 22 (Akvarellkampanjen, frist 31. mai)\n\nKontekst: Du er inne i siste uken av akvarellkampanjen. Med 208 ordre og omsetning på 130 684 kr er det viktig å avslutte sterkt. Prioriter innhold som skaper urgency og driver direkte kjøp de siste dagene.\n\n---\n\n[Instagram] Reels — Vis en rask time-lapse av et akvarellmaleri som bygges opp lag for lag. Avslutt med produktene som ble brukt synlig i bildet. Tekst: \"Siste dager av akvarellkampanjen — hent det du trenger før 31. mai.\"\n\n[Instagram] Karusell — \"5 ting du trenger for å komme i gang med akvarell.\" Produktorientert, men i en pedagogisk innpakning. Lenke til aktuelle produkter i bio. Passer godt til nye følgere og nybegynnere.\n\n[Facebook] Produktfokus — Fremhev ett konkret produkt med god margin eller høyt søkevolum, f.eks. en akvarellblokk eller et startpakke-sett. Inkluder pris, lenke til nettbutikk og en tydelig CTA: \"Kjøp nå — kampanjen avsluttes 31. mai.\"\n\n[Instagram] Story-serie — \"Dag i livet på TEGNE.\" Vis butikkmiljøet i en av de fysiske butikkene (f.eks. Bergen sentrum). Skaper nærhet og minner lokale følgere om at de kan stikke innom.\n\n[Facebook] Engasjementsinnlegg — Still et spørsmål: \"Hva er ditt favorittakvarellmerke, og hvorfor?\" Lavterskel å svare på, bygger kommentarfelt og gir deg innsikt i hva kundene foretrekker.\n\n[Instagram] Avslutningsinnlegg for kampanjen — Publiseres torsdag eller fredag. \"Siste sjanse\"-budskap med et tydelig tilbud eller påminnelse om kampanjeslutt. Bruk et sterkt bilde av produkter eller ferdig kunstverk. CTA: \"Handle innen 31. mai på tegne.no.\"\n\n---\n\nAnbefalt publ"
+    },
+    "2026-W22_kpi": {
+      "revenue": "130684",
+      "orders": "208",
+      "aov": "628",
+      "clicks": "2791",
+      "impressions": "97472",
+      "ctr": "2.86",
+      "position": "7.1",
+      "_diagnosis": "Diagnose: Flere ordrer enn forrige uke er et godt tegn, men fallet i gjennomsnittlig ordresum på nesten 13 % spiser opp gevinsten og trekker inntekten ned. Kundene kjøper altså oftere, men handler for mindre — noe som kan tyde på at du tiltrekker deg mange småkjøp eller engangsvarer uten at kurven fylles opp. Synligheten i søk har falt merkbart med 12,6 % færre visninger, men CTR har faktisk gått opp, noe som tyder på at de som ser annonsene eller treffene dine er relevante nok — det er rekkevidden som svikter. Den bedrede snittposisjonen (lavere tall = høyere plassering) støtter dette bildet.\n\nTiltak 1: Jobb aktivt med å øke AOV denne uken. Sett opp bunter eller «kjøp mer, spar mer»-tilbud på nettbutikken — for eksempel tre produkter innen akvarell eller tegning til en samlepris. Send gjerne en kort e-post til listen med én tydelig pakketilbuds-CTA.\n\nTiltak 2: Undersøk hva som har falt i visninger. Sjekk Google Search Console for hvilke sider eller søkeord som har mistet treff den siste uken, og prioriter å styrke metabeskrivelser og titteltagger på de sidene som har falt mest.\n\nTiltak 3: Legg inn en «du mangler bare X kroner til fri frakt»-melding i handlekurven dersom dere ikke allerede har det. Med AOV på 628 kr er det trolig rom for å dytte kunden til å legge i en ekstra penn, tube eller skissebok før betaling."
+    },
+    "2026-W21_friday": {
+      "articles": [
+        {
+          "title": "Kom i gang med akrylmaling – utstyr og teknikker for nybegynnere",
+          "type": "ny",
+          "reason": "Akrylmaling har stigende trend denne uken og er et høyvolum søkeord. En grundig nybegynnerguide treffer bredt, støtter posisjonsforbedring fra 7-området og opp mot topp 5, og kan lenkes til relevante produktsider for å styrke intern lenking."
+        },
+        {
+          "title": "Lufttørkende leire – 5 prosjekter du kan lage hjemme",
+          "type": "ny",
+          "reason": "Lufttørkende leire er i tydelig vekst og er en kategori med lavt redaksjonelt innhold hos de fleste konkurrenter. Et inspirasjonsorientert innlegg med prosjektideer fanger søkere tidlig i kjøpsreisen og kan drive klikkrate fra søk der TEGNE nå er synlig men ikke dominerende."
+        },
+        {
+          "title": "Golden akrylmaling – hva skiller artist-kvalitet fra student-kvalitet?",
+          "type": "ny",
+          "reason": "Golden har stigende trend og er et premiummerke med god margin. Et innlegg som forklarer kvalitetsforskjeller støtter AOV-målet ved å hjelpe kunder velge opp, og kan kombineres med produktbundles i e-postkampanje for å dytte AOV mot 800 kr."
+        }
+      ],
+      "categories": [
+        "Akrylmaling",
+        "Leire og modellering",
+        "Golden-sortimentet"
+      ]
+    },
+    "2026-W22_thursday": {
+      "technicalNotes": ""
+    },
+    "2026-W22-thursday": {
+      "_notes": "Posca — ny tittel, gravstein-seksjon, to FAQ-svarPosca — ny tittel, gravstein-seksjon, to FAQ-svar\nAkrylmaling — ingen endringer nødvendig\nRit komfyr — ny tittel, to nye seksjoner (polyester + ull)\nRit hovedartikkel — fire FAQ-svar skrevet\nMalemedier — ny tittel, tre H2-overskrifter oppdatert\n"
+    },
+    "2026-W22_wednesday": {
+      "txt_produktfokus": "Akvarellkampanjen",
+      "txt_blogglenke": "",
+      "txt_kampanje": "Siste sjanse akvarellkampanje",
+      "txt_tips": "N/A",
+      "txt_annet": "",
+      "open_rate": "36.7",
+      "click_rate": "0.5",
+      "subscribers": "224",
+      "best": "https://www.tegne.no/nettbutikk/male/kunstnermaling/akrylmaling/"
+    },
+    "2026-W22_seo_articles": [
+      {
+        "id": "mpqzcbpi8kll",
+        "title": "Ingen denne uken",
+        "status": "Utkast"
+      }
+    ],
+    "2026-W23_kpi": {
+      "revenue": "151981",
+      "orders": "194",
+      "aov": "783",
+      "clicks": "2638",
+      "impressions": "97935",
+      "ctr": "2.69",
+      "position": "7.2",
+      "_diagnosis": "Uke 23 viser en tydelig polarisering: omsetningen er solid opp, men drevet av høyere snittordre snarere enn volum. Færre klikk og lavere CTR antyder at du treffer færre, men mer kjøpeklare kunder — noe som kan tyde på at noen lavintensjonskunder faller fra, mens de som handler, handler mer. Synkende CTR kombinert med nesten flat visningsvekst tyder på at annonsene eller metataglene ikke er overbevisende nok i møte med brukerne. Gjennomsnittlig posisjon på 7.2 er heller ikke sterk, og den lille forverringen forsterker klikktapet.\n\n– Gjennomgå de 5–10 søkeordene med flest visninger og lavest CTR: oppdater metabeskrivelser og titler med mer konkrete fordeler eller produktnavn, og sjekk om søkeintensjon faktisk matcher landingssiden.\n\n– Undersøk hvilke produktkategorier som driver den høye AOV-en akkurat nå — er det spesifikke settvarer, pensler over en viss pristerskel eller noe annet? Bruk den innsikten aktivt i e-postutsendelse denne uken for å forsterke trenden mens den er varm.\n\n– Sett opp eller juster en RLSA-kampanje (remarketing-lister for søkeannonser) rettet mot de som har besøkt nettbutikken siste 14 dager uten å konvertere, med et budskap knyttet til det som driver høy AOV nå — dette kan hente tilbake klikkvolumet uten å tynne ut konverteringskvaliteten."
+    },
+    "2026-W23_posts": [
+      {
+        "id": "mpv3ce27hiro",
+        "platform": "Instagram",
+        "text": "",
+        "done": false
+      },
+      {
+        "id": "mpv3ce27ytjd",
+        "platform": "Facebook",
+        "text": "",
+        "done": false
+      },
+      {
+        "id": "mpv3ce278mlo",
+        "platform": "Instagram",
+        "text": "",
+        "done": false
+      }
+    ],
+    "2026-W23_tuesday": {
+      "_postsInitialized": true
+    },
+    "2026-W23_priorities": "Pantone\nHorisont kampanjer\n",
+    "2026-W24_posts": [
+      {
+        "id": "mq6naya07md5",
+        "platforms": [
+          "Instagram",
+          "Facebook"
+        ],
+        "stores": [],
+        "campaignId": null,
+        "text": "HIMI på tur i sommer",
+        "done": false
+      },
+      {
+        "id": "mq6nbhjk420h",
+        "platforms": [
+          "Instagram",
+          "Facebook"
+        ],
+        "stores": [],
+        "campaignId": null,
+        "text": "Smykker, perler",
+        "done": false
+      },
+      {
+        "id": "mq6nbspjoufr",
+        "platforms": [
+          "Instagram",
+          "Facebook"
+        ],
+        "stores": [],
+        "campaignId": null,
+        "text": "Akryl pouring",
+        "done": true
+      }
+    ],
+    "2026-W24_tuesday": {
+      "_postsInitialized": true
+    },
+    "2026-W24_kpi": {
+      "revenue": "116580",
+      "orders": "190",
+      "aov": "614",
+      "clicks": "2532",
+      "impressions": "100356",
+      "ctr": "2.52",
+      "position": "7.2",
+      "_diagnosis": "Uke 24 viser et alvorlig fall i omsetning som ikke kan forklares med ordrevolumet alene. Antall ordre er nesten uendret (-2,1 %), men AOV har rast med over 20 % — det betyr at kundene kjøper billigere produkter, færre produkter per ordre, eller at rabatter/kampanjer fra forrige uke har dratt snittet kunstig opp. Visningene øker svakt, men CTR faller, noe som tyder på at annonsene eller metabeskrivelsene ikke treffer godt nok akkurat nå. Søkeposisjonen er stabil på 7,2, så det organiske er ikke problemet i seg selv, men plasseringen er heller ikke god nok til å drive kvalitetstrafikk uten å jobbe aktivt med den.\n\nTiltak 1: Finn AOV-fallet. Sjekk hvilke produktkategorier som dominerte salget denne uken mot forrige uke. Hvis forrige uke hadde en kampanje på dyrere produkter (f.eks. lerret, profesjonelle fargesett), er fallet naturlig — men da bør du planlegge neste AOV-løft med en ny buntet kampanje eller \"kjøp for 699, spar 10 %\" allerede nå.\n\nTiltak 2: Test annonsekopiene mot CTR-fallet. En nedgang på 6,3 % i CTR med stigende visninger betyr at du vises for rett folk, men ikke overtaler dem til å klikke. Gå inn i Google Ads og Search Console og identifiser hvilke annonser eller sider som har falt mest. Oppdater titler og metabeskrivelser med tydeligere verdiforslag — pris, tilgjengelighet eller sesongaktualitet for uke 24/25.\n\nTiltak 3: Legg inn et e-postutsendelse midt i uken rettet mot eksisterende kunder med fokus på produkter i mellomprissjiktet (400–800 kr). Dette"
+    },
+    "2026-W20_posts": [
+      {
+        "id": "mq6ef0pvl905",
+        "platform": "Instagram",
+        "text": "",
+        "done": false
+      },
+      {
+        "id": "mq6ef0pv6u8i",
+        "platform": "Facebook",
+        "text": "",
+        "done": false
+      },
+      {
+        "id": "mq6ef0pvarrl",
+        "platform": "Instagram",
+        "text": "",
+        "done": false
+      }
+    ],
+    "2026-W20_tuesday": {
+      "_postsInitialized": true
+    },
+    "2026-W19_posts": [
+      {
+        "id": "mq6ef1n7inh9",
+        "platform": "Instagram",
+        "text": "",
+        "done": false
+      },
+      {
+        "id": "mq6ef1n7vxn3",
+        "platform": "Facebook",
+        "text": "",
+        "done": false
+      },
+      {
+        "id": "mq6ef1n7yff2",
+        "platform": "Instagram",
+        "text": "",
+        "done": false
+      }
+    ],
+    "2026-W19_tuesday": {
+      "_postsInitialized": true
+    },
+    "2026-W18_posts": [
+      {
+        "id": "mq6ef2r09h2x",
+        "platform": "Instagram",
+        "text": "",
+        "done": false
+      },
+      {
+        "id": "mq6ef2r0xx8a",
+        "platform": "Facebook",
+        "text": "",
+        "done": false
+      },
+      {
+        "id": "mq6ef2r06tho",
+        "platform": "Instagram",
+        "text": "",
+        "done": false
+      }
+    ],
+    "2026-W18_tuesday": {
+      "_postsInitialized": true
+    },
+    "2026-W17_posts": [
+      {
+        "id": "mq6ef3hxxro4",
+        "platform": "Instagram",
+        "text": "",
+        "done": false
+      },
+      {
+        "id": "mq6ef3hxwrlx",
+        "platform": "Facebook",
+        "text": "",
+        "done": false
+      },
+      {
+        "id": "mq6ef3hx2sg8",
+        "platform": "Instagram",
+        "text": "",
+        "done": false
+      }
+    ],
+    "2026-W17_tuesday": {
+      "_postsInitialized": true
+    },
+    "2026-W24-monday": {
+      "_notes": "AOV er ned pga to store ordre forrige uke som trakk opp rev da. Alt annet ser stabilt ut"
+    },
+    "2026-W24_priorities": "Forslag: bujo+kaweco (og faktisk HIMI) = \"sommerens journalutstyr\"\n\nAkryl pouring\nHIMI\nKaweco\nCobra oljemaling",
+    "2026-W25_kpi": {
+      "revenue": "131371",
+      "orders": "199",
+      "aov": "660",
+      "clicks": "2631",
+      "impressions": "104569",
+      "ctr": "2.52",
+      "position": "8.5"
+    },
+    "2026-W25_posts": [
+      {
+        "id": "mqevvii40y10",
+        "platform": "Instagram",
+        "text": "",
+        "done": false
+      },
+      {
+        "id": "mqevvii42m6q",
+        "platform": "Facebook",
+        "text": "",
+        "done": false
+      },
+      {
+        "id": "mqevvii4qng8",
+        "platform": "Instagram",
+        "text": "",
+        "done": false
+      }
+    ],
+    "2026-W25_tuesday": {
+      "_postsInitialized": true
+    },
+    "2026-W25-monday": {
+      "_notes": ""
+    },
+    "2026-W25_priorities": "Sommer-kampanje - Lage et forslag til kampanje\n(Maling og kreativitet i sommer). \n",
+    "2026-W20_kpi": {
+      "revenue": "127230",
+      "orders": "231",
+      "aov": "550",
+      "clicks": "2854",
+      "impressions": "112858",
+      "ctr": "2.53",
+      "position": "7.6",
+      "_diagnosis": "# 📊 TEGNE – KPI-analyse Mandag Uke 20\n\n---\n\n## Diagnose\n\nOmsetningen på **kr 127 230** med 231 ordre er solid, og en AOV på **kr 550** er god for kategorien. Den organiske CTR på **2,53 %** fra posisjon **7,6** er akseptabel, men potensialet er betydelig større – å klatre fra snitt 7–8 til topp 5 kan doble klikkvolum uten ekstra annonsekroner. Konverteringsraten fra klikk til ordre ligger på **~8 %** (2854 klikk → 231 ordre), noe som faktisk er **svært høyt** og tyder på at de som finner deg er godt kvalifiserte. Hovedutfordringen er altså **rekkevidde og synlighet**, ikke konvertering.\n\n---\n\n## 🎯 Tiltak denne uken\n\n**1. Jakt på posisjon 4–6-søkeord i Search Console**\n- Filtrer på posisjoner 5–10 med 500+ visninger\n- Disse er lavthengende frukt for tittel/meta-optimalisering\n- Prioriter kategorisider fremfor produktsider\n\n**2. Løft AOV mot kr 650 med merverdi-tilbud**\n- Sett opp \"ofte kjøpt sammen\"-moduler på topp-10 produkter\n- Vurder fri frakt-terskel på kr 699 (opp fra eventuell lavere grense) for å dra AOV opp\n- Enkel bunting: *\"Start med akvarell\"*-pakke e.l.\n\n**3. Aktiver e-post mot de 231 kjøperne**\n- Send en kort oppfølgingsmail om 5–7 dager med relaterte produkter\n- Lav innsats, høy sannsynlighet for repeatpurchase siden de allerede konverterer godt\n\n---\n\n> 💡 **Marthes priorit"
+    }
+  },
+  "tegne_backlog": [
+    {
+      "id": "mp44dx94n8m5",
+      "text": "Teste \"ofte kjøpt sammen\"",
+      "priority": "med",
+      "created": "2026-05-13T13:53:21.304Z"
+    }
+  ],
+  "tegne_monday_table": {
+    "2026-W21": {
+      "innhold_opp": [
+        "Dekorere russedressen",
+        "Akrylmaling for nybegynnere",
+        "Rit Dye tekstilfarge",
+        "Akvarellmaling",
+        "Fargelære",
+        "Lufttørkende leire",
+        "Lerret og maleplater til maling",
+        "Dagslyslamper og lysbrett",
+        "Moleskine almanakker",
+        "Fargeblyanter",
+        "Ansiktsmaling",
+        "Tegning (oversikt over alle artikler om tegning)",
+        "Russedress-maling",
+        "Akrylmaling nybegynner",
+        "Tekstilfarge",
+        "Russedress",
+        "Akrylmaling",
+        "Rit Dye",
+        "Russedress-dekor"
+      ],
+      "innhold_ned": [
+        "Kalligrafi og håndskrift",
+        "Kaweco",
+        "Alkoholtusjer (kategori)",
+        "Maling for barn (kategori)",
+        "Tegne og skissebøker (kategori)",
+        "Silketrykk (kategori)",
+        "Tusjer og penner (kategori)",
+        "Notatbøker",
+        "Alf Bjercke (kategori/merke)",
+        "Linjaler og kutteverktøy (kategori)",
+        "Copic markers",
+        "Lerret til ditt neste kunstverk",
+        "Maling til skinn og lær",
+        "Posca-tusjer",
+        "Farge klær med Rit i vask eller bøtte",
+        "Lag kunst med flytende alkoholblekk",
+        "Kalligrafi",
+        "Alkoholtusjer"
+      ],
+      "sokeord_opp": [
+        "Hobbybutikk Bergen",
+        "Male på russedress",
+        "Oljepastell",
+        "Tekstilfarge ull",
+        "Tegne",
+        "Tekstilfarge",
+        "Akrylmaling",
+        "Akvarellmaling",
+        "Tegne Oslo",
+        "Hvordan male på russedress",
+        "Posca tusj",
+        "Grafikkpresse",
+        "Tegnelampe",
+        "Nagler til klær",
+        "Lerret til maling",
+        "Tegne Åsane",
+        "Hvordan tegne med kull",
+        "Russedress maling",
+        "Male russedress"
+      ],
+      "sokeord_ned": [
+        "Hobbykjelleren",
+        "Tegne no",
+        "Tegne ark",
+        "uni ball 207",
+        "Kalligrafi",
+        "Garnbutikk på Lagunen",
+        "Bordstaffeli",
+        "Fargesirkel",
+        "Lerret på rull",
+        "Tusj til gravstein",
+        "Amsterdam acrylic",
+        "Alf Bjercke pensler",
+        "Gouache maling",
+        "Bullet journal",
+        "Rit tekstilfarge",
+        "Rense strykejern",
+        "Balsatre",
+        "Tegne butikk",
+        "Akrylmaling for nybegynnere",
+        "Copic markers"
+      ]
+    },
+    "2026-W21_comment": "Uke 21 domineres tydelig av russesesongen – søk og innhold knyttet til russedress-dekor og tekstilfarge stiger markant, og dette bør prioriteres høyt i alle kanaler denne uka. Nybegynnervennlig innhold som akrylmaling og lufttørkende leire har også god medvind, noe som tyder på økt rekruttering av nye hobbyister. Innhold og søkeord knyttet til kalligrafi, Copic og alkoholtusjer faller, og bør ikke prioriteres nå. Marthe bør konsentrere denne ukas innsats om russeseson-innhold og synlighet i Bergen/Oslo/Åsane for lokale søk.",
+    "2026-W22": {
+      "innhold_opp": [
+        "Grafisk trykk",
+        "Kalligrafi og håndskrift",
+        "Butikk – Oslo",
+        "Alt om oljemaling",
+        "Fargelære",
+        "Slik reparerer du klær selv",
+        "Fargelære – Ittens fargesirkel",
+        "Ferniss - beskytt dine kunstverk",
+        "Akvarellpapir",
+        "Notatbøker",
+        "Lerret og maleplater (kategori)",
+        "Linotrykk",
+        "Skoleutstyr og materialåakker for studenter, lærere og barnehager",
+        "Ferniss (kategori)",
+        "Rit (merkevarekategori)",
+        "Foamboard (kaategori)",
+        "Dyppepenn (kategori)",
+        "Kalligrafi",
+        "Oljemaling"
+      ],
+      "innhold_ned": [
+        "Dekorere russedressen",
+        "Mal, tegn og dekorer på tekstil",
+        "Akrylmaling for nybegynnere",
+        "Dagslyslamper og lysbrett",
+        "Combiframe, rammer til lerret",
+        "Rit dye tekstilfarge",
+        "Fargeblyanter (kategori)",
+        "Oljepasteller og vokskritt (kategori)",
+        "Tørrpastell (kategori)",
+        "Moleskine almanakker",
+        "Diamond painting (kategori)",
+        "Gesso og grunning (Kategori)",
+        "Nagler (kategori)",
+        "Slik kvitter du deg med malingsrester (oljemaling og akrylmaling)",
+        "Mixed media - hva er det?",
+        "Akrylpapir (kategori)",
+        "Trykkpapir (kategori)",
+        "Russedress",
+        "Tekstilmaling",
+        "Diamond painting"
+      ],
+      "sokeord_opp": [
+        "tegne",
+        "trykkteknikk for bilder",
+        "fargesirkel",
+        "art shop Oslo",
+        "silketrykk",
+        "polymer leire",
+        "staffeli",
+        "tegnebok",
+        "tekstilfarge syntetisk stoff",
+        "akvarellpapir",
+        "gouache maling",
+        "alkohol tusjer",
+        "kaweco sport",
+        "skissebok",
+        "rit dye",
+        "christ engebretsen (butikken i Oslo)",
+        "ansiktsmaling",
+        "decoupage",
+        "kaweco",
+        "silketrykk utstyr",
+        "Fargesirkel",
+        "Akvarellpapir",
+        "Staffeli",
+        "Kaweco",
+        "Polymer leire"
+      ],
+      "sokeord_ned": [
+        "maling russedress",
+        "farge ullklær",
+        "tegne bergen sentrum",
+        "dekorere russedress",
+        "hobbykjelleren",
+        "ramme til lerret",
+        "tekstilmaling",
+        "fyllepenn",
+        "oljepastell",
+        "canvas lerret",
+        "tegne saker",
+        "tegne oslo",
+        "tegne.no",
+        "akrylmaling",
+        "lerret på rull",
+        "posca tusj",
+        "kunstbutikk bergen",
+        "moleskine",
+        "tegne lampe",
+        "Maling russedress",
+        "Tekstilmaling",
+        "Lerret på rull",
+        "Russedress maling",
+        "Lerret rull",
+        "Posca tusj"
+      ]
+    },
+    "2026-W22_comment": "Trykkteknikk og kalligrafi peker seg ut som ukens vinnere, og det er verdt å bygge videre på dette momentumet med målrettet innhold. Russedress-relatert innhold og søkeord faller markant, noe som er naturlig etter russetiden og ikke bør prioriteres nå. Kaweco og fargesirkel stiger i søk, så det kan være lurt å sikre at disse sidene er optimalisert og lenket opp godt. Prioriter denne uka å styrke trykk- og kalligrafisidene, og vurder om Fargelære-innholdet kan løftes ytterligere med intern lenking eller en kort e-postkampanje.",
+    "2026-W23": {
+      "innhold_opp": [
+        "TEGNE Bergen sendtum",
+        "Lerret og maleplater (kategori)",
+        "Forsiden på nettbutikken",
+        "Notatbøker",
+        "Akrylmaling for nybegynnere",
+        "Monotrykk",
+        "Fargelære - Ittens fargesirkel",
+        "Farge klær i maskin med Rit tekstilfarge",
+        "Fargelære - Generell guide",
+        "Combiframe - rammer til lerret",
+        "Signering av kunstverk",
+        "Trygg bruk og håndtering av linolje",
+        "Å male plein air",
+        "Ansiktsmaling (kategori)",
+        "Perler til smykker",
+        "Mixed media - hva er det?",
+        "Moleskine almanakker",
+        "Reisevennlig kunstutstyr",
+        "Bladgull (kategori)",
+        "Lerret og maleplater",
+        "Fargelære",
+        "Akrylmaling nybegynnere"
+      ],
+      "innhold_ned": [
+        "Dekorere russedressen",
+        "Grafisk trykk",
+        "Rit Dye tekstilfarge",
+        "Slik reparerer du klær selv",
+        "TEGNE hentpunkt Sartor",
+        "TEGNE hentepunkt Lagunen",
+        "Dyppepenn",
+        "Slik kvitter du deg med malingsrester",
+        "Posca-tusj",
+        "Pastellpapir",
+        "Linjaler og kutteverktøy (kategori)",
+        "Akvarellpapir - hvilket passer best til deg?",
+        "Hvilke lerret skal du velge?",
+        "Silketrykk",
+        "Russedressen"
+      ],
+      "sokeord_opp": [
+        "lerret, linlerret, lærret",
+        "foam board, foramboard",
+        "tegne berge, tegne butikk bergen, tegne no bergen",
+        "kalligrafi, kalligrafi bokstaver, kaligrafi alfabet",
+        "farge klær, klesfarge, farge til tekstil, farging av tekstiler, tøyfarge, farge tekstiler",
+        "maleplate, malepalett, malepaletten",
+        "^(rit dye|rit tekstilfarge|rit all purpose dye|rit dye more synthetic|rit dyemore|rit dyemore syntetfarge|rit dyemore synthetic|rit fabric dye|tit dye)$",
+        "rit dye|rit tekstilfarge|rit all purpose dye|rit dye more synthetic|rit dyemore|rit dyemore syntetfarge|rit dyemore synthetic|rit fabric dye|tit dye)",
+        "tegne butikk, kunstartikler, maleutstyr kunst, kunstnerutstyr,",
+        "lufttørkende leire, selvtørkende leire",
+        "posca tusj",
+        "gouache",
+        "rit",
+        "tegne oslo",
+        "fargesirkelen",
+        "akvarellmaling, vannmaling",
+        "stort lerret, oppspent lerret, store lerret, canvas lerret, lerretsduk, strukket lerret",
+        "notatbok",
+        "akrylmaling",
+        "Lerret",
+        "Rit tekstilfarge",
+        "Fargesirkelen",
+        "Lerret/linlerret",
+        "Farge klær/tekstil",
+        "Rit-serien",
+        "Farge klær",
+        "Kalligrafi",
+        "Rit Dye"
+      ],
+      "sokeord_ned": [
+        "tegne",
+        "trykkteknikk for bilder",
+        "grafikkpresse, grafisk trykk",
+        "silketrykk",
+        "ittens fargesirkel",
+        "Hobbykjelleren (sartor og lagunen)",
+        "kunstbutikk oslo",
+        "fargelære",
+        "tekstilmaling. maling på klær",
+        "decoupage",
+        "kaweco",
+        "syntetisk farge stoff",
+        "fyllepenn",
+        "origamipapir",
+        "ramme til lerret",
+        "akvarellpapir",
+        "tegnebok, tegne ark, tegne bok, tegneblokk",
+        "fargeblyanter, fargeblyant sett, tegneblyant sett",
+        "nagler",
+        "Tegne (brand)",
+        "Silketrykk",
+        "Akvarellpapir",
+        "Tegne (generisk)",
+        "Fargeblyanter"
+      ]
+    },
+    "2026-W23_comment": "Uka viser sterk positiv trend for lerret, maleplater og tekstilfarge-relatert innhold, noe som tyder på god effekt av fjorårets SEO-arbeid på Rit og lerret-sider. Posca-tusj og grafisk trykk taper trafikk til tross for at Posca-artikkelen ble oppdatert forrige uke — det bør følges nøye. Marthe bør prioritere å styrke de stigende kategoriene med internt lenkearbeid, og undersøke hvorfor Posca ikke henter inn trafikkfall etter oppdateringen.",
+    "2026-W24": {
+      "innhold_opp": [
+        "Akvarellpapir",
+        "Mal, tegn og dekorer på tekstil",
+        "TEGNE Lagunen",
+        "Perler til smykker",
+        "Pouring med akrylmaling",
+        "Kaweco (merkevare)",
+        "Bullet journal",
+        "Ferniss",
+        "Kundeklubb",
+        "Farge polyester og syntetiske tekstiler på komfyren med Rit",
+        "Alkoholtusjer (kategori)",
+        "Cobra oljemaling",
+        "Maling for barn",
+        "Oppbevaring til sy og strikk",
+        "TEGNE Oslo",
+        "Slik kvitter du deg med malingsrester",
+        "Lag kunst med flytende alkoholblekk",
+        "Farge klær med Rit i vask eller bøtte",
+        "Pigmenter (kategori)"
+      ],
+      "innhold_ned": [
+        "Fargelære",
+        "Grafisk trykk",
+        "Notatbøker",
+        "Combiframe",
+        "Rit Dye tekstilfarge (hovedartikkel)",
+        "Silketrykk (kategori)",
+        "Sjablonger (kategori)",
+        "Foamboard (kategori)",
+        "Akvarellmaling",
+        "Posca-tusj",
+        "Staffeli",
+        "Linotrykk",
+        "Maling til skinn og lær",
+        "Å male plein air",
+        "ansiktsmaling",
+        "Monotrykk",
+        "Reisevennlig kunstutstyr",
+        "Lerret og maleplater (kategori)"
+      ],
+      "sokeord_opp": [
+        "Akvarellpapir",
+        "kustbutikk oslo",
+        "male på klær",
+        "silketrykk utstyr",
+        "kaweco sport",
+        "fyllepenn",
+        "himi gouache",
+        "tusj til gravstein",
+        "hobbykjelleren bergen",
+        "bullet journal",
+        "alkoholtusjer",
+        "skrifttyper håndskrift",
+        "fabriano papir",
+        "primærfarger",
+        "vannbasert oljemaling kunst",
+        "blyantforlenger",
+        "tegne nettside",
+        "akryl pouring",
+        "blyant hb",
+        "cobra oljemaling"
+      ],
+      "sokeord_ned": [
+        "Tegne Bergen",
+        "Staffeli",
+        "fargesirkel",
+        "notatbok",
+        "lufttørkende leire",
+        "farge til klær",
+        "lerret",
+        "kalligrafi",
+        "foamboard",
+        "rit dye",
+        "hobbykjelleren",
+        "ittens fargesikel",
+        "maleutstyr hobby",
+        "oljepastell",
+        "tegnebrett",
+        "tegne utstyr",
+        "decoupage",
+        "polymer leire",
+        "kaweco sport ef"
+      ]
+    },
+    "2026-W25": {
+      "innhold_opp": [
+        "Akvarellmaling",
+        "Tegne Oslo",
+        "Forside",
+        "Maling til skinn og lær",
+        "Oljemaling",
+        "Combiframe",
+        "Notatbøker",
+        "Akvarellpapir",
+        "Ferniss",
+        "Blyantguide"
+      ],
+      "innhold_ned": [
+        "Kaweco (Merkevareside)",
+        "Maling for barn",
+        "Rit dye tekstilfarge",
+        "Hobbykjelleren Lagunen",
+        "Fargelære",
+        "Kalligrafi og håndskrift",
+        "Teknisk tegnepapir",
+        "TEGNE Horisont Åsane",
+        "Kundeklubb",
+        "Forside"
+      ],
+      "sokeord_opp": [
+        "TEGNE Oslo",
+        "Stort lerret /oppspent lerret",
+        "Akvarellmaling",
+        "Tegne Bergen",
+        "Ramme til lerret",
+        "Hobbykjelleren Bergen",
+        "Rit Dye",
+        "Notatbok",
+        "Akvarellblyanter /akvarellpensler",
+        "Museo lerret",
+        "Vannbasert tusj",
+        "Hobby butikk oslo",
+        "Lage armbånd med perler",
+        "Pastelmat",
+        "Alkoholblekk på lerret"
+      ],
+      "sokeord_ned": [
+        "Hobbykjelleren (lagunen, sartor, nettbutikk)",
+        "Kunstbutikk Oslo / kunstutstyr oslo",
+        "Tegne.no (merkenavn direktesøk)",
+        "Lerret / linlerret",
+        "Tekstilmaling / male på klær",
+        "Kaweco Sport",
+        "Christ Engebretsen (uten \"Oslo\")",
+        "Caran d'Ache Luminance",
+        "Linotrykk",
+        "Soft pastel",
+        "Trykkpresse",
+        "Uni-ball 207",
+        "Kunst utstyr / kunstmateriell (generisk)",
+        "Alkoholtusjer",
+        "Ferniss (søkeord)"
+      ]
+    }
+  },
+  "tegne_keywords": {
+    "2026-W21": [
+      {
+        "id": "mpaz9e9qncx5",
+        "text": "Akrylmaling",
+        "trend": "↑"
+      },
+      {
+        "id": "mpaz9jfq735f",
+        "text": "Lufttørkende leire",
+        "trend": "↑"
+      },
+      {
+        "id": "mpdpxg7wlpmi",
+        "text": "Golden",
+        "trend": "↑"
+      }
+    ],
+    "2026-W25": [
+      {
+        "id": "mqewujll9i39",
+        "text": "Maling til skinn og lær",
+        "trend": "↑"
+      },
+      {
+        "id": "mqewvi487kk6",
+        "text": "Akvarellpapir",
+        "trend": "↑"
+      }
+    ]
+  },
+  "tegne_tasks": {
+    "2026-W21_v2_init": true,
+    "2026-W20_v2_init": true,
+    "2026-W19_v2_init": true,
+    "2026-W18_v2_init": true,
+    "2026-W21_v2": [
+      {
+        "id": "mpclti6udka0",
+        "text": "Lerret på mål: tydeliggjøre fraktpriser",
+        "priority": "ikke-startet",
+        "stores": [],
+        "status": "fullfort",
+        "created": "2026-05-19T12:23:31.158Z"
+      },
+      {
+        "id": "mpchnwcrbogv",
+        "text": "Justeringer i Dashboardet: Mer luft på iPhone. Left scroll på tabsene slik at jeg lettere kan trykke på \"kampanjer\". Ikoner på desktop. Status på oppgaver - ikke startet ->Statistikk forrige nyhetsbrev: Ta med tidspunkt flest åpnet og revenue",
+        "priority": "lav",
+        "stores": [],
+        "status": "startet",
+        "created": "2026-05-19T10:27:11.115Z"
+      },
+      {
+        "id": "mpchnpbc88ll",
+        "text": "Rydde i kontakter i Mailchimp",
+        "priority": "middels",
+        "stores": [],
+        "status": "fullfort",
+        "created": "2026-05-19T10:27:01.992Z"
+      },
+      {
+        "id": "mpb8e0jtgud6",
+        "text": "Hva gjør jeg med artikkelen \"Akrylmaling – en samlet oversikt og veien videre\"?",
+        "priority": "lav",
+        "status": "fullfort",
+        "created": "2026-05-18T13:19:47.273Z"
+      },
+      {
+        "id": "mpb3c9rchf72",
+        "text": "Diller - Ta en avgjørelse ang AutomateWoo",
+        "priority": "haster",
+        "status": "pagar",
+        "created": "2026-05-18T10:58:27.816Z"
+      },
+      {
+        "id": "mpb0v8lvad7a",
+        "text": "Ferdigstille om tjenester, lerret på mål, passepartout ++",
+        "priority": "hoy",
+        "status": "fullfort",
+        "created": "2026-05-18T09:49:13.939Z"
+      },
+      {
+        "id": "mpazisx5nfrt",
+        "text": "E-post og AOV – utover forlatt handlekurv – Se notat",
+        "priority": "hoy",
+        "status": "startet",
+        "created": "2026-05-18T09:11:34.121Z"
+      },
+      {
+        "id": "mpazihohptan",
+        "text": "Sterkere titler og metabeskrivelser – Se notat",
+        "priority": "hoy",
+        "status": "startet",
+        "created": "2026-05-18T09:11:19.553Z"
+      },
+      {
+        "id": "mpazi1flpile",
+        "text": "Søkeordsanalyse – Se notat",
+        "priority": "hoy",
+        "status": "startet",
+        "created": "2026-05-18T09:10:58.497Z"
+      },
+      {
+        "id": "mpaw44chdf6v",
+        "text": "Tekstilfarge ull - har vi artikkel om dette?",
+        "priority": "lav",
+        "status": "startet",
+        "created": "2026-05-18T07:36:10.241Z"
+      },
+      {
+        "id": "mpaw2nte2bfi",
+        "text": "Ta en titt på alkoholblekk-artikkel. Fjerne?",
+        "priority": "lav",
+        "status": "fullfort",
+        "created": "2026-05-18T07:35:02.162Z"
+      }
+    ],
+    "2026-W22_v2": [
+      {
+        "id": "mpqkncxym9e0",
+        "text": "Gå gjennom merkevare-siden, legge til nye merker (Daniel Smith, HIMI), ta vekk evt utgåtte",
+        "priority": "middels",
+        "stores": [],
+        "status": "startet",
+        "created": "2026-05-29T06:59:31.270Z"
+      },
+      {
+        "id": "mppf13663vij",
+        "text": "Daniel Smith - legge ut",
+        "priority": "haster",
+        "stores": [],
+        "status": "fullfort",
+        "created": "2026-05-28T11:34:27.918Z"
+      },
+      {
+        "id": "mppdqyahx2iy",
+        "text": "Annonse Horisont sommersalgkampanje",
+        "priority": "haster",
+        "stores": [
+          "aasane"
+        ],
+        "status": "pagar",
+        "created": "2026-05-28T10:58:35.417Z"
+      },
+      {
+        "id": "mppdphytax1t",
+        "text": "Annonse Horisont sommermarked",
+        "priority": "haster",
+        "stores": [
+          "aasane"
+        ],
+        "status": "pagar",
+        "created": "2026-05-28T10:57:27.605Z"
+      },
+      {
+        "id": "mpmmaa1ssf7z",
+        "text": "Fargelære og Ittens fargesirkel — kanibaliseringsopprydding, nye meta-beskrivelser og H2-struktur",
+        "priority": "ikke-startet",
+        "stores": [],
+        "status": "startet",
+        "created": "2026-05-26T12:34:15.520Z"
+      },
+      {
+        "id": "mpmlrk5aecch",
+        "text": "Korte ned på RIT-artikkelen",
+        "priority": "lav",
+        "stores": [],
+        "status": "startet",
+        "created": "2026-05-26T12:19:42.142Z"
+      },
+      {
+        "id": "mpmhfn1ifeus",
+        "text": "Legge inn informasjon om Kaweco, se epost fra Therese",
+        "priority": "ikke-startet",
+        "stores": [],
+        "status": "startet",
+        "created": "2026-05-26T10:18:27.558Z"
+      },
+      {
+        "id": "mpmd5nmiz7ha",
+        "text": "Lage kampanjen for Pantone",
+        "priority": "haster",
+        "stores": [],
+        "status": "pagar",
+        "created": "2026-05-26T08:18:43.290Z"
+      },
+      {
+        "id": "mpmcwgm30e73",
+        "text": "Sjekk at fargesirkel/fargelære har god titteltag, metabeskrivelse og produktbeskrivelser",
+        "priority": "ikke-startet",
+        "stores": [],
+        "status": "startet",
+        "created": "2026-05-26T08:11:34.299Z"
+      },
+      {
+        "id": "mpmcvycrz12t",
+        "text": "Sjekk at Kaweco-siden(e) har god titteltag, metabeskrivelse og produktbeskrivelser",
+        "priority": "ikke-startet",
+        "stores": [],
+        "status": "startet",
+        "created": "2026-05-26T08:11:10.635Z"
+      },
+      {
+        "id": "mpmcviabx5f8",
+        "text": "Publiser eller forbedre én artikkel, guide eller produkthighlight knyttet til trykkteknikk eller kalligrafi denne uken. Legg inn intern lenking fra relaterte sider til disse kategoriene",
+        "priority": "ikke-startet",
+        "stores": [],
+        "status": "fullfort",
+        "created": "2026-05-26T08:10:49.811Z"
+      },
+      {
+        "id": "mpmcuew4g39n",
+        "text": "Øke AOV. Tiltak: Undersøke om vi kan ha du mangler X for fri frakt\" i handlekurven. Foreslå produkter i handlekurv. Andre har også kjøpt",
+        "priority": "ikke-startet",
+        "stores": [],
+        "status": "pagar",
+        "created": "2026-05-26T08:09:58.756Z"
+      },
+      {
+        "id": "mpmcextqmi86",
+        "text": "Legge inn kort engelsk tekst på viktige info-sider? I alle fall butikksidene. Fange turister",
+        "priority": "ikke-startet",
+        "stores": [
+          "bergen",
+          "aasane",
+          "oslo"
+        ],
+        "status": "fullfort",
+        "created": "2026-05-26T07:57:56.798Z"
+      },
+      {
+        "id": "mpb3c9rchf72",
+        "text": "Diller - Ta en avgjørelse ang AutomateWoo",
+        "priority": "haster",
+        "status": "startet",
+        "created": "2026-05-18T10:58:27.816Z"
+      },
+      {
+        "id": "mpb0v8lvad7a",
+        "text": "Ferdigstille om tjenester, lerret på mål, passepartout ++",
+        "priority": "hoy",
+        "status": "pagar",
+        "created": "2026-05-18T09:49:13.939Z"
+      },
+      {
+        "id": "mpaw44chdf6v",
+        "text": "Tekstilfarge ull - har vi artikkel om dette?",
+        "priority": "lav",
+        "status": "startet",
+        "created": "2026-05-18T07:36:10.241Z"
+      },
+      {
+        "id": "mpaw2nte2bfi",
+        "text": "Ta en titt på alkoholblekk-artikkel. Fjerne?",
+        "priority": "lav",
+        "status": "startet",
+        "created": "2026-05-18T07:35:02.162Z"
+      }
+    ],
+    "2026-W22_v2_init": true,
+    "2026-W23_v2": [
+      {
+        "id": "mpzft6b37ww0",
+        "text": "Ta vekk Pride-flagget 1. juli",
+        "priority": "hoy",
+        "stores": [],
+        "status": "startet",
+        "created": "2026-06-04T11:54:00.111Z"
+      },
+      {
+        "id": "mpzcr32882af",
+        "text": "ByNatt plakater, frist 10.juni. 20%på alle ordinære varer. Åpent 10-22",
+        "priority": "hoy",
+        "stores": [],
+        "status": "fullfort",
+        "created": "2026-06-04T10:28:23.744Z"
+      },
+      {
+        "id": "mpy1amu7wmv9",
+        "text": "Plakat til Tegne Bergen Kaweco A3",
+        "priority": "hoy",
+        "stores": [],
+        "status": "startet",
+        "created": "2026-06-03T12:19:54.271Z"
+      },
+      {
+        "id": "mpxzwny85rsd",
+        "text": "CDA kampanjeside museum akvarell",
+        "priority": "hoy",
+        "stores": [],
+        "status": "fullfort",
+        "created": "2026-06-03T11:41:02.912Z"
+      },
+      {
+        "id": "mpwnmoop5xj4",
+        "text": "Få Claude til å se på Games Workshop",
+        "priority": "middels",
+        "stores": [],
+        "status": "startet",
+        "created": "2026-06-02T13:09:35.737Z"
+      },
+      {
+        "id": "mpwi7hf6lit4",
+        "text": "Si opp ChatGPT og Claude",
+        "priority": "ikke-startet",
+        "stores": [],
+        "status": "startet",
+        "created": "2026-06-02T10:37:48.402Z"
+      },
+      {
+        "id": "mpqzfmsgu3v7",
+        "text": "SLÅ AV AKVARELLKAMPANJEN",
+        "priority": "haster",
+        "stores": [],
+        "status": "fullfort",
+        "created": "2026-05-29T13:53:25.024Z"
+      },
+      {
+        "id": "mpqkncxym9e0",
+        "text": "Gå gjennom merkevare-siden, legge til nye merker (Daniel Smith, HIMI), ta vekk evt utgåtte",
+        "priority": "middels",
+        "stores": [],
+        "status": "startet",
+        "created": "2026-05-29T06:59:31.270Z"
+      },
+      {
+        "id": "mppdqyahx2iy",
+        "text": "Annonse Horisont sommersalgkampanje",
+        "priority": "haster",
+        "stores": [
+          "aasane"
+        ],
+        "status": "fullfort",
+        "created": "2026-05-28T10:58:35.417Z"
+      },
+      {
+        "id": "mppdphytax1t",
+        "text": "Annonse Horisont sommermarked",
+        "priority": "haster",
+        "stores": [
+          "aasane"
+        ],
+        "status": "fullfort",
+        "created": "2026-05-28T10:57:27.605Z"
+      },
+      {
+        "id": "mpmmaa1ssf7z",
+        "text": "Fargelære og Ittens fargesirkel — kanibaliseringsopprydding, nye meta-beskrivelser og H2-struktur",
+        "priority": "ikke-startet",
+        "stores": [],
+        "status": "startet",
+        "created": "2026-05-26T12:34:15.520Z"
+      },
+      {
+        "id": "mpmlrk5aecch",
+        "text": "Korte ned på RIT-artikkelen",
+        "priority": "lav",
+        "stores": [],
+        "status": "startet",
+        "created": "2026-05-26T12:19:42.142Z"
+      },
+      {
+        "id": "mpmhfn1ifeus",
+        "text": "Legge inn informasjon om Kaweco, se epost fra Therese",
+        "priority": "ikke-startet",
+        "stores": [],
+        "status": "startet",
+        "created": "2026-05-26T10:18:27.558Z"
+      },
+      {
+        "id": "mpmd5nmiz7ha",
+        "text": "Lage kampanjen for Pantone",
+        "priority": "haster",
+        "stores": [],
+        "status": "fullfort",
+        "created": "2026-05-26T08:18:43.290Z"
+      },
+      {
+        "id": "mpmcwgm30e73",
+        "text": "Sjekk at fargesirkel/fargelære har god titteltag, metabeskrivelse og produktbeskrivelser",
+        "priority": "ikke-startet",
+        "stores": [],
+        "status": "startet",
+        "created": "2026-05-26T08:11:34.299Z"
+      },
+      {
+        "id": "mpmcvycrz12t",
+        "text": "Sjekk at Kaweco-siden(e) har god titteltag, metabeskrivelse og produktbeskrivelser",
+        "priority": "ikke-startet",
+        "stores": [],
+        "status": "startet",
+        "created": "2026-05-26T08:11:10.635Z"
+      },
+      {
+        "id": "mpmcuew4g39n",
+        "text": "Øke AOV. Tiltak: Undersøke om vi kan ha du mangler X for fri frakt\" i handlekurven. Foreslå produkter i handlekurv. Andre har også kjøpt",
+        "priority": "ikke-startet",
+        "stores": [],
+        "status": "pagar",
+        "created": "2026-05-26T08:09:58.756Z"
+      },
+      {
+        "id": "mpb3c9rchf72",
+        "text": "Diller - Ta en avgjørelse ang AutomateWoo",
+        "priority": "haster",
+        "status": "startet",
+        "created": "2026-05-18T10:58:27.816Z"
+      },
+      {
+        "id": "mpb0v8lvad7a",
+        "text": "Ferdigstille om tjenester, lerret på mål, passepartout ++",
+        "priority": "hoy",
+        "status": "pagar",
+        "created": "2026-05-18T09:49:13.939Z"
+      },
+      {
+        "id": "mpaw44chdf6v",
+        "text": "Tekstilfarge ull - har vi artikkel om dette?",
+        "priority": "lav",
+        "status": "startet",
+        "created": "2026-05-18T07:36:10.241Z"
+      },
+      {
+        "id": "mpaw2nte2bfi",
+        "text": "Ta en titt på alkoholblekk-artikkel. Fjerne?",
+        "priority": "lav",
+        "status": "startet",
+        "created": "2026-05-18T07:35:02.162Z"
+      }
+    ],
+    "2026-W23_v2_init": true,
+    "2026-W24_v2": [
+      {
+        "id": "mqat5cfssy3p",
+        "text": "Stilman feil kategori for ark",
+        "priority": "lav",
+        "stores": [],
+        "status": "startet",
+        "created": "2026-06-12T10:52:50.872Z"
+      },
+      {
+        "id": "mqama5xrzllm",
+        "text": "Flytte Claude hjernen til OneDrive",
+        "priority": "haster",
+        "stores": [],
+        "status": "startet",
+        "created": "2026-06-12T07:40:38.415Z"
+      },
+      {
+        "id": "mq6hb2v0jgv9",
+        "text": "Pentel-produktarbeid",
+        "priority": "hoy",
+        "stores": [],
+        "status": "startet",
+        "created": "2026-06-09T10:10:18.301Z"
+      },
+      {
+        "id": "mq6ftixb1xb7",
+        "text": "Undersøke Silketrykk-artikkel. Trenger den arbeid?",
+        "priority": "middels",
+        "stores": [],
+        "status": "startet",
+        "created": "2026-06-09T09:28:39.695Z"
+      },
+      {
+        "id": "mq6fsmvggrpg",
+        "text": "Lage innholdsside for HIMI",
+        "priority": "middels",
+        "stores": [],
+        "status": "startet",
+        "created": "2026-06-09T09:27:58.156Z"
+      },
+      {
+        "id": "mpzft6b37ww0",
+        "text": "Ta vekk Pride-flagget 1. juli",
+        "priority": "hoy",
+        "stores": [],
+        "status": "startet",
+        "created": "2026-06-04T11:54:00.111Z"
+      },
+      {
+        "id": "mpy1amu7wmv9",
+        "text": "Plakat til Tegne Bergen Kaweco A3",
+        "priority": "hoy",
+        "stores": [],
+        "status": "fullfort",
+        "created": "2026-06-03T12:19:54.271Z"
+      },
+      {
+        "id": "mpwnmoop5xj4",
+        "text": "Få Claude til å se på Games Workshop",
+        "priority": "middels",
+        "stores": [],
+        "status": "startet",
+        "created": "2026-06-02T13:09:35.737Z"
+      },
+      {
+        "id": "mpwi7hf6lit4",
+        "text": "Si opp ChatGPT og Claude",
+        "priority": "ikke-startet",
+        "stores": [],
+        "status": "startet",
+        "created": "2026-06-02T10:37:48.402Z"
+      },
+      {
+        "id": "mpqkncxym9e0",
+        "text": "Gå gjennom merkevare-siden, legge til nye merker (Daniel Smith, HIMI), ta vekk evt utgåtte",
+        "priority": "middels",
+        "stores": [],
+        "status": "startet",
+        "created": "2026-05-29T06:59:31.270Z"
+      },
+      {
+        "id": "mpmmaa1ssf7z",
+        "text": "Fargelære og Ittens fargesirkel — kanibaliseringsopprydding, nye meta-beskrivelser og H2-struktur",
+        "priority": "ikke-startet",
+        "stores": [],
+        "status": "startet",
+        "created": "2026-05-26T12:34:15.520Z"
+      },
+      {
+        "id": "mpmlrk5aecch",
+        "text": "Korte ned på RIT-artikkelen",
+        "priority": "lav",
+        "stores": [],
+        "status": "startet",
+        "created": "2026-05-26T12:19:42.142Z"
+      },
+      {
+        "id": "mpmhfn1ifeus",
+        "text": "Legge inn informasjon om Kaweco, se epost fra Therese",
+        "priority": "ikke-startet",
+        "stores": [],
+        "status": "startet",
+        "created": "2026-05-26T10:18:27.558Z"
+      },
+      {
+        "id": "mpmcwgm30e73",
+        "text": "Sjekk at fargesirkel/fargelære har god titteltag, metabeskrivelse og produktbeskrivelser",
+        "priority": "ikke-startet",
+        "stores": [],
+        "status": "startet",
+        "created": "2026-05-26T08:11:34.299Z"
+      },
+      {
+        "id": "mpmcvycrz12t",
+        "text": "Sjekk at Kaweco-siden(e) har god titteltag, metabeskrivelse og produktbeskrivelser",
+        "priority": "ikke-startet",
+        "stores": [],
+        "status": "startet",
+        "created": "2026-05-26T08:11:10.635Z"
+      },
+      {
+        "id": "mpmcuew4g39n",
+        "text": "Øke AOV. Tiltak: Undersøke om vi kan ha du mangler X for fri frakt\" i handlekurven. Foreslå produkter i handlekurv. Andre har også kjøpt",
+        "priority": "ikke-startet",
+        "stores": [],
+        "status": "pagar",
+        "created": "2026-05-26T08:09:58.756Z"
+      },
+      {
+        "id": "mpb3c9rchf72",
+        "text": "Diller - Ta en avgjørelse ang AutomateWoo",
+        "priority": "haster",
+        "status": "startet",
+        "created": "2026-05-18T10:58:27.816Z"
+      },
+      {
+        "id": "mpb0v8lvad7a",
+        "text": "Ferdigstille om tjenester, lerret på mål, passepartout ++",
+        "priority": "hoy",
+        "status": "pagar",
+        "created": "2026-05-18T09:49:13.939Z"
+      },
+      {
+        "id": "mpaw44chdf6v",
+        "text": "Tekstilfarge ull - har vi artikkel om dette?",
+        "priority": "lav",
+        "status": "startet",
+        "created": "2026-05-18T07:36:10.241Z"
+      },
+      {
+        "id": "mpaw2nte2bfi",
+        "text": "Ta en titt på alkoholblekk-artikkel. Fjerne?",
+        "priority": "lav",
+        "status": "startet",
+        "created": "2026-05-18T07:35:02.162Z"
+      }
+    ],
+    "2026-W24_v2_init": true,
+    "2026-W17_v2_init": true,
+    "2026-W25_v2": [
+      {
+        "id": "mqhrsrwvstyl",
+        "text": "Endre hero forside",
+        "priority": "haster",
+        "stores": [],
+        "status": "fullfort",
+        "created": "2026-06-17T07:49:28.015Z"
+      },
+      {
+        "id": "mqgkqqa087ms",
+        "text": "Endre \"La våren inspirere deg\" på tips og guider siden",
+        "priority": "haster",
+        "stores": [],
+        "status": "fullfort",
+        "created": "2026-06-16T11:44:09.096Z"
+      },
+      {
+        "id": "mqghl35h9ge1",
+        "text": "Legge inn ferie i kalender",
+        "priority": "haster",
+        "stores": [],
+        "status": "fullfort",
+        "created": "2026-06-16T10:15:46.997Z"
+      },
+      {
+        "id": "mqgcg1cnrh1i",
+        "text": "Cosplay plakater - Hanna?",
+        "priority": "ikke-startet",
+        "stores": [],
+        "status": "fullfort",
+        "created": "2026-06-16T07:51:53.303Z"
+      },
+      {
+        "id": "mqfa3fl9nw0e",
+        "text": "Ferdigstille Pentel og sende mail om at det er ferdig",
+        "priority": "hoy",
+        "stores": [],
+        "status": "startet",
+        "created": "2026-06-15T13:58:19.821Z"
+      },
+      {
+        "id": "mqf1yz2idjgy",
+        "text": "Selge mer Daniel Smith",
+        "priority": "hoy",
+        "stores": [],
+        "status": "startet",
+        "created": "2026-06-15T10:10:54.858Z"
+      },
+      {
+        "id": "mqex7mkd4b42",
+        "text": "Posisjon – snittposisjon 8,5 (−18,1%). Følg neste uke. Hvis >9, ta en gjennomgang av titler og meta på topp 10-sider.",
+        "priority": "hoy",
+        "stores": [],
+        "status": "fullfort",
+        "created": "2026-06-15T07:57:40.477Z"
+      },
+      {
+        "id": "mqex6og6mdl4",
+        "text": "Maling til skinn og lær – +367% er et klart signal. Legg til intern lenking fra akrylmaling, tekstilmaling og beslektede sider.",
+        "priority": "hoy",
+        "stores": [],
+        "status": "fullfort",
+        "created": "2026-06-15T07:56:56.262Z"
+      },
+      {
+        "id": "mqex6cgbnqgf",
+        "text": "Kunstbutikk Oslo – kommersielt søk ned −45%. Sjekk Tegne Oslo-sidens posisjon for disse søkene i GSC og vurder tittel/meta-oppdatering.",
+        "priority": "middels",
+        "stores": [],
+        "status": "fullfort",
+        "created": "2026-06-15T07:56:40.715Z"
+      },
+      {
+        "id": "mqex62bjun18",
+        "text": "Fjerne Hobbykjelleren Sarto",
+        "priority": "lav",
+        "stores": [],
+        "status": "fullfort",
+        "created": "2026-06-15T07:56:27.583Z"
+      },
+      {
+        "id": "mqex5ic5t3tv",
+        "text": "Sjekk Teknisk tegnepapir – 89% fall på siden, sannsynligvis utsolgt eller avviklet produkt.",
+        "priority": "lav",
+        "stores": [],
+        "status": "fullfort",
+        "created": "2026-06-15T07:56:01.685Z"
+      },
+      {
+        "id": "mqex55qmys4q",
+        "text": "Sjekk Kundeklubb-siden – 100% klikkfall på siden og 0 søkeordklikk er uvanlig. Sannsynlig teknisk feil eller indekseringsproblem.",
+        "priority": "haster",
+        "stores": [],
+        "status": "fullfort",
+        "created": "2026-06-15T07:55:45.358Z"
+      },
+      {
+        "id": "mqat5cfssy3p",
+        "text": "Stilman feil kategori for ark",
+        "priority": "lav",
+        "stores": [],
+        "status": "startet",
+        "created": "2026-06-12T10:52:50.872Z"
+      },
+      {
+        "id": "mqama5xrzllm",
+        "text": "Flytte Claude hjernen til OneDrive",
+        "priority": "haster",
+        "stores": [],
+        "status": "fullfort",
+        "created": "2026-06-12T07:40:38.415Z"
+      },
+      {
+        "id": "mq6hb2v0jgv9",
+        "text": "Pentel-produktarbeid",
+        "priority": "hoy",
+        "stores": [],
+        "status": "fullfort",
+        "created": "2026-06-09T10:10:18.301Z"
+      },
+      {
+        "id": "mq6fsmvggrpg",
+        "text": "Lage innholdsside for HIMI",
+        "priority": "middels",
+        "stores": [],
+        "status": "startet",
+        "created": "2026-06-09T09:27:58.156Z"
+      },
+      {
+        "id": "mpzft6b37ww0",
+        "text": "Ta vekk Pride-flagget 1. juli",
+        "priority": "hoy",
+        "stores": [],
+        "status": "startet",
+        "created": "2026-06-04T11:54:00.111Z"
+      },
+      {
+        "id": "mpwnmoop5xj4",
+        "text": "Få Claude til å se på Games Workshop",
+        "priority": "middels",
+        "stores": [],
+        "status": "startet",
+        "created": "2026-06-02T13:09:35.737Z"
+      },
+      {
+        "id": "mpwi7hf6lit4",
+        "text": "Si opp ChatGPT og Claude",
+        "priority": "ikke-startet",
+        "stores": [],
+        "status": "fullfort",
+        "created": "2026-06-02T10:37:48.402Z"
+      },
+      {
+        "id": "mpqkncxym9e0",
+        "text": "Gå gjennom merkevare-siden, legge til nye merker (Daniel Smith, HIMI), ta vekk evt utgåtte",
+        "priority": "middels",
+        "stores": [],
+        "status": "fullfort",
+        "created": "2026-05-29T06:59:31.270Z"
+      },
+      {
+        "id": "mpmmaa1ssf7z",
+        "text": "Fargelære og Ittens fargesirkel — kanibaliseringsopprydding, nye meta-beskrivelser og H2-struktur",
+        "priority": "ikke-startet",
+        "stores": [],
+        "status": "fullfort",
+        "created": "2026-05-26T12:34:15.520Z"
+      },
+      {
+        "id": "mpmlrk5aecch",
+        "text": "Korte ned på RIT-artikkelen",
+        "priority": "lav",
+        "stores": [],
+        "status": "startet",
+        "created": "2026-05-26T12:19:42.142Z"
+      },
+      {
+        "id": "mpmhfn1ifeus",
+        "text": "Legge inn informasjon om Kaweco, se epost fra Therese",
+        "priority": "ikke-startet",
+        "stores": [],
+        "status": "fullfort",
+        "created": "2026-05-26T10:18:27.558Z"
+      },
+      {
+        "id": "mpmcwgm30e73",
+        "text": "Sjekk at fargesirkel/fargelære har god titteltag, metabeskrivelse og produktbeskrivelser",
+        "priority": "ikke-startet",
+        "stores": [],
+        "status": "startet",
+        "created": "2026-05-26T08:11:34.299Z"
+      },
+      {
+        "id": "mpmcvycrz12t",
+        "text": "Sjekk at Kaweco-siden(e) har god titteltag, metabeskrivelse og produktbeskrivelser",
+        "priority": "ikke-startet",
+        "stores": [],
+        "status": "pagar",
+        "created": "2026-05-26T08:11:10.635Z"
+      },
+      {
+        "id": "mpmcuew4g39n",
+        "text": "Øke AOV. Tiltak: Undersøke om vi kan ha du mangler X for fri frakt\" i handlekurven. Foreslå produkter i handlekurv. Andre har også kjøpt",
+        "priority": "ikke-startet",
+        "stores": [],
+        "status": "fullfort",
+        "created": "2026-05-26T08:09:58.756Z"
+      },
+      {
+        "id": "mpb3c9rchf72",
+        "text": "Diller - Ta en avgjørelse ang AutomateWoo",
+        "priority": "haster",
+        "status": "startet",
+        "created": "2026-05-18T10:58:27.816Z"
+      },
+      {
+        "id": "mpb0v8lvad7a",
+        "text": "Ferdigstille om tjenester, lerret på mål, passepartout ++",
+        "priority": "hoy",
+        "status": "pagar",
+        "created": "2026-05-18T09:49:13.939Z"
+      },
+      {
+        "id": "mpaw44chdf6v",
+        "text": "Tekstilfarge ull - har vi artikkel om dette?",
+        "priority": "lav",
+        "status": "startet",
+        "created": "2026-05-18T07:36:10.241Z"
+      },
+      {
+        "id": "mpaw2nte2bfi",
+        "text": "Ta en titt på alkoholblekk-artikkel. Fjerne?",
+        "priority": "lav",
+        "status": "startet",
+        "created": "2026-05-18T07:35:02.162Z"
+      }
+    ],
+    "2026-W25_v2_init": true
+  },
   "tegne_settings": {
     "banner": "",
-    "bannerColor": "primary"
+    "bannerColor": "primary",
+    "bannerInput": "",
+    "wellnessText": ""
   },
-
-  "tegne_weekly": {},
-
-  "tegne_monthly": {},
-
-  "tegne_quarterly": {},
-
-  "tegne_tasks": {},
-
-  "tegne_backlog": {},
-
-  "tegne_keywords": {},
-
-  "tegne_calendar": {},
-
-  "tegne_winloss": {},
-
-  "tegne_monday_table": {},
-
-  "tegne_ai_context": {},
-
-  "tegne_campaigns": []
+  "tegne_campaigns": [
+    {
+      "id": "1779179482591",
+      "name": "Akvarellkampanje",
+      "type": "hoved",
+      "status": "avsluttet",
+      "startDate": "2026-05-01",
+      "endDate": "2026-05-31",
+      "stores": [
+        "bergen",
+        "aasane",
+        "oslo",
+        "nett"
+      ],
+      "goal": "",
+      "budget": "",
+      "result": ""
+    },
+    {
+      "id": "1779179923955",
+      "name": "Pantone",
+      "type": "helg",
+      "status": "avsluttet",
+      "startDate": "2026-06-04",
+      "endDate": "2026-06-08",
+      "stores": [
+        "bergen",
+        "aasane",
+        "oslo",
+        "nett"
+      ],
+      "goal": "Redusere beholdning",
+      "budget": "",
+      "result": ""
+    }
+  ],
+  "tegne_winloss": {
+    "2026-W21-monday": [
+      {
+        "id": "mpbaibxw739i",
+        "type": "win",
+        "text": "TEGNE dashbord er live "
+      },
+      {
+        "id": "mpdpy3rtbxe4",
+        "type": "loss",
+        "text": "Trenger et felt som sier \"populære produkter\" eller lignende"
+      }
+    ],
+    "2026-W21-wednesday": [
+      {
+        "id": "mpdq450q88ww",
+        "type": "loss",
+        "text": "Statistikk forrige nyhetsbrev: Ta med tidspunkt flest åpnet og revenue"
+      }
+    ]
+  },
+  "tegne_reminder_last": "2026-6-19",
+  "tegne_monthly": {
+    "2026-06": {
+      "revenue": "606191",
+      "orders": "909",
+      "aov": "666.88",
+      "clicks": "11039",
+      "impressions": "416328",
+      "ctr": "2.6515",
+      "position": "7.4",
+      "ig_followers": "4800",
+      "ig_reach": "20000",
+      "ig_engagement": "",
+      "fb_followers": "",
+      "fb_reach": "",
+      "fb_engagement": "",
+      "ig_impressions": "80530",
+      "ig_interactions": "757",
+      "ig_new_followers": "84",
+      "ig_posts_shared": "47",
+      "fb_impressions": "190566",
+      "fb_reach_followers": "16",
+      "fb_reach_nonfollowers": "84",
+      "bestPost": "17. mai-innlegg fra Oslo. 1972 visninger\nKunde som viser frem akvarellkampanjen fra Oslo. 1778 visninger\nBatikk-tskjorte fra Oslo 902 visninger\nUrban sketching. 531 visninger\nAkvarellfavoritter fra Bergen sentrum. 521 visninger\nNyhet Stilman & Birn fra Oslo. 455 visninger\nAkvarellmaling, fargelære, akvarellkampanje. 446 visninger"
+    }
+  }
 }

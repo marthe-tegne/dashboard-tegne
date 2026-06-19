@@ -1,0 +1,32 @@
+{
+  "_updated": "2026-06-19",
+  "_version": 1,
+  "_note": "Denne filen oppdateres av Claude i Cowork. Push til Netlify for å oppdatere dashboardet.",
+
+  "tegne_settings": {
+    "banner": "",
+    "bannerColor": "primary"
+  },
+
+  "tegne_weekly": {},
+
+  "tegne_monthly": {},
+
+  "tegne_quarterly": {},
+
+  "tegne_tasks": {},
+
+  "tegne_backlog": {},
+
+  "tegne_keywords": {},
+
+  "tegne_calendar": {},
+
+  "tegne_winloss": {},
+
+  "tegne_monday_table": {},
+
+  "tegne_ai_context": {},
+
+  "tegne_campaigns": []
+}

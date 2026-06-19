@@ -9,6 +9,7 @@ const Weekly = {
     week: 0,
     dayIndex: 0,
     taskFilter: 'aktive',
+    taskCategory: null,
   },
 
   init() {
@@ -145,19 +146,25 @@ const Weekly = {
               <button class="task-filter-btn" data-filter="alle">Alle</button>
               <button class="task-filter-btn" data-filter="fullfort">Fullført</button>
             </div>
-            <div class="task-list" id="taskList"></div>
-            <div class="platform-tag-row" id="taskStoreTags" style="margin-bottom:6px">
-              ${CONFIG.STORES.map(s => `<button class="stag" data-s="${s.id}">${s.icon} ${s.label}</button>`).join('')}
+            <div class="platform-tag-row" id="taskCategoryFilter" style="margin-bottom:4px;margin-top:4px">
+              <button class="ctag-filter active" data-cat="">Alle</button>
+              ${CONFIG.TASK_CATEGORIES.map(c => `<button class="ctag-filter" data-cat="${c.id}" style="--cat-color:${c.color}">${c.label}</button>`).join('')}
             </div>
-            <div class="add-task-row" style="margin-top:4px">
+            <div id="carryForwardPanel"></div>
+            <div class="task-list" id="taskList"></div>
+            <div class="add-task-row" style="margin-top:6px;flex-wrap:wrap;gap:4px">
               <select id="newTaskPriority" class="task-prio-select">
-                <option value="ikke-startet" selected>⚪ Ikke startet</option>
-                <option value="haster">🔴 Haster</option>
-                <option value="hoy">🟠 Høy</option>
+                <option value="lav" selected>🟢 Lav</option>
                 <option value="middels">🟡 Middels</option>
-                <option value="lav">🟢 Lav</option>
+                <option value="hoy">🟠 Høy</option>
+                <option value="haster">🔴 Haster</option>
               </select>
-              <input class="add-task-input" id="newTaskInput" placeholder="Ny oppgave…">
+              <select id="newTaskCategory" class="task-prio-select">
+                <option value="">Kategori…</option>
+                ${CONFIG.TASK_CATEGORIES.map(c => `<option value="${c.id}">${c.label}</option>`).join('')}
+              </select>
+              <input class="add-task-input" id="newTaskInput" placeholder="Ny oppgave…" style="flex:1;min-width:120px">
+              <input type="date" id="newTaskDue" class="task-due-input" title="Frist (valgfritt)">
               <button class="btn-primary btn-sm" id="addTaskBtn">+</button>
             </div>
           </div>
@@ -404,14 +411,21 @@ const Weekly = {
               const delta = (prevKpiData && prevKpiData[f.key] !== undefined && prevKpiData[f.key] !== '')
                 ? Utils.deltaHTML(Number(val), Number(prevKpiData[f.key]), f.key === 'position')
                 : '<span style="height:18px;display:block"></span>';
-              return `<div class="kpi-field">
+              const threshCls = this.getKpiThresholdClass(f.key, val);
+              const sparklineKeys = ['revenue', 'clicks', 'position'];
+              const sparkline = sparklineKeys.includes(f.key)
+                ? this.renderSparkline(this.getSparklineData(f.key), f.key === 'position')
+                : '';
+              return `<div class="kpi-field ${threshCls}">
                 <div class="kpi-label-row">
                   <span class="kpi-label">${f.label}</span>
                   ${f.auto ? '<span class="kpi-auto-badge">auto</span>' : ''}
+                  ${threshCls ? `<span class="kpi-thresh-icon">${threshCls === 'kpi-err' ? '🔴' : '⚠️'}</span>` : ''}
                   ${f.tooltip ? `<button class="kpi-help" data-tooltip="${f.tooltip}" type="button" tabindex="-1">?</button>` : ''}
                 </div>
                 <div class="kpi-value-static">${f.prefix || ''}${val}${f.suffix || ''}</div>
                 ${delta}
+                ${sparkline}
               </div>`;
             }).join('')}
           </div>
@@ -429,6 +443,63 @@ const Weekly = {
 
   /* ---- KPI Grid ---- */
 
+  /* ---- Sparkline ---- */
+
+  getSparklineData(kpiKey, weeks = 6) {
+    const { year, week } = this.state;
+    const values = [];
+    for (let i = weeks - 1; i >= 0; i--) {
+      const w = Utils.addWeeks(year, week, -i);
+      const wKey = Utils.getWeekKey(w.year, w.week);
+      const kpi = this.getWeekKpi(wKey);
+      const v = kpi[kpiKey];
+      values.push(v !== undefined && v !== '' ? Number(v) : null);
+    }
+    return values;
+  },
+
+  renderSparkline(values, inverted = false, width = 80, height = 24) {
+    const valid = values.filter(v => v !== null);
+    if (valid.length < 2) return '';
+    const min = Math.min(...valid);
+    const max = Math.max(...valid);
+    const range = max - min || 1;
+    const step = width / (values.length - 1);
+
+    const points = values.map((v, i) => {
+      const x = i * step;
+      const norm = (v === null) ? null : (v - min) / range;
+      const y = inverted
+        ? height - 2 - norm * (height - 4)
+        : 2 + (1 - norm) * (height - 4);
+      return v === null ? null : `${x.toFixed(1)},${y.toFixed(1)}`;
+    }).filter(Boolean);
+
+    const last = values[values.length - 1];
+    const prev = values[values.length - 2];
+    const trending = (last !== null && prev !== null)
+      ? (inverted ? last < prev : last > prev)
+      : null;
+    const color = trending === true ? '#0a7c45' : trending === false ? '#eb5857' : '#247ca7';
+
+    return `<svg class="kpi-sparkline" viewBox="0 0 ${width} ${height}" xmlns="http://www.w3.org/2000/svg">
+      <polyline points="${points.join(' ')}" fill="none" stroke="${color}" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round"/>
+    </svg>`;
+  },
+
+  getKpiThresholdClass(key, val) {
+    if (val === '' || val === undefined) return '';
+    const thresh = (Utils.load(CONFIG.STORAGE_KEYS.SETTINGS, {}).thresholds) || {};
+    const n = Number(val);
+    if (key === 'position') {
+      if (thresh.thresh_position_err && n > thresh.thresh_position_err) return 'kpi-err';
+      if (thresh.thresh_position_warn && n > thresh.thresh_position_warn) return 'kpi-warn';
+    }
+    if (key === 'revenue' && thresh.thresh_revenue_warn && n < thresh.thresh_revenue_warn) return 'kpi-warn';
+    if (key === 'ctr'     && thresh.thresh_ctr_warn     && n < thresh.thresh_ctr_warn)     return 'kpi-warn';
+    return '';
+  },
+
   renderKpiGrid(kpiData, prevKpiData) {
     return `<div class="kpi-grid">
       ${CONFIG.KPI_FIELDS.map(f => {
@@ -436,11 +507,13 @@ const Weekly = {
         const delta = prevKpiData && prevKpiData[f.key] !== undefined && val !== ''
           ? Utils.deltaHTML(Number(val), Number(prevKpiData[f.key]), f.key === 'position')
           : '<span style="height:18px;display:block"></span>';
+        const threshCls = this.getKpiThresholdClass(f.key, val);
         return `
-        <div class="kpi-field">
+        <div class="kpi-field ${threshCls}">
           <div class="kpi-label-row">
             <span class="kpi-label">${f.label}</span>
             ${f.auto ? '<span class="kpi-auto-badge">auto</span>' : ''}
+            ${threshCls ? `<span class="kpi-thresh-icon" title="Utenfor terskelgrense">${threshCls === 'kpi-err' ? '🔴' : '⚠️'}</span>` : ''}
             ${f.tooltip ? `<button class="kpi-help" data-tooltip="${f.tooltip}" type="button" tabindex="-1">?</button>` : ''}
           </div>
           <input
@@ -1617,19 +1690,73 @@ const Weekly = {
     const already = Utils.loadNested(CONFIG.STORAGE_KEYS.TASKS, initKey, false);
     if (already) return;
 
-    const prevWeek = Utils.addWeeks(this.state.year, this.state.week, -1);
+    const prevWeek    = Utils.addWeeks(this.state.year, this.state.week, -1);
     const prevWeekKey = Utils.getWeekKey(prevWeek.year, prevWeek.week);
-    const prevTasks = this.getWeekTasks(prevWeekKey);
-    const carry = prevTasks.filter(t => t.status !== 'fullfort');
+    const prevTasks   = this.getWeekTasks(prevWeekKey);
+    const candidates  = prevTasks.filter(t => t.status !== 'fullfort');
 
-    if (carry.length > 0) {
-      const current = this.getWeekTasks(weekKey);
-      const existingIds = new Set(current.map(t => t.id));
-      carry.forEach(t => { if (!existingIds.has(t.id)) current.push({ ...t }); });
-      this.saveWeekTasks(weekKey, current);
-      if (carry.length > 0) Utils.toast(`${carry.length} oppgave${carry.length > 1 ? 'r' : ''} videreført fra forrige uke`, 'info');
+    if (candidates.length === 0) {
+      Utils.saveNested(CONFIG.STORAGE_KEYS.TASKS, initKey, true);
+      return;
     }
-    Utils.saveNested(CONFIG.STORAGE_KEYS.TASKS, initKey, true);
+
+    this.renderCarryForwardPanel(weekKey, candidates, initKey);
+  },
+
+  renderCarryForwardPanel(weekKey, candidates, initKey) {
+    const panel = Utils.el('carryForwardPanel');
+    if (!panel) return;
+
+    const highPrio = new Set(['haster', 'hoy']);
+    const prioColors = { haster: '#eb5857', hoy: '#f97316', middels: '#f7c855', lav: '#acf5ca' };
+
+    panel.innerHTML = `
+      <div class="carry-forward-panel">
+        <div class="carry-forward-header">
+          <span>📋 Fra forrige uke — ${candidates.length} ufullendte oppgaver</span>
+        </div>
+        <div class="carry-forward-list">
+          ${candidates.map(t => {
+            const cat    = CONFIG.TASK_CATEGORIES.find(c => c.id === t.category);
+            const pColor = prioColors[t.priority] || '#d1d9e0';
+            const checked = highPrio.has(t.priority) ? 'checked' : '';
+            return `
+            <label class="carry-item" data-tid="${t.id}">
+              <input type="checkbox" class="carry-check" data-tid="${t.id}" ${checked}>
+              <span class="carry-prio-dot" style="background:${pColor}"></span>
+              <span class="carry-text">${Utils.esc(t.text)}</span>
+              ${cat ? `<span class="badge" style="background:${cat.bg};color:${cat.color};font-size:.6rem;flex-shrink:0">${cat.label}</span>` : ''}
+            </label>`;
+          }).join('')}
+        </div>
+        <div class="carry-forward-actions">
+          <button class="btn-primary btn-sm" id="carryConfirmBtn">Ta med valgte</button>
+          <button class="btn-ghost-sm" id="carryDismissBtn">Avvis alle</button>
+        </div>
+      </div>`;
+
+    Utils.on('carryConfirmBtn', 'click', () => {
+      const selected = [...panel.querySelectorAll('.carry-check:checked')].map(cb => cb.dataset.tid);
+      if (selected.length > 0) {
+        const current    = this.getWeekTasks(weekKey);
+        const existingIds = new Set(current.map(t => t.id));
+        candidates
+          .filter(t => selected.includes(t.id))
+          .forEach(t => {
+            if (!existingIds.has(t.id)) current.push({ ...t, status: 'ikke-startet' });
+          });
+        this.saveWeekTasks(weekKey, current);
+        Utils.toast(`${selected.length} oppgave${selected.length > 1 ? 'r' : ''} videreført ✓`, 'success');
+      }
+      Utils.saveNested(CONFIG.STORAGE_KEYS.TASKS, initKey, true);
+      panel.innerHTML = '';
+      this.renderTasks(weekKey);
+    });
+
+    Utils.on('carryDismissBtn', 'click', () => {
+      Utils.saveNested(CONFIG.STORAGE_KEYS.TASKS, initKey, true);
+      panel.innerHTML = '';
+    });
   },
 
   renderTasks(weekKey) {
@@ -1637,34 +1764,59 @@ const Weekly = {
     const counter = Utils.el('taskCount');
     if (!list) return;
 
-    const filter   = this.state.taskFilter || 'aktive';
-    const allTasks = this.getWeekTasks(weekKey);
-    const active   = allTasks.filter(t => t.status !== 'fullfort');
-    const done     = allTasks.filter(t => t.status === 'fullfort');
+    const filter   = this.state.taskFilter   || 'aktive';
+    const catFilter = this.state.taskCategory || null;
+    const allTasks  = this.getWeekTasks(weekKey);
+    const active    = allTasks.filter(t => t.status !== 'fullfort');
+    const done      = allTasks.filter(t => t.status === 'fullfort');
     if (counter) counter.textContent = `${done.length}/${allTasks.length}`;
 
-    // Sync filter button active state
+    // Filterknappar status
     Utils.qsa('.task-filter-btn').forEach(btn => {
       btn.classList.toggle('active', btn.dataset.filter === filter);
-    });
-    Utils.qsa('.task-filter-btn').forEach(btn => {
       btn.onclick = () => { this.state.taskFilter = btn.dataset.filter; this.renderTasks(weekKey); };
     });
-    Utils.qsa('.stag').forEach(btn => {
-      btn.addEventListener('click', () => btn.classList.toggle('active'));
+
+    // Filterknappar kategori
+    Utils.qsa('.ctag-filter').forEach(btn => {
+      btn.classList.toggle('active', (btn.dataset.cat || null) === catFilter);
+      btn.onclick = () => {
+        this.state.taskCategory = btn.dataset.cat || null;
+        this.renderTasks(weekKey);
+      };
     });
 
-    let visible = allTasks;
-    if (filter === 'aktive') visible = active;
-    if (filter === 'fullfort') visible = done;
-
-    const prioColors = { 'ikke-startet': '#d1d9e0', haster: '#eb5857', hoy: '#f97316', middels: '#f7c855', lav: '#acf5ca' };
-    const statusLabels = { startet: 'Startet', pagar: 'Pågår', fullfort: 'Fullført' };
+    const prioOrder = { haster: 0, hoy: 1, middels: 2, lav: 3 };
+    const prioColors = { haster: '#eb5857', hoy: '#f97316', middels: '#f7c855', lav: '#acf5ca' };
     const statusColors = {
-      startet:  { bg: 'var(--gray)',      color: 'var(--text-soft)' },
-      pagar:    { bg: 'var(--primary-lt)', color: 'var(--primary)' },
-      fullfort: { bg: 'var(--green-lt)',   color: '#0a7c45' },
+      'ikke-startet': { bg: 'var(--gray)',       color: 'var(--text-soft)' },
+      startet:        { bg: 'var(--gray)',       color: 'var(--text-soft)' }, // bakoverkompatibilitet
+      pagar:          { bg: 'var(--primary-lt)', color: 'var(--primary)' },
+      fullfort:       { bg: 'var(--green-lt)',   color: '#0a7c45' },
     };
+
+    let visible = allTasks;
+    if (filter === 'aktive')   visible = active;
+    if (filter === 'fullfort') visible = done;
+    if (catFilter) visible = visible.filter(t => t.category === catFilter);
+
+    // Sorter: forfalt øverst, deretter prioritet, deretter kategori
+    const today = new Date(); today.setHours(0,0,0,0);
+    const dueScore = t => {
+      if (!t.dueDate) return 2;
+      const d = new Date(t.dueDate); d.setHours(0,0,0,0);
+      if (d < today) return 0;  // forfalt
+      if ((d - today) / 86400000 <= 3) return 1; // snart
+      return 2;
+    };
+    visible = [...visible].sort((a, b) => {
+      const da = dueScore(a), db = dueScore(b);
+      if (da !== db) return da - db;
+      const pa = prioOrder[a.priority] ?? 99;
+      const pb = prioOrder[b.priority] ?? 99;
+      if (pa !== pb) return pa - pb;
+      return (a.category || '').localeCompare(b.category || '');
+    });
 
     if (visible.length === 0) {
       list.innerHTML = `<p class="text-muted text-small" style="padding:8px 0">${
@@ -1673,22 +1825,36 @@ const Weekly = {
         'Ingen oppgaver denne uken.'}</p>`;
     } else {
       list.innerHTML = visible.map(t => {
-        const sc = statusColors[t.status] || statusColors.startet;
-        const storeBadges = (t.stores || []).map(sid => {
-          const s = CONFIG.STORES.find(x => x.id === sid);
-          return s ? `<span class="badge" style="background:#247ca715;color:var(--primary-dk);font-size:.65rem">${s.icon} ${s.label}</span>` : '';
-        }).join('');
+        const sc  = statusColors[t.status] || statusColors['ikke-startet'];
+        const cat = CONFIG.TASK_CATEGORIES.find(c => c.id === t.category);
+        const catBadge = cat
+          ? `<span class="badge" style="background:${cat.bg};color:${cat.color};font-size:.62rem">${cat.label}</span>`
+          : '';
+        const prioBar = prioColors[t.priority] || '#d1d9e0';
+        const normalizedStatus = t.status === 'startet' ? 'ikke-startet' : t.status;
+
+        // Frist-badge
+        let dueBadge = '';
+        if (t.dueDate) {
+          const due = new Date(t.dueDate); due.setHours(0,0,0,0);
+          const diff = Math.round((due - today) / 86400000);
+          const dueStr = due.toLocaleDateString('no-NO', { day: 'numeric', month: 'short' });
+          if (diff < 0)      dueBadge = `<span class="task-due-badge overdue">⚠ ${dueStr}</span>`;
+          else if (diff <= 3) dueBadge = `<span class="task-due-badge soon">⏰ ${dueStr}</span>`;
+          else                dueBadge = `<span class="task-due-badge">${dueStr}</span>`;
+        }
+
         return `
         <div class="task-item-v2" data-tid="${t.id}">
-          <div class="task-prio-bar" style="background:${prioColors[t.priority] || prioColors['ikke-startet']}"></div>
+          <div class="task-prio-bar" style="background:${prioBar}"></div>
           <div style="flex:1;min-width:0">
             <span class="task-text-v2 ${t.status === 'fullfort' ? 'done' : ''}" contenteditable="true" data-tid="${t.id}">${Utils.esc(t.text)}</span>
-            ${storeBadges ? `<div style="display:flex;flex-wrap:wrap;gap:2px;margin-top:2px">${storeBadges}</div>` : ''}
+            ${(catBadge || dueBadge) ? `<div style="display:flex;flex-wrap:wrap;gap:2px;margin-top:2px">${catBadge}${dueBadge}</div>` : ''}
           </div>
           <select class="task-status-sel" data-tid="${t.id}" style="background:${sc.bg};color:${sc.color}">
-            <option value="startet" ${t.status==='startet'?'selected':''}>Startet</option>
-            <option value="pagar"   ${t.status==='pagar'  ?'selected':''}>Pågår</option>
-            <option value="fullfort"${t.status==='fullfort'?'selected':''}>Fullført</option>
+            <option value="ikke-startet" ${normalizedStatus==='ikke-startet'?'selected':''}>Ikke startet</option>
+            <option value="pagar"        ${normalizedStatus==='pagar'       ?'selected':''}>Pågår</option>
+            <option value="fullfort"     ${normalizedStatus==='fullfort'    ?'selected':''}>Fullført</option>
           </select>
           <button class="task-del" data-tid="${t.id}" style="opacity:1">✕</button>
         </div>`;
@@ -1721,15 +1887,17 @@ const Weekly = {
   },
 
   addWeekTask(weekKey) {
-    const input = Utils.el('newTaskInput');
-    const prio  = Utils.el('newTaskPriority')?.value || 'ikke-startet';
+    const input    = Utils.el('newTaskInput');
+    const prio     = Utils.el('newTaskPriority')?.value || 'lav';
+    const category = Utils.el('newTaskCategory')?.value || null;
+    const dueDate  = Utils.el('newTaskDue')?.value || null;
     if (!input || !input.value.trim()) return;
-    const stores = [...Utils.qsa('.stag.active')].map(b => b.dataset.s);
     const tasks = this.getWeekTasks(weekKey);
-    tasks.unshift({ id: Utils.uid(), text: input.value.trim(), priority: prio, stores, status: 'startet', created: new Date().toISOString() });
+    tasks.unshift({ id: Utils.uid(), text: input.value.trim(), priority: prio, category: category || null, dueDate: dueDate || null, status: 'ikke-startet', created: new Date().toISOString() });
     this.saveWeekTasks(weekKey, tasks);
     input.value = '';
-    Utils.qsa('.stag').forEach(b => b.classList.remove('active'));
+    const dueEl = Utils.el('newTaskDue');
+    if (dueEl) dueEl.value = '';
     this.renderTasks(weekKey);
   },
 

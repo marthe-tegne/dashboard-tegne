@@ -1,0 +1,13 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git push *)",
+      "Bash(git add *)",
+      "Bash(git commit -m 'Fix KPI summary on Tue-Fri: remove grey box, add tooltips, more spacing *)",
+      "Bash(git commit -m ' *)",
+      "Bash(git commit -m 'Fix duplicate active campaigns + improve spacing *)",
+      "Bash(git commit -m 'Remove SoMe stats from Tuesday — only in monthly view *)",
+      "Bash(git commit -m 'PWA: switch icons to PNG, add campaigns.js to cache, bump to v2 *)"
+    ]
+  }
+}

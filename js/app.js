@@ -39,6 +39,11 @@ const App = {
       const el = Utils.el('sheetsUrl');
       if (el) el.value = s.sheetsUrl;
     }
+    const thresh = s.thresholds || {};
+    ['thresh_position_warn','thresh_position_err','thresh_revenue_warn','thresh_ctr_warn'].forEach(id => {
+      const el = Utils.el(id);
+      if (el && thresh[id] !== undefined) el.value = thresh[id];
+    });
     if (s.bannerInput) {
       const el = Utils.el('bannerInput');
       if (el) el.value = s.bannerInput;
@@ -52,8 +57,14 @@ const App = {
     const bannerColor  = document.querySelector('input[name="bannerColor"]:checked')?.value || 'primary';
     const wellnessText = Utils.el('wellnessText')?.value.trim() || '';
 
+    const thresholds = {};
+    ['thresh_position_warn','thresh_position_err','thresh_revenue_warn','thresh_ctr_warn'].forEach(id => {
+      const v = Utils.el(id)?.value.trim();
+      if (v !== '') thresholds[id] = parseFloat(v);
+    });
+
     const s = Utils.load(CONFIG.STORAGE_KEYS.SETTINGS, {});
-    Object.assign(s, { sheetsUrl, anthropicKey, banner, bannerColor, bannerInput: banner, wellnessText });
+    Object.assign(s, { sheetsUrl, anthropicKey, banner, bannerColor, bannerInput: banner, wellnessText, thresholds });
     Utils.save(CONFIG.STORAGE_KEYS.SETTINGS, s);
 
     if (banner) this.applyBanner(banner, bannerColor);
@@ -281,40 +292,31 @@ const App = {
     Utils.save('tegne_reminder_last', todayKey);
   },
 
-  /* ---- Google Sheets sync ---- */
+  /* ---- Last inn data fra data.json ---- */
 
   async syncFromSheets() {
-    if (!Sheets.isConfigured()) return;
-
-    const hasLocalData = Object.values(CONFIG.STORAGE_KEYS)
-      .filter(k => k !== CONFIG.STORAGE_KEYS.SETTINGS)
-      .some(k => {
-        const d = Utils.load(k, null);
-        return d !== null && Object.keys(d).length > 0;
-      });
-
-    if (hasLocalData) {
-      await Sheets.syncAll();
-      Utils.toast('Data lagret til Google Sheets ✓', 'success');
-    } else {
-      const ok = await Sheets.fetchAll();
-      if (ok) {
-        Utils.toast('Data hentet fra Google Sheets ✓', 'success');
-        if (this.currentView === 'weekly')    Weekly.render();
-        if (this.currentView === 'monthly')   Monthly.render();
-        if (this.currentView === 'quarterly') Quarterly.render();
-      }
+    const result = await Sheets.loadFromFile();
+    if (result.ok) {
+      Weekly.render();
+      Monthly.render();
+      Quarterly.render();
+      Campaigns.render();
+      Utils.toast(`Data lastet (${result.updated}) ✓`, 'success');
     }
   },
 
   async forceSyncToSheets() {
-    if (!Sheets.isConfigured()) {
-      Utils.toast('Ingen Google Sheets-URL konfigurert', 'error');
-      return;
+    Utils.toast('Laster inn data fra data.json…', 'info', 2000);
+    const result = await Sheets.loadFromFile();
+    if (result.ok) {
+      Weekly.render();
+      Monthly.render();
+      Quarterly.render();
+      Campaigns.render();
+      Utils.toast(`Data oppdatert (${result.updated}) ✓`, 'success');
+    } else {
+      Utils.toast('Kunne ikke laste data.json', 'error');
     }
-    Utils.toast('Synkroniserer…', 'info', 2000);
-    await Sheets.syncAll();
-    Utils.toast('All data pushet til Google Sheets ✓', 'success');
   },
 
   /* ---- PWA Service Worker ---- */

@@ -85,6 +85,22 @@ const CONFIG = {
     bannerColor: 'primary',
   },
 
+  // Oppgave-kategorier
+  TASK_CATEGORIES: [
+    { id: 'seo',            label: 'SEO',           color: '#1a5f82', bg: '#1a5f8220' },
+    { id: 'innhold',        label: 'Innhold',        color: '#0a7c45', bg: '#0a7c4520' },
+    { id: 'some-grafisk',   label: 'SoMe & Grafisk', color: '#e1306c', bg: '#e1306c20' },
+    { id: 'kampanje-admin', label: 'Kampanje/Admin', color: '#92620a', bg: '#f7c85530' },
+  ],
+
+  // Oppgave-prioriteter
+  TASK_PRIORITIES: [
+    { id: 'haster',  label: '🔴 Haster',  color: '#eb5857', order: 0 },
+    { id: 'hoy',     label: '🟠 Høy',     color: '#f97316', order: 1 },
+    { id: 'middels', label: '🟡 Middels', color: '#f7c855', order: 2 },
+    { id: 'lav',     label: '🟢 Lav',     color: '#acf5ca', order: 3 },
+  ],
+
   // Dager i uka
   DAYS: ['monday', 'tuesday', 'wednesday', 'thursday', 'friday'],
   DAY_LABELS: ['Mandag', 'Tirsdag', 'Onsdag', 'Torsdag', 'Fredag'],

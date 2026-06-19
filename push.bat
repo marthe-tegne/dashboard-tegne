@@ -3,8 +3,8 @@ cd /d "%~dp0"
 echo.
 echo Oppdaterer TEGNE Dashboard...
 echo.
-git add data.json
-git commit -m "data: oppdater %date%"
+git add -A
+git commit -m "oppdater dashboard %date%"
 git push
 echo.
 echo -----------------------------------------------

@@ -1588,6 +1588,47 @@ body {
 }
 
 /* =============================================
+   SUB-TABS (Kampanjer / Arrangement)
+   ============================================= */
+.sub-tab-nav {
+  display: flex;
+  gap: 4px;
+  margin-bottom: 12px;
+  border-bottom: 2px solid var(--border);
+  padding-bottom: 0;
+}
+.sub-tab {
+  background: none;
+  border: none;
+  padding: 6px 16px 8px;
+  font-size: .85rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -2px;
+  transition: color .15s, border-color .15s;
+  border-radius: 4px 4px 0 0;
+}
+.sub-tab:hover { color: var(--text); }
+.sub-tab.active {
+  color: var(--primary);
+  border-bottom-color: var(--primary);
+}
+
+/* Event-spesifikke stiler */
+.event-location-tag {
+  font-size: .72rem;
+  color: var(--text-muted);
+  margin-top: 2px;
+}
+.event-attendees {
+  font-size: .72rem;
+  color: var(--text-muted);
+  margin-top: 1px;
+}
+
+/* =============================================
    CAMPAIGNS
    ============================================= */
 .view-title {

@@ -20,6 +20,7 @@ const CONFIG = {
     MONDAY_TABLE:'tegne_monday_table',
     AI_CONTEXT:  'tegne_ai_context',
     CAMPAIGNS:   'tegne_campaigns',
+    EVENTS:      'tegne_events',
   },
 
   STORES: [
@@ -39,6 +40,22 @@ const CONFIG = {
     { id: 'planlagt',  label: 'Planlagt' },
     { id: 'aktiv',     label: 'Aktiv' },
     { id: 'avsluttet', label: 'Avsluttet' },
+  ],
+
+  EVENT_TYPES: [
+    { id: 'workshop',       label: 'Workshop',         color: '#7c3aed', textColor: '#fff' },
+    { id: 'kurs',           label: 'Kurs',             color: '#0891b2', textColor: '#fff' },
+    { id: 'utstilling',     label: 'Utstilling',       color: '#059669', textColor: '#fff' },
+    { id: 'pop-up',         label: 'Pop-up',           color: '#f59e0b', textColor: '#1d2739' },
+    { id: 'butikkevent',    label: 'Butikkevent',      color: '#e1306c', textColor: '#fff' },
+    { id: 'eksternt',       label: 'Eksternt',         color: '#64748b', textColor: '#fff' },
+  ],
+
+  EVENT_STATUSES: [
+    { id: 'ide',        label: 'Idé' },
+    { id: 'planlagt',   label: 'Planlagt' },
+    { id: 'bekreftet',  label: 'Bekreftet' },
+    { id: 'avsluttet',  label: 'Avsluttet' },
   ],
 
   CAMPAIGN_STORES: [

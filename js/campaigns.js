@@ -7,6 +7,7 @@ const Campaigns = {
   state: {
     filterType:  null,
     filterStore: null,
+    subTab: 'campaigns',
   },
 
   getData() {
@@ -20,7 +21,22 @@ const Campaigns = {
     }
   },
 
-  init() {},
+  init() {
+    // Sub-tab binding (delegert, siden DOM re-rendres)
+    document.addEventListener('click', e => {
+      const btn = e.target.closest('.sub-tab');
+      if (!btn) return;
+      const tab = btn.dataset.subtab;
+      if (!tab) return;
+      this.state.subTab = tab;
+      Utils.qsa('.sub-tab').forEach(b => b.classList.toggle('active', b.dataset.subtab === tab));
+      const cc = Utils.el('campaignContent');
+      const ec = Utils.el('eventContent');
+      if (cc) cc.style.display = tab === 'campaigns' ? '' : 'none';
+      if (ec) ec.style.display = tab === 'events'    ? '' : 'none';
+      if (tab === 'events') Events.render();
+    });
+  },
 
   render() {
     const campaigns = this.getData();

@@ -56,4 +56,55 @@ const Sheets = {
     try {
       const res = await fetch(url, {
         method: 'POST',
-        body: JSON.stringif
+        body: JSON.stringify({ action: 'set', key, value }),
+      });
+      const json = await res.json().catch(() => null);
+      console.log(`Sheets.set(${key}) →`, json?.status || 'ok');
+      return json;
+    } catch (err) {
+      console.warn(`Sheets.set(${key}) feilet:`, err.message);
+      return null;
+    }
+  },
+
+  async get(key) {
+    const url = this.getUrl();
+    if (!url) return null;
+    try {
+      const res = await fetch(`${url}?action=get&key=${encodeURIComponent(key)}`);
+      return await res.json().catch(() => null);
+    } catch (err) {
+      console.warn(`Sheets.get(${key}) feilet:`, err.message);
+      return null;
+    }
+  },
+
+  /* ---- Debounced save (kaller set etter 2 sek) ---- */
+
+  debouncedSave(type, key, value) {
+    const timerKey = `${type}__${key}`;
+    clearTimeout(this._saveTimers[timerKey]);
+    this._saveTimers[timerKey] = setTimeout(() => {
+      this.set(key, value);
+    }, 2000);
+  },
+
+  /* ---- Synk alt til Sheets ---- */
+
+  async syncAll() {
+    const url = this.getUrl();
+    if (!url) return;
+    const keys = Object.values(CONFIG.STORAGE_KEYS);
+    for (const key of keys) {
+      const val = Utils.load(key, null);
+      if (val !== null) await this.set(key, val);
+    }
+    console.log('Synk til Sheets fullført');
+  },
+
+  /* ---- Stubs ---- */
+  async request()  { return null; },
+  async list()     { return []; },
+  async fetchAll() { return false; },
+
+};

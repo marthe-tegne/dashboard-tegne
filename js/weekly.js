@@ -2020,4 +2020,214 @@ const Weekly = {
         item.classList.add('dragging');
         e.dataTransfer.effectAllowed = 'move';
       });
-      item.addEventListener('dragend', () 
+      item.addEventListener('dragend', () => {
+        item.classList.remove('dragging');
+        list.querySelectorAll('.task-item-v2').forEach(i => i.classList.remove('drag-over'));
+      });
+      item.addEventListener('dragover', e => {
+        e.preventDefault();
+        e.dataTransfer.dropEffect = 'move';
+        list.querySelectorAll('.task-item-v2').forEach(i => i.classList.remove('drag-over'));
+        if (item.dataset.tid !== dragSrcId) item.classList.add('drag-over');
+      });
+      item.addEventListener('drop', e => {
+        e.preventDefault();
+        if (!dragSrcId || item.dataset.tid === dragSrcId) return;
+        let tasks = this.getWeekTasks(weekKey);
+        const srcIdx  = tasks.findIndex(t => t.id === dragSrcId);
+        const destIdx = tasks.findIndex(t => t.id === item.dataset.tid);
+        if (srcIdx < 0 || destIdx < 0) return;
+        const [moved] = tasks.splice(srcIdx, 1);
+        tasks.splice(destIdx, 0, moved);
+        this.saveWeekTasks(weekKey, tasks);
+        this.renderTasks(weekKey);
+      });
+    });
+  },
+
+  /* ---- Kalender-panel ---- */
+
+  renderTaskCalendar(weekKey) {
+    const panel = Utils.el('taskCalPanel');
+    if (!panel || panel.style.display === 'none') return;
+
+    const allTasks = this.getWeekTasks(weekKey).filter(t => t.dueDate);
+    const today = new Date(); today.setHours(0,0,0,0);
+    const year  = today.getFullYear();
+    const month = today.getMonth();
+
+    const firstDay = new Date(year, month, 1);
+    const lastDay  = new Date(year, month + 1, 0);
+    const startDow = (firstDay.getDay() + 6) % 7; // Mandag=0
+
+    // Grupper oppgaver per dato-streng
+    const byDate = {};
+    allTasks.forEach(t => {
+      const d = t.dueDate.substring(0, 10);
+      if (!byDate[d]) byDate[d] = [];
+      byDate[d].push(t);
+    });
+
+    const dayNames = ['Man', 'Tir', 'Ons', 'Tor', 'Fre', 'Lør', 'Søn'];
+    let cells = '';
+
+    // Tomme celler før første dag
+    for (let i = 0; i < startDow; i++) cells += `<div class="cal-cell cal-empty"></div>`;
+
+    for (let d = 1; d <= lastDay.getDate(); d++) {
+      const dateStr = `${year}-${String(month+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+      const tasks   = byDate[dateStr] || [];
+      const isToday = d === today.getDate();
+      const dots    = tasks.map(t => {
+        const prioColors = { haster: '#eb5857', hoy: '#f97316', middels: '#f7c855', lav: '#acf5ca' };
+        return `<span class="cal-dot" style="background:${prioColors[t.priority]||'var(--primary)'}"></span>`;
+      }).join('');
+      const tooltipTasks = tasks.map(t => t.text).join('\n');
+
+      cells += `<div class="cal-cell${isToday ? ' cal-today' : ''}${tasks.length ? ' cal-has-tasks' : ''}"
+        title="${tooltipTasks ? Utils.esc(tooltipTasks) : ''}">
+        <span class="cal-day-num">${d}</span>
+        ${dots ? `<div class="cal-dots">${dots}</div>` : ''}
+      </div>`;
+    }
+
+    panel.innerHTML = `
+      <div class="task-cal-inner">
+        <div class="cal-month-label">${CONFIG.MONTHS_NO[month]} ${year}</div>
+        <div class="cal-grid">
+          ${dayNames.map(n => `<div class="cal-header-cell">${n}</div>`).join('')}
+          ${cells}
+        </div>
+      </div>`;
+  },
+
+  initCalendarToggle(weekKey) {
+    const btn = Utils.el('toggleCalBtn');
+    if (!btn) return;
+    btn.onclick = () => {
+      const panel = Utils.el('taskCalPanel');
+      if (!panel) return;
+      const open = panel.style.display !== 'none';
+      panel.style.display = open ? 'none' : '';
+      btn.style.background = open ? '' : 'var(--primary-lt)';
+      if (!open) this.renderTaskCalendar(weekKey);
+    };
+  },
+
+  addWeekTask(weekKey) {
+    const input    = Utils.el('newTaskInput');
+    const prio     = Utils.el('newTaskPriority')?.value || 'lav';
+    const category = Utils.el('newTaskCategory')?.value || null;
+    const dueDate  = Utils.el('newTaskDue')?.value || null;
+    if (!input || !input.value.trim()) return;
+    const tasks = this.getWeekTasks(weekKey);
+    tasks.unshift({ id: Utils.uid(), text: input.value.trim(), priority: prio, category: category || null, dueDate: dueDate || null, status: 'ikke-startet', created: new Date().toISOString() });
+    this.saveWeekTasks(weekKey, tasks);
+    input.value = '';
+    const dueEl = Utils.el('newTaskDue');
+    if (dueEl) dueEl.value = '';
+    this.renderTasks(weekKey);
+  },
+
+  /* ---- Vinn/Taper ---- */
+
+  renderWinLoss(dayKey) {
+    const list = Utils.el('winlossList');
+    if (!list) return;
+    const items = Utils.loadNested(CONFIG.STORAGE_KEYS.WINLOSS, dayKey, []);
+    list.innerHTML = items.map(item => `
+      <div class="winloss-item" data-wid="${item.id}">
+        <span class="winloss-badge ${item.type}">${item.type === 'win' ? '✅ Funket' : '❌ Funket ikke'}</span>
+        <textarea class="winloss-text" data-wid="${item.id}" rows="1">${Utils.esc(item.text)}</textarea>
+        <button class="task-del" data-wid="${item.id}">✕</button>
+      </div>`).join('');
+
+    list.querySelectorAll('.winloss-text').forEach(ta => {
+      ta.addEventListener('input', Utils.debounce(() => {
+        const items = Utils.loadNested(CONFIG.STORAGE_KEYS.WINLOSS, dayKey, []);
+        const i = items.find(i => i.id === ta.dataset.wid);
+        if (i) { i.text = ta.value; Utils.saveNested(CONFIG.STORAGE_KEYS.WINLOSS, dayKey, items); }
+      }, 600));
+    });
+    list.querySelectorAll('.task-del').forEach(btn => {
+      btn.addEventListener('click', () => {
+        let items = Utils.loadNested(CONFIG.STORAGE_KEYS.WINLOSS, dayKey, []);
+        items = items.filter(i => i.id !== btn.dataset.wid);
+        Utils.saveNested(CONFIG.STORAGE_KEYS.WINLOSS, dayKey, items);
+        this.renderWinLoss(dayKey);
+      });
+    });
+  },
+
+  addWinLoss(dayKey, type) {
+    const items = Utils.loadNested(CONFIG.STORAGE_KEYS.WINLOSS, dayKey, []);
+    items.push({ id: Utils.uid(), type, text: '' });
+    Utils.saveNested(CONFIG.STORAGE_KEYS.WINLOSS, dayKey, items);
+    this.renderWinLoss(dayKey);
+    setTimeout(() => {
+      const textareas = Utils.qsa('.winloss-text');
+      if (textareas.length) textareas[textareas.length - 1].focus();
+    }, 50);
+  },
+
+
+  /* ---- Innholdskalender ---- */
+
+  renderCalendar(weekKey) {
+    const list = Utils.el('calendarList');
+    if (!list) return;
+    const channels = ['Blogg', 'E-post', 'Google Ads', 'Instagram', 'Facebook', 'Annet'];
+    const entries = Utils.loadNested(CONFIG.STORAGE_KEYS.CALENDAR, weekKey, []);
+
+    const save = () => {};
+
+    list.innerHTML = `
+      ${entries.length === 0 ? '<p class="text-muted text-small" style="margin-bottom:8px">Ingen innhold planlagt. Trykk "+ Legg til".</p>' : ''}
+      ${entries.map(e => `
+        <div class="pub-entry" data-eid="${e.id}">
+          <select class="pub-channel-sel" data-eid="${e.id}">
+            ${channels.map(ch => `<option ${e.channel===ch?'selected':''}>${ch}</option>`).join('')}
+          </select>
+          <input class="pub-entry-input" data-eid="${e.id}" value="${Utils.esc(e.text||'')}" placeholder="Hva går ut denne uka…">
+          <button class="task-del pub-del" data-eid="${e.id}" style="opacity:1">✕</button>
+        </div>`).join('')}
+      <button class="btn-ghost-sm" id="addCalEntryBtn" style="margin-top:6px;font-size:.8rem">+ Legg til</button>`;
+
+    list.querySelectorAll('.pub-channel-sel').forEach(sel => {
+      sel.addEventListener('change', Utils.debounce(() => {
+        const es = Utils.loadNested(CONFIG.STORAGE_KEYS.CALENDAR, weekKey, []);
+        const e = es.find(e => e.id === sel.dataset.eid);
+        if (e) { e.channel = sel.value; Utils.saveNested(CONFIG.STORAGE_KEYS.CALENDAR, weekKey, es); save(); }
+      }, 300));
+    });
+    list.querySelectorAll('.pub-entry-input').forEach(input => {
+      input.addEventListener('input', Utils.debounce(() => {
+        const es = Utils.loadNested(CONFIG.STORAGE_KEYS.CALENDAR, weekKey, []);
+        const e = es.find(e => e.id === input.dataset.eid);
+        if (e) { e.text = input.value; Utils.saveNested(CONFIG.STORAGE_KEYS.CALENDAR, weekKey, es); save(); }
+      }, 600));
+    });
+    list.querySelectorAll('.pub-del').forEach(btn => {
+      btn.addEventListener('click', () => {
+        let es = Utils.loadNested(CONFIG.STORAGE_KEYS.CALENDAR, weekKey, []);
+        es = es.filter(e => e.id !== btn.dataset.eid);
+        Utils.saveNested(CONFIG.STORAGE_KEYS.CALENDAR, weekKey, es);
+        this.renderCalendar(weekKey);
+      });
+    });
+    const addBtn = Utils.el('addCalEntryBtn');
+    if (addBtn) addBtn.onclick = () => this.addCalendarEntry(weekKey);
+  },
+
+  addCalendarEntry(weekKey) {
+    const es = Utils.loadNested(CONFIG.STORAGE_KEYS.CALENDAR, weekKey, []);
+    es.push({ id: Utils.uid(), channel: 'Blogg', text: '' });
+    Utils.saveNested(CONFIG.STORAGE_KEYS.CALENDAR, weekKey, es);
+    this.renderCalendar(weekKey);
+    setTimeout(() => {
+      const inputs = Utils.qsa('.pub-entry-input');
+      if (inputs.length) inputs[inputs.length - 1].focus();
+    }, 50);
+  },
+
+};

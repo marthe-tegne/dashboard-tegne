@@ -1,5 +1,5 @@
 // TEGNE Dashboard — Service Worker (PWA)
-const CACHE = 'tegne-v3';
+const CACHE = 'tegne-v5';
 const ASSETS = [
   '/',
   '/index.html',
@@ -13,6 +13,8 @@ const ASSETS = [
   '/js/monthly.js',
   '/js/quarterly.js',
   '/js/campaigns.js',
+  '/js/events.js',
+  '/js/search.js',
   '/js/app.js',
   '/manifest.json',
   '/assets/icon-192.png',

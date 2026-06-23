@@ -1871,6 +1871,36 @@ body {
   display: inline-block;
 }
 
+/* ---- Kalender-panel ---- */
+.task-cal-inner { padding: 8px 12px; }
+.cal-month-label { font-size: .75rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: .05em; margin-bottom: 6px; }
+.cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 2px; }
+.cal-header-cell { font-size: .65rem; font-weight: 700; color: var(--text-muted); text-align: center; padding: 2px 0; }
+.cal-cell { min-height: 32px; border-radius: 4px; padding: 2px; display: flex; flex-direction: column; align-items: center; cursor: default; font-size: .75rem; color: var(--text-soft); }
+.cal-cell.cal-empty { }
+.cal-cell.cal-today { background: var(--primary-lt); color: var(--primary); font-weight: 700; }
+.cal-cell.cal-has-tasks { background: var(--gray); }
+.cal-day-num { line-height: 1.6; }
+.cal-dots { display: flex; gap: 2px; flex-wrap: wrap; justify-content: center; }
+.cal-dot { width: 6px; height: 6px; border-radius: 50%; }
+
+/* ---- Daglige rutiner ---- */
+.routine-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 5px 0;
+  border-bottom: 1px solid var(--border);
+  cursor: pointer;
+  font-size: .85rem;
+  color: var(--text);
+}
+.routine-item:last-child { border-bottom: none; }
+.routine-item.routine-done span { text-decoration: line-through; color: var(--text-muted); }
+.routine-item input[type="checkbox"] { accent-color: var(--primary); width: 15px; height: 15px; flex-shrink: 0; cursor: pointer; }
+.routine-edit-row { display: flex; align-items: center; gap: 8px; padding: 4px 0; border-bottom: 1px solid var(--border); }
+.routine-edit-row:last-child { border-bottom: none; }
+
 /* Event week strip */
 .event-week-strip {
   display: flex;

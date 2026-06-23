@@ -136,21 +136,27 @@ const Weekly = {
 
         ${this.renderWeekContext(weekKey, dayIndex)}
 
+        ${this.renderDailyRoutines(dayIndex, weekKey)}
+
         <!-- Ukens oppgaveliste -->
         <div class="card">
           <div class="card-header">
             <div class="card-title"><span class="icon">${CONFIG.ICONS.tasks}</span> Ukens oppgaver</div>
-            <span class="badge badge-primary" id="taskCount"></span>
+            <div style="display:flex;gap:6px;align-items:center">
+              <span class="badge badge-primary" id="taskCount"></span>
+              <button class="btn-ghost-sm" id="toggleCalBtn" title="Kalendervisning">📅</button>
+            </div>
           </div>
+          <div id="taskCalPanel" style="display:none;padding:0 0 8px"></div>
           <div class="card-body" style="padding-top:8px">
-            <div class="task-filter-row" id="taskFilterRow">
+            <div class="task-filter-row" id="taskFilterRow" style="align-items:center">
               <button class="task-filter-btn active" data-filter="aktive">Aktive</button>
               <button class="task-filter-btn" data-filter="alle">Alle</button>
               <button class="task-filter-btn" data-filter="fullfort">Fullført</button>
-            </div>
-            <div class="platform-tag-row" id="taskCategoryFilter" style="margin-bottom:4px;margin-top:4px">
-              <button class="ctag-filter active" data-cat="">Alle</button>
-              ${CONFIG.TASK_CATEGORIES.map(c => `<button class="ctag-filter" data-cat="${c.id}" style="--cat-color:${c.color}">${c.label}</button>`).join('')}
+              <select id="taskCategorySelect" class="task-prio-select" style="margin-left:auto">
+                <option value="">Alle kategorier</option>
+                ${CONFIG.TASK_CATEGORIES.map(c => `<option value="${c.id}">${c.label}</option>`).join('')}
+              </select>
             </div>
             <div id="carryForwardPanel"></div>
             <div class="task-list" id="taskList"></div>
@@ -226,6 +232,8 @@ const Weekly = {
     this.renderWeekContextData(weekKey, dayIndex);
     this.initCarryForward(weekKey);
     this.renderTasks(weekKey);
+    this.initCalendarToggle(weekKey);
+    this.bindRoutines(dayIndex, weekKey);
     if (isMonday)    this.renderMondayTableData(weekKey);
     if (isTuesday)   this.renderTuesdayData(weekKey);
     if (isWednesday) this.renderWednesdayData(weekKey);
@@ -1564,6 +1572,155 @@ const Weekly = {
     </div>`;
   },
 
+  /* ---- Daglige rutiner ---- */
+
+  getDayRoutines(dayIndex) {
+    const dayId = CONFIG.DAYS[dayIndex];
+    const all = Utils.load(CONFIG.DAILY_ROUTINES_KEY, {});
+    return all[dayId] || [];
+  },
+
+  saveDayRoutines(dayIndex, routines) {
+    const dayId = CONFIG.DAYS[dayIndex];
+    const all = Utils.load(CONFIG.DAILY_ROUTINES_KEY, {});
+    all[dayId] = routines;
+    Utils.save(CONFIG.DAILY_ROUTINES_KEY, all);
+  },
+
+  getRoutineState(weekKey, dayIndex) {
+    const key = `tegne_routine_state_${weekKey}_${CONFIG.DAYS[dayIndex]}`;
+    return Utils.load(key, {});
+  },
+
+  saveRoutineState(weekKey, dayIndex, state) {
+    const key = `tegne_routine_state_${weekKey}_${CONFIG.DAYS[dayIndex]}`;
+    Utils.save(key, state);
+  },
+
+  renderDailyRoutines(dayIndex, weekKey) {
+    const routines = this.getDayRoutines(dayIndex);
+    const dayLabel = CONFIG.DAY_LABELS[dayIndex];
+    const state    = this.getRoutineState(weekKey, dayIndex);
+    const done     = routines.filter(r => state[r.id]).length;
+
+    return `<div class="card" id="routinesCard">
+      <div class="card-header">
+        <div class="card-title">
+          <span class="icon">🔁</span> Dagens arbeid — ${dayLabel}
+          ${routines.length ? `<span class="badge badge-primary" style="font-size:.65rem;margin-left:6px">${done}/${routines.length}</span>` : ''}
+        </div>
+        <button class="btn-ghost-sm" id="editRoutinesBtn">Rediger</button>
+      </div>
+      <div class="card-body" id="routinesList">
+        ${routines.length === 0
+          ? `<p class="text-muted text-small">Ingen faste oppgaver for ${dayLabel.toLowerCase()} ennå.
+              <button class="btn-ghost-sm" id="editRoutinesBtn2" style="margin-left:6px">+ Legg til</button></p>`
+          : routines.map(r => `
+            <label class="routine-item ${state[r.id] ? 'routine-done' : ''}">
+              <input type="checkbox" class="routine-cb" data-rid="${r.id}" ${state[r.id] ? 'checked' : ''}>
+              <span>${Utils.esc(r.text)}</span>
+            </label>`).join('')
+        }
+      </div>
+      <!-- Rediger-panel (skjult) -->
+      <div id="routineEditPanel" style="display:none;padding:0 12px 12px">
+        <div style="border-top:1px solid var(--border);padding-top:10px">
+          <div class="form-label" style="margin-bottom:6px">Faste oppgaver for ${dayLabel}</div>
+          <div id="routineEditList"></div>
+          <div style="display:flex;gap:6px;margin-top:6px">
+            <input type="text" id="newRoutineInput" class="form-input" placeholder="Ny fast oppgave…" style="flex:1">
+            <button class="btn-primary btn-sm" id="addRoutineBtn">+</button>
+          </div>
+        </div>
+      </div>
+    </div>`;
+  },
+
+  bindRoutines(dayIndex, weekKey) {
+    const editBtn  = Utils.el('editRoutinesBtn');
+    const editBtn2 = Utils.el('editRoutinesBtn2');
+    const panel    = Utils.el('routineEditPanel');
+
+    const toggleEdit = () => {
+      if (!panel) return;
+      const open = panel.style.display !== 'none';
+      panel.style.display = open ? 'none' : '';
+      if (!open) this.renderRoutineEditList(dayIndex, weekKey);
+    };
+    if (editBtn)  editBtn.onclick  = toggleEdit;
+    if (editBtn2) editBtn2.onclick = toggleEdit;
+
+    // Checkboxes
+    Utils.qsa('.routine-cb').forEach(cb => {
+      cb.addEventListener('change', () => {
+        const state = this.getRoutineState(weekKey, dayIndex);
+        state[cb.dataset.rid] = cb.checked;
+        this.saveRoutineState(weekKey, dayIndex, state);
+        const label = cb.closest('.routine-item');
+        if (label) label.classList.toggle('routine-done', cb.checked);
+        // Oppdater teller
+        const routines = this.getDayRoutines(dayIndex);
+        const done = routines.filter(r => state[r.id]).length;
+        const badge = Utils.el('routinesCard')?.querySelector('.badge');
+        if (badge) badge.textContent = `${done}/${routines.length}`;
+      });
+    });
+  },
+
+  renderRoutineEditList(dayIndex, weekKey) {
+    const container = Utils.el('routineEditList');
+    if (!container) return;
+    const routines = this.getDayRoutines(dayIndex);
+    container.innerHTML = routines.map(r => `
+      <div class="routine-edit-row" data-rid="${r.id}">
+        <span style="flex:1;font-size:.85rem">${Utils.esc(r.text)}</span>
+        <button class="btn-icon del-routine-btn" data-rid="${r.id}">✕</button>
+      </div>`).join('') || '<p class="text-muted text-small">Ingen ennå.</p>';
+
+    container.querySelectorAll('.del-routine-btn').forEach(btn => {
+      btn.onclick = () => {
+        let r = this.getDayRoutines(dayIndex).filter(x => x.id !== btn.dataset.rid);
+        this.saveDayRoutines(dayIndex, r);
+        this.renderRoutineEditList(dayIndex, weekKey);
+      };
+    });
+
+    const addBtn = Utils.el('addRoutineBtn');
+    const input  = Utils.el('newRoutineInput');
+    if (addBtn) {
+      addBtn.onclick = () => {
+        const text = input?.value.trim();
+        if (!text) return;
+        const r = this.getDayRoutines(dayIndex);
+        r.push({ id: Utils.uid(), text });
+        this.saveDayRoutines(dayIndex, r);
+        if (input) input.value = '';
+        this.renderRoutineEditList(dayIndex, weekKey);
+        // Oppdater sjekklisten uten full re-render
+        const list = Utils.el('routinesList');
+        if (list) {
+          const state = this.getRoutineState(weekKey, dayIndex);
+          const fresh = this.getDayRoutines(dayIndex);
+          list.innerHTML = fresh.map(x => `
+            <label class="routine-item ${state[x.id] ? 'routine-done' : ''}">
+              <input type="checkbox" class="routine-cb" data-rid="${x.id}" ${state[x.id] ? 'checked' : ''}>
+              <span>${Utils.esc(x.text)}</span>
+            </label>`).join('');
+          // Re-bind checkboxes
+          list.querySelectorAll('.routine-cb').forEach(cb => {
+            cb.addEventListener('change', () => {
+              const s = this.getRoutineState(weekKey, dayIndex);
+              s[cb.dataset.rid] = cb.checked;
+              this.saveRoutineState(weekKey, dayIndex, s);
+              cb.closest('.routine-item')?.classList.toggle('routine-done', cb.checked);
+            });
+          });
+        }
+      };
+      input?.addEventListener('keydown', e => { if (e.key === 'Enter') addBtn.click(); });
+    }
+  },
+
   renderMondayCampaigns() {
     const list = this.getWeekCampaigns();
     if (!list.length) return '';
@@ -1825,14 +1982,18 @@ const Weekly = {
       btn.onclick = () => { this.state.taskFilter = btn.dataset.filter; this.renderTasks(weekKey); };
     });
 
-    // Filterknappar kategori
-    Utils.qsa('.ctag-filter').forEach(btn => {
-      btn.classList.toggle('active', (btn.dataset.cat || null) === catFilter);
-      btn.onclick = () => {
-        this.state.taskCategory = btn.dataset.cat || null;
+    // Kategori dropdown-filter
+    const catSel = Utils.el('taskCategorySelect');
+    if (catSel) {
+      catSel.value = catFilter || '';
+      catSel.onchange = () => {
+        this.state.taskCategory = catSel.value || null;
         this.renderTasks(weekKey);
       };
-    });
+    }
+
+    // Bakoverkompatibilitet: 'kampanje-admin' → 'kampanje'
+    allTasks.forEach(t => { if (t.category === 'kampanje-admin') t.category = 'kampanje'; });
 
     const prioOrder = { haster: 0, hoy: 1, middels: 2, lav: 3 };
     const prioColors = { haster: '#eb5857', hoy: '#f97316', middels: '#f7c855', lav: '#acf5ca' };
@@ -1976,6 +2137,75 @@ const Weekly = {
         this.renderTasks(weekKey);
       });
     });
+  },
+
+  /* ---- Kalender-panel ---- */
+
+  renderTaskCalendar(weekKey) {
+    const panel = Utils.el('taskCalPanel');
+    if (!panel || panel.style.display === 'none') return;
+
+    const allTasks = this.getWeekTasks(weekKey).filter(t => t.dueDate);
+    const today = new Date(); today.setHours(0,0,0,0);
+    const year  = today.getFullYear();
+    const month = today.getMonth();
+
+    const firstDay = new Date(year, month, 1);
+    const lastDay  = new Date(year, month + 1, 0);
+    const startDow = (firstDay.getDay() + 6) % 7; // Mandag=0
+
+    // Grupper oppgaver per dato-streng
+    const byDate = {};
+    allTasks.forEach(t => {
+      const d = t.dueDate.substring(0, 10);
+      if (!byDate[d]) byDate[d] = [];
+      byDate[d].push(t);
+    });
+
+    const dayNames = ['Man', 'Tir', 'Ons', 'Tor', 'Fre', 'Lør', 'Søn'];
+    let cells = '';
+
+    // Tomme celler før første dag
+    for (let i = 0; i < startDow; i++) cells += `<div class="cal-cell cal-empty"></div>`;
+
+    for (let d = 1; d <= lastDay.getDate(); d++) {
+      const dateStr = `${year}-${String(month+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+      const tasks   = byDate[dateStr] || [];
+      const isToday = d === today.getDate();
+      const dots    = tasks.map(t => {
+        const prioColors = { haster: '#eb5857', hoy: '#f97316', middels: '#f7c855', lav: '#acf5ca' };
+        return `<span class="cal-dot" style="background:${prioColors[t.priority]||'var(--primary)'}"></span>`;
+      }).join('');
+      const tooltipTasks = tasks.map(t => t.text).join('\n');
+
+      cells += `<div class="cal-cell${isToday ? ' cal-today' : ''}${tasks.length ? ' cal-has-tasks' : ''}"
+        title="${tooltipTasks ? Utils.esc(tooltipTasks) : ''}">
+        <span class="cal-day-num">${d}</span>
+        ${dots ? `<div class="cal-dots">${dots}</div>` : ''}
+      </div>`;
+    }
+
+    panel.innerHTML = `
+      <div class="task-cal-inner">
+        <div class="cal-month-label">${CONFIG.MONTHS_NO[month]} ${year}</div>
+        <div class="cal-grid">
+          ${dayNames.map(n => `<div class="cal-header-cell">${n}</div>`).join('')}
+          ${cells}
+        </div>
+      </div>`;
+  },
+
+  initCalendarToggle(weekKey) {
+    const btn = Utils.el('toggleCalBtn');
+    if (!btn) return;
+    btn.onclick = () => {
+      const panel = Utils.el('taskCalPanel');
+      if (!panel) return;
+      const open = panel.style.display !== 'none';
+      panel.style.display = open ? 'none' : '';
+      btn.style.background = open ? '' : 'var(--primary-lt)';
+      if (!open) this.renderTaskCalendar(weekKey);
+    };
   },
 
   addWeekTask(weekKey) {

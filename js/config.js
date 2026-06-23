@@ -104,11 +104,15 @@ const CONFIG = {
 
   // Oppgave-kategorier
   TASK_CATEGORIES: [
-    { id: 'seo',            label: 'SEO',           color: '#1a5f82', bg: '#1a5f8220' },
-    { id: 'innhold',        label: 'Innhold',        color: '#0a7c45', bg: '#0a7c4520' },
-    { id: 'some-grafisk',   label: 'SoMe & Grafisk', color: '#e1306c', bg: '#e1306c20' },
-    { id: 'kampanje-admin', label: 'Kampanje/Admin', color: '#92620a', bg: '#f7c85530' },
+    { id: 'seo',          label: 'SEO',           color: '#1a5f82', bg: '#1a5f8220' },
+    { id: 'innhold',      label: 'Innhold',        color: '#0a7c45', bg: '#0a7c4520' },
+    { id: 'some-grafisk', label: 'SoMe & Grafisk', color: '#e1306c', bg: '#e1306c20' },
+    { id: 'kampanje',     label: 'Kampanje',       color: '#92620a', bg: '#f7c85530' },
+    { id: 'admin',        label: 'Admin',          color: '#6b21a8', bg: '#6b21a820' },
+    { id: 'annet',        label: 'Annet',          color: '#475569', bg: '#47556920' },
   ],
+
+  DAILY_ROUTINES_KEY: 'tegne_daily_routines',
 
   // Oppgave-prioriteter
   TASK_PRIORITIES: [

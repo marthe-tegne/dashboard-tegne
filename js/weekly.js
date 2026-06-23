@@ -217,20 +217,6 @@ const Weekly = {
         ${isThursday ? this.renderThursdaySection(weekKey) : ''}
         ${isFriday ? this.renderFridaySection(weekKey) : ''}
 
-        <!-- Hva funket / funket ikke — alltid nederst -->
-        <div class="card">
-          <div class="card-header">
-            <div class="card-title"><span class="icon">${CONFIG.ICONS.bulb}</span> Hva funket / funket ikke</div>
-          </div>
-          <div class="card-body">
-            <div class="winloss-list" id="winlossList"></div>
-            <div class="winloss-add-row">
-              <button class="btn-primary btn-sm" id="addWinBtn" style="background:var(--green);color:#0a7c45;border:none">+ Funket</button>
-              <button class="btn-primary btn-sm" id="addLossBtn" style="background:var(--red-lt);color:#b91c1c;border:none">+ Funket ikke</button>
-            </div>
-          </div>
-        </div>
-
       </div>`;
 
     Utils.html('dayContent', html);
@@ -240,7 +226,6 @@ const Weekly = {
     this.renderWeekContextData(weekKey, dayIndex);
     this.initCarryForward(weekKey);
     this.renderTasks(weekKey);
-    this.renderWinLoss(dayKey);
     if (isMonday)    this.renderMondayTableData(weekKey);
     if (isTuesday)   this.renderTuesdayData(weekKey);
     if (isWednesday) this.renderWednesdayData(weekKey);
@@ -1888,7 +1873,6 @@ const Weekly = {
         'Ingen oppgaver denne uken.'}</p>`;
     } else {
       list.innerHTML = visible.map(t => {
-        const sc  = statusColors[t.status] || statusColors['ikke-startet'];
         const cat = CONFIG.TASK_CATEGORIES.find(c => c.id === t.category);
         const catBadge = cat
           ? `<span class="badge" style="background:${cat.bg};color:${cat.color};font-size:.62rem">${cat.label}</span>`
@@ -1896,42 +1880,54 @@ const Weekly = {
         const prioBar = prioColors[t.priority] || '#d1d9e0';
         const normalizedStatus = t.status === 'startet' ? 'ikke-startet' : t.status;
 
+        const statusCfg = {
+          'ikke-startet': { label: '○ Ikke startet', bg: 'var(--gray)',       color: 'var(--text-muted)' },
+          'pagar':        { label: '◑ Pågår',         bg: 'var(--primary-lt)', color: 'var(--primary)' },
+          'fullfort':     { label: '● Fullført',      bg: 'var(--green-lt)',   color: '#0a7c45' },
+        };
+        const sc = statusCfg[normalizedStatus] || statusCfg['ikke-startet'];
+
         // Frist-badge
         let dueBadge = '';
         if (t.dueDate) {
           const due = new Date(t.dueDate); due.setHours(0,0,0,0);
           const diff = Math.round((due - today) / 86400000);
           const dueStr = due.toLocaleDateString('no-NO', { day: 'numeric', month: 'short' });
-          if (diff < 0)      dueBadge = `<span class="task-due-badge overdue">⚠ ${dueStr}</span>`;
+          if (diff < 0)       dueBadge = `<span class="task-due-badge overdue">⚠ ${dueStr}</span>`;
           else if (diff <= 3) dueBadge = `<span class="task-due-badge soon">⏰ ${dueStr}</span>`;
           else                dueBadge = `<span class="task-due-badge">${dueStr}</span>`;
         }
 
         return `
-        <div class="task-item-v2" data-tid="${t.id}">
+        <div class="task-item-v2" data-tid="${t.id}" draggable="true">
+          <div class="task-drag-handle" title="Dra for å endre rekkefølge">⠿</div>
           <div class="task-prio-bar" style="background:${prioBar}"></div>
           <div style="flex:1;min-width:0">
             <span class="task-text-v2 ${t.status === 'fullfort' ? 'done' : ''}" contenteditable="true" data-tid="${t.id}">${Utils.esc(t.text)}</span>
             ${(catBadge || dueBadge) ? `<div style="display:flex;flex-wrap:wrap;gap:2px;margin-top:2px">${catBadge}${dueBadge}</div>` : ''}
           </div>
-          <select class="task-status-sel" data-tid="${t.id}" style="background:${sc.bg};color:${sc.color}">
-            <option value="ikke-startet" ${normalizedStatus==='ikke-startet'?'selected':''}>Ikke startet</option>
-            <option value="pagar"        ${normalizedStatus==='pagar'       ?'selected':''}>Pågår</option>
-            <option value="fullfort"     ${normalizedStatus==='fullfort'    ?'selected':''}>Fullført</option>
-          </select>
-          <button class="task-del" data-tid="${t.id}" style="opacity:1">✕</button>
+          <button class="task-status-btn" data-tid="${t.id}" data-status="${normalizedStatus}"
+            style="background:${sc.bg};color:${sc.color}"
+            title="Klikk for å endre status">${sc.label}</button>
+          <button class="task-del" data-tid="${t.id}">✕</button>
         </div>`;
       }).join('');
     }
 
-    list.querySelectorAll('.task-status-sel').forEach(sel => {
-      sel.addEventListener('change', () => {
+    // Status-knapp: klikk sykler gjennom statuser
+    const statusCycle = ['ikke-startet', 'pagar', 'fullfort'];
+    list.querySelectorAll('.task-status-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
         const tasks = this.getWeekTasks(weekKey);
-        const t = tasks.find(t => t.id === sel.dataset.tid);
-        if (t) { t.status = sel.value; this.saveWeekTasks(weekKey, tasks); }
+        const t = tasks.find(t => t.id === btn.dataset.tid);
+        if (!t) return;
+        const cur = statusCycle.indexOf(t.status === 'startet' ? 'ikke-startet' : t.status);
+        t.status = statusCycle[(cur + 1) % statusCycle.length];
+        this.saveWeekTasks(weekKey, tasks);
         this.renderTasks(weekKey);
       });
     });
+
     list.querySelectorAll('.task-text-v2[contenteditable]').forEach(el => {
       el.addEventListener('blur', () => {
         const tasks = this.getWeekTasks(weekKey);
@@ -1939,10 +1935,43 @@ const Weekly = {
         if (t && el.textContent !== t.text) { t.text = el.textContent.trim(); this.saveWeekTasks(weekKey, tasks); }
       });
     });
+
     list.querySelectorAll('.task-del').forEach(btn => {
       btn.addEventListener('click', () => {
         let tasks = this.getWeekTasks(weekKey);
         tasks = tasks.filter(t => t.id !== btn.dataset.tid);
+        this.saveWeekTasks(weekKey, tasks);
+        this.renderTasks(weekKey);
+      });
+    });
+
+    // Dra-og-slipp rekkefølge
+    let dragSrcId = null;
+    list.querySelectorAll('.task-item-v2').forEach(item => {
+      item.addEventListener('dragstart', e => {
+        dragSrcId = item.dataset.tid;
+        item.classList.add('dragging');
+        e.dataTransfer.effectAllowed = 'move';
+      });
+      item.addEventListener('dragend', () => {
+        item.classList.remove('dragging');
+        list.querySelectorAll('.task-item-v2').forEach(i => i.classList.remove('drag-over'));
+      });
+      item.addEventListener('dragover', e => {
+        e.preventDefault();
+        e.dataTransfer.dropEffect = 'move';
+        list.querySelectorAll('.task-item-v2').forEach(i => i.classList.remove('drag-over'));
+        if (item.dataset.tid !== dragSrcId) item.classList.add('drag-over');
+      });
+      item.addEventListener('drop', e => {
+        e.preventDefault();
+        if (!dragSrcId || item.dataset.tid === dragSrcId) return;
+        let tasks = this.getWeekTasks(weekKey);
+        const srcIdx  = tasks.findIndex(t => t.id === dragSrcId);
+        const destIdx = tasks.findIndex(t => t.id === item.dataset.tid);
+        if (srcIdx < 0 || destIdx < 0) return;
+        const [moved] = tasks.splice(srcIdx, 1);
+        tasks.splice(destIdx, 0, moved);
         this.saveWeekTasks(weekKey, tasks);
         this.renderTasks(weekKey);
       });

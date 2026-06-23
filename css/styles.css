@@ -568,16 +568,31 @@ body {
   cursor: text;
 }
 .task-text-v2.done { text-decoration: line-through; color: var(--text-muted); }
-.task-status-sel {
+.task-status-btn {
   border: none;
   border-radius: 20px;
-  font-size: .7rem;
+  font-size: .68rem;
   font-weight: 700;
-  padding: 3px 8px;
+  padding: 3px 9px;
   cursor: pointer;
   outline: none;
   flex-shrink: 0;
+  white-space: nowrap;
+  transition: opacity .15s;
 }
+.task-status-btn:hover { opacity: .8; }
+.task-drag-handle {
+  font-size: 1rem;
+  color: var(--text-muted);
+  cursor: grab;
+  padding: 0 4px 0 8px;
+  flex-shrink: 0;
+  user-select: none;
+  opacity: .4;
+}
+.task-item-v2:hover .task-drag-handle { opacity: .8; }
+.task-item-v2.dragging { opacity: .4; }
+.task-item-v2.drag-over { border-color: var(--primary); background: var(--primary-lt); }
 .task-filter-row {
   display: flex;
   gap: 4px;

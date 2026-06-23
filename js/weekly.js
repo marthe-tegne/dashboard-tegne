@@ -1973,23 +1973,24 @@ const Weekly = {
             <span class="task-text-v2 ${t.status === 'fullfort' ? 'done' : ''}" contenteditable="true" data-tid="${t.id}">${Utils.esc(t.text)}</span>
             ${(catBadge || dueBadge) ? `<div style="display:flex;flex-wrap:wrap;gap:2px;margin-top:2px">${catBadge}${dueBadge}</div>` : ''}
           </div>
-          <button class="task-status-btn" data-tid="${t.id}" data-status="${normalizedStatus}"
-            style="background:${sc.bg};color:${sc.color}"
-            title="Klikk for å endre status">${sc.label}</button>
+          <select class="task-status-sel" data-tid="${t.id}"
+            style="background:${sc.bg};color:${sc.color}">
+            <option value="ikke-startet" ${normalizedStatus === 'ikke-startet' ? 'selected' : ''}>Ikke startet</option>
+            <option value="pagar"        ${normalizedStatus === 'pagar'        ? 'selected' : ''}>Pågår</option>
+            <option value="fullfort"     ${normalizedStatus === 'fullfort'     ? 'selected' : ''}>Fullført</option>
+          </select>
           <button class="task-del" data-tid="${t.id}">✕</button>
         </div>`;
       }).join('');
     }
 
-    // Status-knapp: klikk sykler gjennom statuser
-    const statusCycle = ['ikke-startet', 'pagar', 'fullfort'];
-    list.querySelectorAll('.task-status-btn').forEach(btn => {
-      btn.addEventListener('click', () => {
+    // Status-dropdown
+    list.querySelectorAll('.task-status-sel').forEach(sel => {
+      sel.addEventListener('change', () => {
         const tasks = this.getWeekTasks(weekKey);
-        const t = tasks.find(t => t.id === btn.dataset.tid);
+        const t = tasks.find(t => t.id === sel.dataset.tid);
         if (!t) return;
-        const cur = statusCycle.indexOf(t.status === 'startet' ? 'ikke-startet' : t.status);
-        t.status = statusCycle[(cur + 1) % statusCycle.length];
+        t.status = sel.value;
         this.saveWeekTasks(weekKey, tasks);
         this.renderTasks(weekKey);
       });

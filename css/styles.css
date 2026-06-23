@@ -581,6 +581,19 @@ body {
   transition: opacity .15s;
 }
 .task-status-btn:hover { opacity: .8; }
+.task-status-sel {
+  border: none;
+  border-radius: 20px;
+  font-size: .68rem;
+  font-weight: 700;
+  padding: 3px 9px;
+  cursor: pointer;
+  outline: none;
+  flex-shrink: 0;
+  white-space: nowrap;
+  appearance: none;
+  -webkit-appearance: none;
+}
 .task-drag-handle {
   font-size: 1rem;
   color: var(--text-muted);

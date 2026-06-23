@@ -1657,6 +1657,7 @@
     "2026-W25_v2_init": true
   },
   "tegne_settings": {
+    "sheetsUrl": "https://script.google.com/macros/s/AKfycbzh_0DZzR66jN1I28zxbuCOkZMEERFigj0bXo-sOBbXvncVT-SFZPLcdeeyD7dq9YwArg/exec",
     "banner": "",
     "bannerColor": "primary",
     "bannerInput": "",

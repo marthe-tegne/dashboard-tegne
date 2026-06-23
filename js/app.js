@@ -21,6 +21,7 @@ const App = {
     Quarterly.init();
     Campaigns.init();
     Events.init();
+    Search.init();
 
     this.setView('weekly');
     this.checkPeriodicReminders();

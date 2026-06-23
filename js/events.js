@@ -15,6 +15,7 @@ const Events = {
 
   saveData(data) {
     Utils.save(CONFIG.STORAGE_KEYS.EVENTS, data);
+    Sheets.debouncedSave('local', CONFIG.STORAGE_KEYS.EVENTS, data);
   },
 
   init() {},

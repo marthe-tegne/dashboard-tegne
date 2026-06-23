@@ -131,6 +131,8 @@ const Weekly = {
       <div class="section-stack">
 
         ${this.renderCampaignStrip()}
+        ${this.renderEventStrip()}
+        ${this.renderDueTasksAlert()}
 
         ${this.renderWeekContext(weekKey, dayIndex)}
 
@@ -1513,6 +1515,67 @@ const Weekly = {
         const tc = CONFIG.CAMPAIGN_TYPES.find(t => t.id === c.type);
         return `<span class="campaign-strip-badge" style="background:${tc?.color||'var(--primary)'};color:${tc?.textColor||'#fff'}">${Utils.esc(c.name)}</span>`;
       }).join('')}
+    </div>`;
+  },
+
+  /* ---- Arrangement-strip (kommende 7 dager) ---- */
+
+  getWeekEvents() {
+    if (typeof Events === 'undefined') return [];
+    const monday = Utils.getMonday(this.state.year, this.state.week);
+    const sunday = new Date(monday); sunday.setDate(monday.getDate() + 6);
+    return Events.getData().filter(e => {
+      if (e.status === 'ide' || !e.date) return false;
+      const d = new Date(e.date);
+      return d >= monday && d <= sunday;
+    }).sort((a, b) => new Date(a.date) - new Date(b.date));
+  },
+
+  renderEventStrip() {
+    const list = this.getWeekEvents();
+    if (!list.length) return '';
+    return `<div class="event-week-strip">
+      <span class="campaign-strip-label">📅 Arrangement:</span>
+      ${list.map(e => {
+        const tc = CONFIG.EVENT_TYPES.find(t => t.id === e.type);
+        const dateStr = Utils.formatDate(e.date, 'short');
+        const timeStr = e.time ? ` kl.${e.time}` : '';
+        return `<span class="event-strip-badge" style="background:${tc?.color||'var(--primary)'}22;color:${tc?.color||'var(--primary)'};border:1px solid ${tc?.color||'var(--primary)'}44">
+          ${dateStr}${timeStr} · ${Utils.esc(e.name)}
+          ${e.location ? `<span style="opacity:.7"> · ${Utils.esc(e.location)}</span>` : ''}
+        </span>`;
+      }).join('')}
+    </div>`;
+  },
+
+  /* ---- Frist-varsling ---- */
+
+  renderDueTasksAlert() {
+    const weekKey = this.getWeekKey();
+    const tasks = Utils.loadNested(CONFIG.STORAGE_KEYS.TASKS, weekKey + '_v2', []);
+    const today = new Date(); today.setHours(0, 0, 0, 0);
+    const tomorrow = new Date(today); tomorrow.setDate(today.getDate() + 1);
+
+    const urgent = tasks.filter(t => {
+      if (!t.dueDate || t.status === 'fullfort') return false;
+      const d = new Date(t.dueDate);
+      return d <= tomorrow;
+    }).sort((a, b) => new Date(a.dueDate) - new Date(b.dueDate));
+
+    if (!urgent.length) return '';
+
+    return `<div class="due-alert-strip">
+      <span class="due-alert-icon">⏰</span>
+      <div class="due-alert-items">
+        ${urgent.map(t => {
+          const d = new Date(t.dueDate);
+          const isToday = d.getTime() === today.getTime();
+          const isOverdue = d < today;
+          const label = isOverdue ? 'Forfalt' : isToday ? 'I dag' : 'I morgen';
+          const cls   = isOverdue || isToday ? 'due-alert-item--red' : 'due-alert-item--yellow';
+          return `<span class="due-alert-item ${cls}"><strong>${label}:</strong> ${Utils.esc(t.text)}</span>`;
+        }).join('')}
+      </div>
     </div>`;
   },
 

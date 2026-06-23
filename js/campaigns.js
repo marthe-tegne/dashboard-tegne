@@ -16,9 +16,7 @@ const Campaigns = {
 
   saveData(data) {
     Utils.save(CONFIG.STORAGE_KEYS.CAMPAIGNS, data);
-    if (typeof Sheets !== 'undefined' && Sheets.isConfigured()) {
-      Sheets.debouncedSave('local', CONFIG.STORAGE_KEYS.CAMPAIGNS, data);
-    }
+    Sheets.debouncedSave('local', CONFIG.STORAGE_KEYS.CAMPAIGNS, data);
   },
 
   init() {

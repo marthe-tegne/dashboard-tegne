@@ -602,6 +602,7 @@ const Weekly = {
   /* ---- Tirsdag — SoMe-dag ---- */
 
   renderTuesdaySoMe(weekKey) {
+    const campaignList = this.getWeekCampaigns();
     return `
       <!-- Ukens innleggsplan -->
       <div class="card">
@@ -609,28 +610,35 @@ const Weekly = {
           <div class="card-title"><span class="icon">${CONFIG.ICONS.phone}</span> Ukens innleggsplan</div>
         </div>
         <div class="card-body">
-          <div class="platform-tag-row" id="platformTags" style="margin-bottom:6px">
-            <button class="ptag" data-p="Instagram">📸 Instagram</button>
-            <button class="ptag" data-p="Facebook">👥 Facebook</button>
-            <button class="ptag" data-p="TikTok">🎵 TikTok</button>
-            <button class="ptag" data-p="Pinterest">📌 Pinterest</button>
-          </div>
-          <div class="platform-tag-row" id="postStoreTags" style="margin-bottom:6px">
-            ${CONFIG.STORES.map(s => `<button class="stag" data-s="${s.id}">${s.icon} ${s.label}</button>`).join('')}
-          </div>
-          <div class="platform-tag-row" id="postCampaignTags" style="margin-bottom:8px">
-            ${(() => {
-              const list = this.getWeekCampaigns();
-              if (!list.length) return '<span style="font-size:.72rem;color:var(--text-muted)">Ingen aktive kampanjer</span>';
-              return list.map(c => {
-                const tc = CONFIG.CAMPAIGN_TYPES.find(t => t.id === c.type);
-                return `<button class="ctag" data-c="${c.id}" style="--ctag-color:${tc?.color||'var(--primary)'};">${Utils.esc(c.name)}</button>`;
-              }).join('');
-            })()}
-          </div>
-          <div class="add-task-row" style="margin-bottom:10px">
-            <input class="add-task-input" id="newPostInput" placeholder="Beskriv innlegget…">
-            <button class="btn-primary btn-sm" id="addPostBtn">+</button>
+          <!-- Nytt innlegg -->
+          <div class="post-add-form">
+            <div class="post-add-tags">
+              <div class="platform-tag-row" id="platformTags">
+                <button class="ptag active" data-p="Instagram">📸 Instagram</button>
+                <button class="ptag" data-p="Facebook">👥 Facebook</button>
+                <button class="ptag" data-p="TikTok">🎵 TikTok</button>
+                <button class="ptag" data-p="Pinterest">📌 Pinterest</button>
+              </div>
+              <div class="platform-tag-row" id="postStoreTags">
+                ${CONFIG.STORES.map(s => `<button class="stag" data-s="${s.id}">${s.icon} ${s.label}</button>`).join('')}
+              </div>
+              <div class="platform-tag-row" id="postCampaignTags">
+                ${!campaignList.length
+                  ? '<span style="font-size:.72rem;color:var(--text-muted)">Ingen aktive kampanjer</span>'
+                  : campaignList.map(c => {
+                      const tc = CONFIG.CAMPAIGN_TYPES.find(t => t.id === c.type);
+                      return `<button class="ctag" data-c="${c.id}" style="--ctag-color:${tc?.color||'var(--primary)'};">${Utils.esc(c.name)}</button>`;
+                    }).join('')}
+              </div>
+            </div>
+            <div class="post-add-row">
+              <select class="post-day-sel" id="newPostDay">
+                <option value="">Dag…</option>
+                ${CONFIG.DAY_LABELS.map((d,i) => `<option value="${CONFIG.DAYS[i]}">${d}</option>`).join('')}
+              </select>
+              <input class="add-task-input" id="newPostInput" placeholder="Beskriv innlegget…" style="flex:1">
+              <button class="btn-primary btn-sm" id="addPostBtn">+</button>
+            </div>
           </div>
           <div id="postPlanList"></div>
           <div style="margin-top:14px">
@@ -742,56 +750,85 @@ const Weekly = {
   renderPostPlan(weekKey) {
     const list = Utils.el('postPlanList');
     if (!list) return;
-    const posts = Utils.loadNested(CONFIG.STORAGE_KEYS.WEEKLY, weekKey + '_posts', []);
-    const platformColors = { Instagram: '#e1306c', Facebook: '#1877f2', TikTok: '#010101', Pinterest: '#e60023' };
+
+    const PLAT_COLOR = { Instagram: '#e1306c', Facebook: '#1877f2', TikTok: '#010101', Pinterest: '#e60023' };
     const allCampaigns = typeof Campaigns !== 'undefined' ? Campaigns.getData() : [];
 
-    // Bind tag toggles
+    // Bind tag toggles i add-form
     Utils.qsa('.ptag').forEach(btn => btn.addEventListener('click', () => btn.classList.toggle('active')));
+    Utils.qsa('.stag').forEach(btn => btn.addEventListener('click', () => btn.classList.toggle('active')));
     Utils.qsa('.ctag').forEach(btn => btn.addEventListener('click', () => {
       Utils.qsa('.ctag').forEach(b => b.classList.remove('active'));
       btn.classList.toggle('active');
     }));
 
+    const posts = Utils.loadNested(CONFIG.STORAGE_KEYS.WEEKLY, weekKey + '_posts', []);
+
     if (posts.length === 0) {
-      list.innerHTML = '<p class="text-muted text-small">Ingen innlegg planlagt ennå.</p>';
+      list.innerHTML = '<p class="text-muted text-small" style="margin-top:8px">Ingen innlegg planlagt ennå.</p>';
       return;
     }
-    list.innerHTML = posts.map(p => {
-      const platforms = p.platforms || (p.platform ? [p.platform] : ['Instagram']);
-      const platBadges = platforms.map(pl =>
-        `<span class="badge" style="background:${platformColors[pl]||'#888'}22;color:${platformColors[pl]||'#888'};font-size:.68rem;margin-right:2px">${pl}</span>`
-      ).join('');
-      const storeBadges = (p.stores || []).map(sid => {
-        const s = CONFIG.STORES.find(x => x.id === sid);
-        return s ? `<span class="badge" style="background:#247ca715;color:var(--primary-dk);font-size:.65rem">${s.icon} ${s.label}</span>` : '';
+
+    // Grupper etter dag
+    const dayOrder = [...CONFIG.DAYS, ''];
+    const byDay = {};
+    posts.forEach(p => {
+      const d = p.day || '';
+      if (!byDay[d]) byDay[d] = [];
+      byDay[d].push(p);
+    });
+
+    list.innerHTML = dayOrder.filter(d => byDay[d]).flatMap(d => {
+      const dayLabel = d ? CONFIG.DAY_LABELS[CONFIG.DAYS.indexOf(d)] : 'Uten dato';
+      const header = `<div class="post-day-header">${dayLabel}</div>`;
+      const cards = byDay[d].map(p => {
+        const platforms = p.platforms || (p.platform ? [p.platform] : ['Instagram']);
+        const mainColor = PLAT_COLOR[platforms[0]] || '#888';
+        const platBadges = platforms.map(pl =>
+          `<span class="post-plat-badge" style="background:${PLAT_COLOR[pl]||'#888'}20;color:${PLAT_COLOR[pl]||'#888'}">${pl}</span>`
+        ).join('');
+        const storeBadges = (p.stores || []).map(sid => {
+          const s = CONFIG.STORES.find(x => x.id === sid);
+          return s ? `<span class="post-store-badge">${s.icon} ${s.label}</span>` : '';
+        }).join('');
+        const campaign = allCampaigns.find(x => x.id === p.campaignId);
+        const tc = campaign ? CONFIG.CAMPAIGN_TYPES.find(t => t.id === campaign.type) : null;
+        const campaignBadge = campaign
+          ? `<span class="post-campaign-badge" style="background:${tc?.color||'var(--primary)'}20;color:${tc?.color||'var(--primary)'}">${Utils.esc(campaign.name)}</span>`
+          : '';
+
+        return `
+        <div class="post-card ${p.done ? 'post-done' : ''}" data-pid="${p.id}" style="--plat-color:${mainColor}">
+          <div class="post-card-top">
+            <div class="post-card-badges">${platBadges}${campaignBadge}${storeBadges}</div>
+            <div class="post-card-actions">
+              <button class="post-img-btn btn-icon" data-pid="${p.id}" title="Bildeidé">🖼</button>
+              <button class="post-done-btn btn-icon ${p.done ? 'post-done-active' : ''}" data-pid="${p.id}" title="Marker ferdig">✓</button>
+              <button class="post-del btn-icon" data-pid="${p.id}">✕</button>
+            </div>
+          </div>
+          <div class="post-card-text ${p.done ? 'done' : ''}" contenteditable="true" data-pid="${p.id}"
+               data-empty="${!p.text}">${p.text ? Utils.esc(p.text) : ''}</div>
+          <div class="post-img-row ${p.imageNote ? '' : 'hidden'}" data-pid="${p.id}">
+            <span style="font-size:.75rem;color:var(--text-muted);flex-shrink:0">🖼 Bildeidé:</span>
+            <input class="post-img-input" data-pid="${p.id}" placeholder="Beskriv bilde eller filnavn…" value="${Utils.esc(p.imageNote||'')}">
+          </div>
+        </div>`;
       }).join('');
-      const campaignBadge = (() => {
-        if (!p.campaignId) return '';
-        const c = allCampaigns.find(x => x.id === p.campaignId);
-        if (!c) return '';
-        const tc = CONFIG.CAMPAIGN_TYPES.find(t => t.id === c.type);
-        return `<span class="campaign-type-badge" style="background:${tc?.color||'var(--primary)'};color:${tc?.textColor||'#fff'};font-size:.62rem">${Utils.esc(c.name)}</span>`;
-      })();
-      return `
-      <div class="task-item" data-pid="${p.id}">
-        <div class="task-checkbox ${p.done ? 'checked' : ''}" data-pid="${p.id}">${p.done ? '✓' : ''}</div>
-        <div style="flex:1;min-width:0">
-          <div style="display:flex;flex-wrap:wrap;gap:2px;margin-bottom:2px">${platBadges}${storeBadges}${campaignBadge}</div>
-          <span class="task-text ${p.done ? 'done' : ''}" style="font-size:.85rem">${p.text ? Utils.esc(p.text) : '<span style="color:var(--text-muted);font-style:italic">Beskriv innlegget…</span>'}</span>
-        </div>
-        <button class="task-del post-del" data-pid="${p.id}">✕</button>
-      </div>`;
+      return [header, cards];
     }).join('');
 
-    list.querySelectorAll('.task-checkbox').forEach(cb => {
-      cb.addEventListener('click', () => {
+    // Checkboxes / done
+    list.querySelectorAll('.post-done-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
         const posts = Utils.loadNested(CONFIG.STORAGE_KEYS.WEEKLY, weekKey + '_posts', []);
-        const p = posts.find(p => p.id === cb.dataset.pid);
+        const p = posts.find(p => p.id === btn.dataset.pid);
         if (p) { p.done = !p.done; Utils.saveNested(CONFIG.STORAGE_KEYS.WEEKLY, weekKey + '_posts', posts); }
         this.renderPostPlan(weekKey);
       });
     });
+
+    // Slett
     list.querySelectorAll('.post-del').forEach(btn => {
       btn.addEventListener('click', () => {
         let posts = Utils.loadNested(CONFIG.STORAGE_KEYS.WEEKLY, weekKey + '_posts', []);
@@ -800,19 +837,53 @@ const Weekly = {
         this.renderPostPlan(weekKey);
       });
     });
+
+    // Bildenotater toggle
+    list.querySelectorAll('.post-img-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const row = list.querySelector(`.post-img-row[data-pid="${btn.dataset.pid}"]`);
+        if (row) { row.classList.toggle('hidden'); if (!row.classList.contains('hidden')) row.querySelector('input')?.focus(); }
+      });
+    });
+
+    // Lagre bildenotat
+    list.querySelectorAll('.post-img-input').forEach(inp => {
+      inp.addEventListener('input', Utils.debounce(() => {
+        const posts = Utils.loadNested(CONFIG.STORAGE_KEYS.WEEKLY, weekKey + '_posts', []);
+        const p = posts.find(p => p.id === inp.dataset.pid);
+        if (p) { p.imageNote = inp.value.trim(); Utils.saveNested(CONFIG.STORAGE_KEYS.WEEKLY, weekKey + '_posts', posts); }
+      }, 600));
+    });
+
+    // Lagre tekst inline
+    list.querySelectorAll('.post-card-text[contenteditable]').forEach(el => {
+      if (!el.textContent.trim()) el.setAttribute('data-empty', 'true');
+      el.addEventListener('focus', () => el.removeAttribute('data-empty'));
+      el.addEventListener('blur', () => {
+        const posts = Utils.loadNested(CONFIG.STORAGE_KEYS.WEEKLY, weekKey + '_posts', []);
+        const p = posts.find(p => p.id === el.dataset.pid);
+        if (p) { p.text = el.textContent.trim(); Utils.saveNested(CONFIG.STORAGE_KEYS.WEEKLY, weekKey + '_posts', posts); }
+        if (!el.textContent.trim()) el.setAttribute('data-empty', 'true');
+      });
+    });
   },
 
   addPost(weekKey) {
     const input = Utils.el('newPostInput');
-    if (!input || !input.value.trim()) return;
-    const platforms   = [...Utils.qsa('.ptag.active')].map(b => b.dataset.p);
-    const stores      = [...Utils.qsa('#postStoreTags .stag.active')].map(b => b.dataset.s);
-    const campaignId  = Utils.qsa('#postCampaignTags .ctag.active')[0]?.dataset.c || null;
+    if (!input) return;
+    const text = input.value.trim();
+    const platforms  = [...Utils.qsa('.ptag.active')].map(b => b.dataset.p);
+    const stores     = [...Utils.qsa('#postStoreTags .stag.active')].map(b => b.dataset.s);
+    const campaignId = Utils.qsa('#postCampaignTags .ctag.active')[0]?.dataset.c || null;
+    const day        = Utils.el('newPostDay')?.value || '';
     const posts = Utils.loadNested(CONFIG.STORAGE_KEYS.WEEKLY, weekKey + '_posts', []);
-    posts.push({ id: Utils.uid(), platforms: platforms.length ? platforms : ['Instagram'], stores, campaignId, text: input.value.trim(), done: false });
+    posts.push({ id: Utils.uid(), platforms: platforms.length ? platforms : ['Instagram'], stores, campaignId, day, text, done: false, imageNote: '' });
     Utils.saveNested(CONFIG.STORAGE_KEYS.WEEKLY, weekKey + '_posts', posts);
     input.value = '';
-    Utils.qsa('.ptag, .stag, .ctag').forEach(b => b.classList.remove('active'));
+    Utils.qsa('.stag, .ctag').forEach(b => b.classList.remove('active'));
+    // Reset platform til Instagram
+    Utils.qsa('.ptag').forEach(b => b.classList.toggle('active', b.dataset.p === 'Instagram'));
+    if (Utils.el('newPostDay')) Utils.el('newPostDay').value = '';
     this.renderPostPlan(weekKey);
   },
 

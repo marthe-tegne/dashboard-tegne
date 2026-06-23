@@ -741,6 +741,93 @@ body {
 }
 
 /* =============================================
+   INNLEGGSPLAN — POST CARDS
+   ============================================= */
+.post-add-form {
+  background: var(--gray);
+  border-radius: var(--radius-sm);
+  padding: 10px 12px;
+  margin-bottom: 14px;
+}
+.post-add-tags { display: flex; flex-direction: column; gap: 6px; margin-bottom: 8px; }
+.post-add-row { display: flex; gap: 6px; align-items: center; }
+.post-day-sel {
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 4px 10px;
+  font-size: .78rem;
+  font-family: var(--font);
+  color: var(--text-soft);
+  background: var(--white);
+  cursor: pointer;
+  flex-shrink: 0;
+}
+.post-day-header {
+  font-size: .7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .05em;
+  color: var(--text-muted);
+  margin: 12px 0 4px;
+}
+.post-card {
+  border-left: 3px solid var(--plat-color, var(--primary));
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  border-top: 1px solid var(--border);
+  border-right: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  background: var(--white);
+  padding: 8px 10px;
+  margin-bottom: 6px;
+  transition: box-shadow .15s;
+}
+.post-card:hover { box-shadow: 0 1px 6px rgba(0,0,0,.07); }
+.post-card.post-done { opacity: .55; }
+.post-card-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 6px; margin-bottom: 4px; }
+.post-card-badges { display: flex; flex-wrap: wrap; gap: 4px; }
+.post-card-actions { display: flex; gap: 2px; flex-shrink: 0; }
+.post-plat-badge {
+  font-size: .68rem; font-weight: 700;
+  padding: 2px 7px; border-radius: 20px;
+}
+.post-store-badge {
+  font-size: .65rem; font-weight: 600;
+  padding: 2px 7px; border-radius: 20px;
+  background: var(--primary-lt); color: var(--primary-dk);
+}
+.post-campaign-badge {
+  font-size: .66rem; font-weight: 600;
+  padding: 2px 7px; border-radius: 20px;
+}
+.post-card-text {
+  font-size: .85rem;
+  color: var(--text);
+  min-height: 1.3em;
+  outline: none;
+  line-height: 1.4;
+}
+.post-card-text[data-empty="true"]:empty::before {
+  content: 'Beskriv innlegget…';
+  color: var(--text-muted);
+  font-style: italic;
+}
+.post-card-text.done { text-decoration: line-through; color: var(--text-muted); }
+.post-done-btn { color: var(--text-muted); }
+.post-done-btn.post-done-active { color: var(--success); font-weight: 700; }
+.post-img-row {
+  display: flex; align-items: center; gap: 6px;
+  margin-top: 6px; padding-top: 6px;
+  border-top: 1px dashed var(--border);
+}
+.post-img-row.hidden { display: none; }
+.post-img-input {
+  flex: 1; border: none; outline: none;
+  font-size: .78rem; color: var(--text-soft);
+  background: transparent;
+  font-family: var(--font);
+}
+
+/* =============================================
    WIN/LOSS LOG
    ============================================= */
 .winloss-list { display: flex; flex-direction: column; gap: 6px; }

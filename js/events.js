@@ -351,10 +351,4 @@ const Events = {
 
     Utils.qsa('.evt-type-btn').forEach(btn => {
       btn.addEventListener('click', () => {
-        Utils.qsa('.evt-type-btn').forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-      });
-    });
-  },
-
-};
+        Utils.qsa('.evt-type-btn').forEach(b => b.classList.remove('active

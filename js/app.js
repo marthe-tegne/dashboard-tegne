@@ -333,4 +333,4 @@ const App = {
 };
 
 // ---- Start app ----
-document.addEventListener('DOMContentLoaded', () => App.init());
+document.addEventListener('DOMContentLoaded', 

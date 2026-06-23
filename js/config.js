@@ -114,6 +114,33 @@ const CONFIG = {
 
   DAILY_ROUTINES_KEY: 'tegne_daily_routines',
 
+  DAILY_ROUTINES: {
+    monday:    [
+      'Hent KPIer fra Metorik (omsetning, ordre, AOV)',
+      'Sjekk Google Search Console (klikk, visninger, posisjon)',
+      'Legg inn ukens tall i dashboardet',
+      'Planlegg ukens prioriteringer',
+    ],
+    tuesday:   [
+      'Lag og planlegg ukens SoMe-innlegg i Later',
+      'Sjekk Instagram og Facebook-statistikk',
+      'Planlegg innlegg frem til neste tirsdag',
+    ],
+    wednesday: [
+      'Skriv og send nyhetsbrev i Mailchimp',
+      'Sjekk statistikk fra forrige nyhetsbrev (åpningsrate, klikk)',
+    ],
+    thursday:  [
+      'SEO-arbeid (artikler, metabeskrivelser, intern lenking)',
+      'Feilretting og tekniske oppgaver i nettbutikk',
+    ],
+    friday:    [
+      'SEO-arbeid og resterende ukesoppgaver',
+      'Kort analyse av uken som har gått',
+      'Forbered neste ukes prioriteringer',
+    ],
+  },
+
   // Oppgave-prioriteter
   TASK_PRIORITIES: [
     { id: 'haster',  label: '🔴 Haster',  color: '#eb5857', order: 0 },
@@ -162,15 +189,4 @@ const CONFIG = {
     award:    `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="7"/><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"/></svg>`,
     filetext: `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><line x1="10" y1="9" x2="8" y2="9"/></svg>`,
     forward:  `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 16 16 12 12 8"/><line x1="8" y1="12" x2="16" y2="12"/></svg>`,
-    stars:    `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>`,
-    check:    `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>`,
-    xcircle:  `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>`,
-    bell:     `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 01-3.46 0"/></svg>`,
-  },
-
-  // Netlify function URL (proxy for Anthropic)
-  AI_ENDPOINT: '/api/claude',
-
-  // AI-modell
-  AI_MODEL: 'claude-sonnet-4-6',
-};
+    stars:    `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" 

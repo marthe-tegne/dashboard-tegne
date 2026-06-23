@@ -1574,19 +1574,6 @@ const Weekly = {
 
   /* ---- Daglige rutiner ---- */
 
-  getDayRoutines(dayIndex) {
-    const dayId = CONFIG.DAYS[dayIndex];
-    const all = Utils.load(CONFIG.DAILY_ROUTINES_KEY, {});
-    return all[dayId] || [];
-  },
-
-  saveDayRoutines(dayIndex, routines) {
-    const dayId = CONFIG.DAYS[dayIndex];
-    const all = Utils.load(CONFIG.DAILY_ROUTINES_KEY, {});
-    all[dayId] = routines;
-    Utils.save(CONFIG.DAILY_ROUTINES_KEY, all);
-  },
-
   getRoutineState(weekKey, dayIndex) {
     const key = `tegne_routine_state_${weekKey}_${CONFIG.DAYS[dayIndex]}`;
     return Utils.load(key, {});
@@ -1598,7 +1585,10 @@ const Weekly = {
   },
 
   renderDailyRoutines(dayIndex, weekKey) {
-    const routines = this.getDayRoutines(dayIndex);
+    const dayId    = CONFIG.DAYS[dayIndex];
+    const routines = (CONFIG.DAILY_ROUTINES[dayId] || []).map((text, i) => ({ id: `${dayId}_${i}`, text }));
+    if (!routines.length) return '';
+
     const dayLabel = CONFIG.DAY_LABELS[dayIndex];
     const state    = this.getRoutineState(weekKey, dayIndex);
     const done     = routines.filter(r => state[r.id]).length;
@@ -1606,119 +1596,35 @@ const Weekly = {
     return `<div class="card" id="routinesCard">
       <div class="card-header">
         <div class="card-title">
-          <span class="icon">🔁</span> Dagens arbeid — ${dayLabel}
-          ${routines.length ? `<span class="badge badge-primary" style="font-size:.65rem;margin-left:6px">${done}/${routines.length}</span>` : ''}
+          <span class="icon">🔁</span> Dagens arbeid
+          <span class="badge badge-primary" style="font-size:.65rem;margin-left:6px">${done}/${routines.length}</span>
         </div>
-        <button class="btn-ghost-sm" id="editRoutinesBtn">Rediger</button>
       </div>
       <div class="card-body" id="routinesList">
-        ${routines.length === 0
-          ? `<p class="text-muted text-small">Ingen faste oppgaver for ${dayLabel.toLowerCase()} ennå.
-              <button class="btn-ghost-sm" id="editRoutinesBtn2" style="margin-left:6px">+ Legg til</button></p>`
-          : routines.map(r => `
-            <label class="routine-item ${state[r.id] ? 'routine-done' : ''}">
-              <input type="checkbox" class="routine-cb" data-rid="${r.id}" ${state[r.id] ? 'checked' : ''}>
-              <span>${Utils.esc(r.text)}</span>
-            </label>`).join('')
-        }
-      </div>
-      <!-- Rediger-panel (skjult) -->
-      <div id="routineEditPanel" style="display:none;padding:0 12px 12px">
-        <div style="border-top:1px solid var(--border);padding-top:10px">
-          <div class="form-label" style="margin-bottom:6px">Faste oppgaver for ${dayLabel}</div>
-          <div id="routineEditList"></div>
-          <div style="display:flex;gap:6px;margin-top:6px">
-            <input type="text" id="newRoutineInput" class="form-input" placeholder="Ny fast oppgave…" style="flex:1">
-            <button class="btn-primary btn-sm" id="addRoutineBtn">+</button>
-          </div>
-        </div>
+        ${routines.map(r => `
+          <label class="routine-item ${state[r.id] ? 'routine-done' : ''}">
+            <input type="checkbox" class="routine-cb" data-rid="${r.id}" ${state[r.id] ? 'checked' : ''}>
+            <span>${Utils.esc(r.text)}</span>
+          </label>`).join('')}
       </div>
     </div>`;
   },
 
   bindRoutines(dayIndex, weekKey) {
-    const editBtn  = Utils.el('editRoutinesBtn');
-    const editBtn2 = Utils.el('editRoutinesBtn2');
-    const panel    = Utils.el('routineEditPanel');
+    const dayId    = CONFIG.DAYS[dayIndex];
+    const routines = (CONFIG.DAILY_ROUTINES[dayId] || []).map((text, i) => ({ id: `${dayId}_${i}`, text }));
 
-    const toggleEdit = () => {
-      if (!panel) return;
-      const open = panel.style.display !== 'none';
-      panel.style.display = open ? 'none' : '';
-      if (!open) this.renderRoutineEditList(dayIndex, weekKey);
-    };
-    if (editBtn)  editBtn.onclick  = toggleEdit;
-    if (editBtn2) editBtn2.onclick = toggleEdit;
-
-    // Checkboxes
     Utils.qsa('.routine-cb').forEach(cb => {
       cb.addEventListener('change', () => {
         const state = this.getRoutineState(weekKey, dayIndex);
         state[cb.dataset.rid] = cb.checked;
         this.saveRoutineState(weekKey, dayIndex, state);
-        const label = cb.closest('.routine-item');
-        if (label) label.classList.toggle('routine-done', cb.checked);
-        // Oppdater teller
-        const routines = this.getDayRoutines(dayIndex);
-        const done = routines.filter(r => state[r.id]).length;
+        cb.closest('.routine-item')?.classList.toggle('routine-done', cb.checked);
+        const done  = routines.filter(r => state[r.id]).length;
         const badge = Utils.el('routinesCard')?.querySelector('.badge');
         if (badge) badge.textContent = `${done}/${routines.length}`;
       });
     });
-  },
-
-  renderRoutineEditList(dayIndex, weekKey) {
-    const container = Utils.el('routineEditList');
-    if (!container) return;
-    const routines = this.getDayRoutines(dayIndex);
-    container.innerHTML = routines.map(r => `
-      <div class="routine-edit-row" data-rid="${r.id}">
-        <span style="flex:1;font-size:.85rem">${Utils.esc(r.text)}</span>
-        <button class="btn-icon del-routine-btn" data-rid="${r.id}">✕</button>
-      </div>`).join('') || '<p class="text-muted text-small">Ingen ennå.</p>';
-
-    container.querySelectorAll('.del-routine-btn').forEach(btn => {
-      btn.onclick = () => {
-        let r = this.getDayRoutines(dayIndex).filter(x => x.id !== btn.dataset.rid);
-        this.saveDayRoutines(dayIndex, r);
-        this.renderRoutineEditList(dayIndex, weekKey);
-      };
-    });
-
-    const addBtn = Utils.el('addRoutineBtn');
-    const input  = Utils.el('newRoutineInput');
-    if (addBtn) {
-      addBtn.onclick = () => {
-        const text = input?.value.trim();
-        if (!text) return;
-        const r = this.getDayRoutines(dayIndex);
-        r.push({ id: Utils.uid(), text });
-        this.saveDayRoutines(dayIndex, r);
-        if (input) input.value = '';
-        this.renderRoutineEditList(dayIndex, weekKey);
-        // Oppdater sjekklisten uten full re-render
-        const list = Utils.el('routinesList');
-        if (list) {
-          const state = this.getRoutineState(weekKey, dayIndex);
-          const fresh = this.getDayRoutines(dayIndex);
-          list.innerHTML = fresh.map(x => `
-            <label class="routine-item ${state[x.id] ? 'routine-done' : ''}">
-              <input type="checkbox" class="routine-cb" data-rid="${x.id}" ${state[x.id] ? 'checked' : ''}>
-              <span>${Utils.esc(x.text)}</span>
-            </label>`).join('');
-          // Re-bind checkboxes
-          list.querySelectorAll('.routine-cb').forEach(cb => {
-            cb.addEventListener('change', () => {
-              const s = this.getRoutineState(weekKey, dayIndex);
-              s[cb.dataset.rid] = cb.checked;
-              this.saveRoutineState(weekKey, dayIndex, s);
-              cb.closest('.routine-item')?.classList.toggle('routine-done', cb.checked);
-            });
-          });
-        }
-      };
-      input?.addEventListener('keydown', e => { if (e.key === 'Enter') addBtn.click(); });
-    }
   },
 
   renderMondayCampaigns() {
@@ -2114,214 +2020,4 @@ const Weekly = {
         item.classList.add('dragging');
         e.dataTransfer.effectAllowed = 'move';
       });
-      item.addEventListener('dragend', () => {
-        item.classList.remove('dragging');
-        list.querySelectorAll('.task-item-v2').forEach(i => i.classList.remove('drag-over'));
-      });
-      item.addEventListener('dragover', e => {
-        e.preventDefault();
-        e.dataTransfer.dropEffect = 'move';
-        list.querySelectorAll('.task-item-v2').forEach(i => i.classList.remove('drag-over'));
-        if (item.dataset.tid !== dragSrcId) item.classList.add('drag-over');
-      });
-      item.addEventListener('drop', e => {
-        e.preventDefault();
-        if (!dragSrcId || item.dataset.tid === dragSrcId) return;
-        let tasks = this.getWeekTasks(weekKey);
-        const srcIdx  = tasks.findIndex(t => t.id === dragSrcId);
-        const destIdx = tasks.findIndex(t => t.id === item.dataset.tid);
-        if (srcIdx < 0 || destIdx < 0) return;
-        const [moved] = tasks.splice(srcIdx, 1);
-        tasks.splice(destIdx, 0, moved);
-        this.saveWeekTasks(weekKey, tasks);
-        this.renderTasks(weekKey);
-      });
-    });
-  },
-
-  /* ---- Kalender-panel ---- */
-
-  renderTaskCalendar(weekKey) {
-    const panel = Utils.el('taskCalPanel');
-    if (!panel || panel.style.display === 'none') return;
-
-    const allTasks = this.getWeekTasks(weekKey).filter(t => t.dueDate);
-    const today = new Date(); today.setHours(0,0,0,0);
-    const year  = today.getFullYear();
-    const month = today.getMonth();
-
-    const firstDay = new Date(year, month, 1);
-    const lastDay  = new Date(year, month + 1, 0);
-    const startDow = (firstDay.getDay() + 6) % 7; // Mandag=0
-
-    // Grupper oppgaver per dato-streng
-    const byDate = {};
-    allTasks.forEach(t => {
-      const d = t.dueDate.substring(0, 10);
-      if (!byDate[d]) byDate[d] = [];
-      byDate[d].push(t);
-    });
-
-    const dayNames = ['Man', 'Tir', 'Ons', 'Tor', 'Fre', 'Lør', 'Søn'];
-    let cells = '';
-
-    // Tomme celler før første dag
-    for (let i = 0; i < startDow; i++) cells += `<div class="cal-cell cal-empty"></div>`;
-
-    for (let d = 1; d <= lastDay.getDate(); d++) {
-      const dateStr = `${year}-${String(month+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
-      const tasks   = byDate[dateStr] || [];
-      const isToday = d === today.getDate();
-      const dots    = tasks.map(t => {
-        const prioColors = { haster: '#eb5857', hoy: '#f97316', middels: '#f7c855', lav: '#acf5ca' };
-        return `<span class="cal-dot" style="background:${prioColors[t.priority]||'var(--primary)'}"></span>`;
-      }).join('');
-      const tooltipTasks = tasks.map(t => t.text).join('\n');
-
-      cells += `<div class="cal-cell${isToday ? ' cal-today' : ''}${tasks.length ? ' cal-has-tasks' : ''}"
-        title="${tooltipTasks ? Utils.esc(tooltipTasks) : ''}">
-        <span class="cal-day-num">${d}</span>
-        ${dots ? `<div class="cal-dots">${dots}</div>` : ''}
-      </div>`;
-    }
-
-    panel.innerHTML = `
-      <div class="task-cal-inner">
-        <div class="cal-month-label">${CONFIG.MONTHS_NO[month]} ${year}</div>
-        <div class="cal-grid">
-          ${dayNames.map(n => `<div class="cal-header-cell">${n}</div>`).join('')}
-          ${cells}
-        </div>
-      </div>`;
-  },
-
-  initCalendarToggle(weekKey) {
-    const btn = Utils.el('toggleCalBtn');
-    if (!btn) return;
-    btn.onclick = () => {
-      const panel = Utils.el('taskCalPanel');
-      if (!panel) return;
-      const open = panel.style.display !== 'none';
-      panel.style.display = open ? 'none' : '';
-      btn.style.background = open ? '' : 'var(--primary-lt)';
-      if (!open) this.renderTaskCalendar(weekKey);
-    };
-  },
-
-  addWeekTask(weekKey) {
-    const input    = Utils.el('newTaskInput');
-    const prio     = Utils.el('newTaskPriority')?.value || 'lav';
-    const category = Utils.el('newTaskCategory')?.value || null;
-    const dueDate  = Utils.el('newTaskDue')?.value || null;
-    if (!input || !input.value.trim()) return;
-    const tasks = this.getWeekTasks(weekKey);
-    tasks.unshift({ id: Utils.uid(), text: input.value.trim(), priority: prio, category: category || null, dueDate: dueDate || null, status: 'ikke-startet', created: new Date().toISOString() });
-    this.saveWeekTasks(weekKey, tasks);
-    input.value = '';
-    const dueEl = Utils.el('newTaskDue');
-    if (dueEl) dueEl.value = '';
-    this.renderTasks(weekKey);
-  },
-
-  /* ---- Vinn/Taper ---- */
-
-  renderWinLoss(dayKey) {
-    const list = Utils.el('winlossList');
-    if (!list) return;
-    const items = Utils.loadNested(CONFIG.STORAGE_KEYS.WINLOSS, dayKey, []);
-    list.innerHTML = items.map(item => `
-      <div class="winloss-item" data-wid="${item.id}">
-        <span class="winloss-badge ${item.type}">${item.type === 'win' ? '✅ Funket' : '❌ Funket ikke'}</span>
-        <textarea class="winloss-text" data-wid="${item.id}" rows="1">${Utils.esc(item.text)}</textarea>
-        <button class="task-del" data-wid="${item.id}">✕</button>
-      </div>`).join('');
-
-    list.querySelectorAll('.winloss-text').forEach(ta => {
-      ta.addEventListener('input', Utils.debounce(() => {
-        const items = Utils.loadNested(CONFIG.STORAGE_KEYS.WINLOSS, dayKey, []);
-        const i = items.find(i => i.id === ta.dataset.wid);
-        if (i) { i.text = ta.value; Utils.saveNested(CONFIG.STORAGE_KEYS.WINLOSS, dayKey, items); }
-      }, 600));
-    });
-    list.querySelectorAll('.task-del').forEach(btn => {
-      btn.addEventListener('click', () => {
-        let items = Utils.loadNested(CONFIG.STORAGE_KEYS.WINLOSS, dayKey, []);
-        items = items.filter(i => i.id !== btn.dataset.wid);
-        Utils.saveNested(CONFIG.STORAGE_KEYS.WINLOSS, dayKey, items);
-        this.renderWinLoss(dayKey);
-      });
-    });
-  },
-
-  addWinLoss(dayKey, type) {
-    const items = Utils.loadNested(CONFIG.STORAGE_KEYS.WINLOSS, dayKey, []);
-    items.push({ id: Utils.uid(), type, text: '' });
-    Utils.saveNested(CONFIG.STORAGE_KEYS.WINLOSS, dayKey, items);
-    this.renderWinLoss(dayKey);
-    setTimeout(() => {
-      const textareas = Utils.qsa('.winloss-text');
-      if (textareas.length) textareas[textareas.length - 1].focus();
-    }, 50);
-  },
-
-
-  /* ---- Innholdskalender ---- */
-
-  renderCalendar(weekKey) {
-    const list = Utils.el('calendarList');
-    if (!list) return;
-    const channels = ['Blogg', 'E-post', 'Google Ads', 'Instagram', 'Facebook', 'Annet'];
-    const entries = Utils.loadNested(CONFIG.STORAGE_KEYS.CALENDAR, weekKey, []);
-
-    const save = () => {};
-
-    list.innerHTML = `
-      ${entries.length === 0 ? '<p class="text-muted text-small" style="margin-bottom:8px">Ingen innhold planlagt. Trykk "+ Legg til".</p>' : ''}
-      ${entries.map(e => `
-        <div class="pub-entry" data-eid="${e.id}">
-          <select class="pub-channel-sel" data-eid="${e.id}">
-            ${channels.map(ch => `<option ${e.channel===ch?'selected':''}>${ch}</option>`).join('')}
-          </select>
-          <input class="pub-entry-input" data-eid="${e.id}" value="${Utils.esc(e.text||'')}" placeholder="Hva går ut denne uka…">
-          <button class="task-del pub-del" data-eid="${e.id}" style="opacity:1">✕</button>
-        </div>`).join('')}
-      <button class="btn-ghost-sm" id="addCalEntryBtn" style="margin-top:6px;font-size:.8rem">+ Legg til</button>`;
-
-    list.querySelectorAll('.pub-channel-sel').forEach(sel => {
-      sel.addEventListener('change', Utils.debounce(() => {
-        const es = Utils.loadNested(CONFIG.STORAGE_KEYS.CALENDAR, weekKey, []);
-        const e = es.find(e => e.id === sel.dataset.eid);
-        if (e) { e.channel = sel.value; Utils.saveNested(CONFIG.STORAGE_KEYS.CALENDAR, weekKey, es); save(); }
-      }, 300));
-    });
-    list.querySelectorAll('.pub-entry-input').forEach(input => {
-      input.addEventListener('input', Utils.debounce(() => {
-        const es = Utils.loadNested(CONFIG.STORAGE_KEYS.CALENDAR, weekKey, []);
-        const e = es.find(e => e.id === input.dataset.eid);
-        if (e) { e.text = input.value; Utils.saveNested(CONFIG.STORAGE_KEYS.CALENDAR, weekKey, es); save(); }
-      }, 600));
-    });
-    list.querySelectorAll('.pub-del').forEach(btn => {
-      btn.addEventListener('click', () => {
-        let es = Utils.loadNested(CONFIG.STORAGE_KEYS.CALENDAR, weekKey, []);
-        es = es.filter(e => e.id !== btn.dataset.eid);
-        Utils.saveNested(CONFIG.STORAGE_KEYS.CALENDAR, weekKey, es);
-        this.renderCalendar(weekKey);
-      });
-    });
-    const addBtn = Utils.el('addCalEntryBtn');
-    if (addBtn) addBtn.onclick = () => this.addCalendarEntry(weekKey);
-  },
-
-  addCalendarEntry(weekKey) {
-    const es = Utils.loadNested(CONFIG.STORAGE_KEYS.CALENDAR, weekKey, []);
-    es.push({ id: Utils.uid(), channel: 'Blogg', text: '' });
-    Utils.saveNested(CONFIG.STORAGE_KEYS.CALENDAR, weekKey, es);
-    this.renderCalendar(weekKey);
-    setTimeout(() => {
-      const inputs = Utils.qsa('.pub-entry-input');
-      if (inputs.length) inputs[inputs.length - 1].focus();
-    }, 50);
-  },
-
-};
+      item.addEventListener('dragend', () 
